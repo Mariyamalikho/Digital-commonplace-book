@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Commonplace Journal</title>
+    <meta name="description" content="A premium digital commonplace book for capturing thoughts, quotes, and ideas with elegance." />
+
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Base Surfaces
+              base: {
+                0:    '#0a0a0f',
+                50:   '#0f0f16',
+                100:  '#111118',
+                150:  '#16161f',
+                200:  '#1a1a24',
+                250:  '#1e1e2a',
+                300:  '#22222f',
+                400:  '#2a2a3a',
+                500:  '#35354a',
+                border: 'rgba(255,255,255,0.07)',
+                borderHover: 'rgba(255,255,255,0.14)',
+              },
+              // Accent (Midnight default)
+              accent: {
+                DEFAULT: '#6c63ff',
+                muted: 'rgba(108,99,255,0.15)',
+                hover: '#7c74ff',
+              },
+              // Parchment (pages stay warm ivory)
+              parchment: {
+                DEFAULT: '#f7f3ed',
+                dark: '#ede7db',
+                line: '#e0d5c5',
+                ink: '#2c2620',
+                inkLight: '#5c4d3c',
+              },
+              // Text
+              ink: {
+                primary: 'rgba(255,255,255,0.92)',
+                secondary: 'rgba(255,255,255,0.55)',
+                tertiary: 'rgba(255,255,255,0.30)',
+                disabled: 'rgba(255,255,255,0.18)',
+              }
+            },
+            fontFamily: {
+              display:   ['"DM Serif Display"', 'Georgia', 'serif'],
+              body:      ['"Inter"', 'system-ui', 'sans-serif'],
+              mono:      ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
+              // Legacy aliases kept for page content
+              serifTitle:   ['"DM Serif Display"', 'Georgia', 'serif'],
+              serifHeading: ['"DM Serif Display"', 'Georgia', 'serif'],
+              handwriting:  ['"Caveat"', 'cursive'],
+              bodyText:     ['"EB Garamond"', 'Georgia', 'serif'],
+              urdu:         ['"Noto Nastaliq Urdu"', '"Gulzar"', '"Amiri"', 'serif'],
+            },
+            borderRadius: {
+              'xl2': '16px',
+              'xl3': '20px',
+              'xl4': '24px',
+            },
+            boxShadow: {
+              'soft-sm':   '0 2px 8px rgba(0,0,0,0.3)',
+              'soft-md':   '0 4px 20px rgba(0,0,0,0.4)',
+              'soft-lg':   '0 8px 40px rgba(0,0,0,0.5)',
+              'soft-xl':   '0 16px 60px rgba(0,0,0,0.6)',
+              'soft-2xl':  '0 24px 80px rgba(0,0,0,0.7)',
+              'glass':     '0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
+              'page':      '0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04)',
+            },
+            backdropBlur: {
+              'xs': '4px',
+            },
+            animation: {
+              'fade-in':    'fadeIn 0.3s ease forwards',
+              'slide-up':   'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'scale-in':   'scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            },
+            keyframes: {
+              fadeIn:  { from: { opacity: '0' }, to: { opacity: '1' } },
+              slideUp: { from: { opacity: '0', transform: 'translateY(16px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+              scaleIn: { from: { opacity: '0', transform: 'scale(0.95)' }, to: { opacity: '1', transform: 'scale(1)' } },
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Premium Fonts: Inter + DM Serif Display + Urdu support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Nastaliq+Urdu:wght@400..700&family=Gulzar&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#0a0a0f] text-white overflow-x-hidden antialiased min-h-screen selection:bg-[#6c63ff]/30 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
