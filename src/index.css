@@ -1,0 +1,327 @@
+/* ============================================================
+   FOLIO — Premium Design System
+   Minimal · Spacious · Editorial · Luxurious
+   ============================================================ */
+
+/* ---------- CSS Custom Properties (Theme Tokens) ---------- */
+:root {
+  /* Surfaces */
+  --bg:         #0a0a0f;
+  --surface-1:  #111118;
+  --surface-2:  #1a1a24;
+  --surface-3:  #22222f;
+  --surface-4:  #2a2a3a;
+
+  /* Borders */
+  --border:       rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.14);
+  --border-focus: rgba(255,255,255,0.28);
+
+  /* Accent (Midnight default) */
+  --accent:       #6c63ff;
+  --accent-light: rgba(108,99,255,0.15);
+  --accent-hover: #7c74ff;
+
+  /* Text */
+  --text-primary:   rgba(255,255,255,0.92);
+  --text-secondary: rgba(255,255,255,0.55);
+  --text-tertiary:  rgba(255,255,255,0.30);
+  --text-disabled:  rgba(255,255,255,0.18);
+
+  /* Parchment (pages stay warm — ALWAYS PRESERVED) */
+  --parchment:      #f7f3ed;
+  --parchment-dark: #ede7db;
+  --parchment-line: #ddd5c5;
+  --ink-dark:       #2c2620;
+  --ink-mid:        #5c4d3c;
+  --ink-light:      #8a7968;
+}
+
+/* ---------- Theme Presets ---------- */
+
+[data-theme="midnight"] {
+  --bg: #0a0a0f; --surface-1: #111118; --surface-2: #1a1a24; --surface-3: #22222f;
+  --accent: #6c63ff; --accent-light: rgba(108,99,255,0.15); --accent-hover: #7c74ff;
+}
+
+[data-theme="sand"] {
+  --bg: #0f0d0a; --surface-1: #17140f; --surface-2: #211c14; --surface-3: #2a231a;
+  --accent: #c9a96e; --accent-light: rgba(201,169,110,0.15); --accent-hover: #d9bc85;
+}
+
+[data-theme="emerald"] {
+  --bg: #080f0c; --surface-1: #0d1710; --surface-2: #122118; --surface-3: #182c20;
+  --accent: #34d399; --accent-light: rgba(52,211,153,0.12); --accent-hover: #4ee8ae;
+}
+
+[data-theme="obsidian"] {
+  --bg: #080808; --surface-1: #101010; --surface-2: #191919; --surface-3: #222222;
+  --accent: #a0a0a0; --accent-light: rgba(160,160,160,0.12); --accent-hover: #bfbfbf;
+}
+
+[data-theme="royal"] {
+  --bg: #0c0a14; --surface-1: #14102a; --surface-2: #1c1636; --surface-3: #241d42;
+  --accent: #9f7aea; --accent-light: rgba(159,122,234,0.15); --accent-hover: #b090f5;
+}
+
+[data-theme="dark-academia"] {
+  --bg: #0d0b08; --surface-1: #171410; --surface-2: #201b14; --surface-3: #2a231a;
+  --accent: #c8a96e; --accent-light: rgba(200,169,110,0.15); --accent-hover: #d9bc85;
+}
+
+/* ---------- Base Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease;
+}
+
+/* ---------- Typography Utilities ---------- */
+.font-display   { font-family: 'DM Serif Display', Georgia, serif; }
+.font-body      { font-family: 'Inter', system-ui, sans-serif; }
+.font-serifTitle   { font-family: 'DM Serif Display', Georgia, serif; }
+.font-serifHeading { font-family: 'DM Serif Display', Georgia, serif; }
+.font-handwriting  { font-family: 'Caveat', cursive; }
+.font-bodyText     { font-family: 'EB Garamond', Georgia, serif; }
+.font-urdu         { font-family: 'Noto Nastaliq Urdu', 'Gulzar', 'Amiri', serif; }
+
+/* ---------- Glass & Surface Utilities ---------- */
+.glass {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+.glass-strong {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--border-hover);
+}
+
+.surface-1 { background: var(--surface-1); border: 1px solid var(--border); }
+.surface-2 { background: var(--surface-2); border: 1px solid var(--border); }
+.surface-3 { background: var(--surface-3); border: 1px solid var(--border); }
+
+/* ---------- Premium Card ---------- */
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07);
+  transform: translateY(-2px);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+
+.btn-secondary {
+  background: var(--surface-3);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--surface-4); border-color: var(--border-hover); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+.btn-ghost:hover { background: var(--surface-2); color: var(--text-primary); border-color: var(--border); }
+
+.btn-danger {
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.25);
+}
+.btn-danger:hover { background: rgba(239,68,68,0.25); }
+
+/* ---------- Premium Inputs ---------- */
+.input-field {
+  width: 100%;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.input-field::placeholder { color: var(--text-tertiary); }
+
+/* ---------- Premium Modal Overlay ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border-hover);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ---------- Warm Ivory Lined Notebook Page (ALWAYS PRESERVED!) ---------- */
+.lined-paper {
+  background-color: var(--parchment);
+  background-image: linear-gradient(var(--parchment-line) 1px, transparent 1px);
+  background-size: 100% 2rem;
+  background-position: 0 1.4rem;
+}
+
+/* ---------- Book Spine Divider ---------- */
+.spine-divider {
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0.06) 30%,
+    rgba(200,185,165,0.3) 50%,
+    rgba(0,0,0,0.06) 70%,
+    rgba(0,0,0,0.15) 100%
+  );
+}
+
+/* ---------- Accent Ribbon (minimal top stripe) ---------- */
+.cover-ribbon-stripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 20px 20px 0 0;
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+/* ---------- Ribbon Wiggle (preserved for cover) ---------- */
+@keyframes ribbonWiggleNatural {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(4deg); }
+  40%  { transform: rotate(-3deg); }
+  60%  { transform: rotate(1.5deg); }
+  80%  { transform: rotate(-0.8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.ribbon-wiggle-natural { transform-origin: top center; }
+.ribbon-wiggle-natural:hover {
+  animation: ribbonWiggleNatural 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ---------- 3D Page Flip Animations (PRESERVED EXACTLY) ---------- */
+@keyframes singlePageFlipNext {
+  0%   { transform: perspective(1600px) rotateY(0deg);    transform-origin: left center;  box-shadow: -5px 0 20px rgba(0,0,0,0.2); }
+  50%  { transform: perspective(1600px) rotateY(-90deg) scale(0.98); transform-origin: left center;  box-shadow: -30px 20px 50px rgba(0,0,0,0.7); }
+  100% { transform: perspective(1600px) rotateY(-180deg); transform-origin: left center;  box-shadow: 0 0 0 transparent; }
+}
+
+@keyframes singlePageFlipPrev {
+  0%   { transform: perspective(1600px) rotateY(0deg);   transform-origin: right center; box-shadow: 5px 0 20px rgba(0,0,0,0.2); }
+  50%  { transform: perspective(1600px) rotateY(90deg) scale(0.98); transform-origin: right center; box-shadow: 30px 20px 50px rgba(0,0,0,0.7); }
+  100% { transform: perspective(1600px) rotateY(180deg); transform-origin: right center; box-shadow: 0 0 0 transparent; }
+}
+
+.animate-single-page-next { animation: singlePageFlipNext 0.42s cubic-bezier(0.4, 0.2, 0.2, 1) forwards; }
+.animate-single-page-prev { animation: singlePageFlipPrev 0.42s cubic-bezier(0.4, 0.2, 0.2, 1) forwards; }
+
+/* ---------- Paper Tear Animations (PRESERVED EXACTLY) ---------- */
+@keyframes pageTearFalling {
+  0%   { transform: rotate(0deg) translateY(0) scale(1); opacity: 1; }
+  20%  { transform: rotate(-6deg) translateY(30px) scale(0.98); opacity: 0.95; }
+  60%  { transform: rotate(-22deg) translateY(350px) translateX(-60px) scale(0.85); opacity: 0.6; }
+  100% { transform: rotate(-38deg) translateY(800px) translateX(-120px) scale(0.7); opacity: 0; }
+}
+.animate-page-tear { animation: pageTearFalling 0.75s cubic-bezier(0.4, 0.2, 0.2, 1) forwards; }
+
+@keyframes scrapFall {
+  0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  50%  { transform: translateY(300px) translateX(-40px) rotate(180deg) scale(0.8); opacity: 0.8; }
+  100% { transform: translateY(700px) translateX(60px) rotate(360deg) scale(0.5); opacity: 0; }
+}
+.animate-scrap-fall { animation: scrapFall 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
+/* ---------- Entrance Animations ---------- */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+.animate-fade-in  { animation: fadeIn  0.3s ease forwards; }
+.animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+.animate-scale-in { animation: scaleIn 0.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ---------- Focus Ring ---------- */
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Book Card Gradient Covers ---------- */
+.book-card-midnight    { background: linear-gradient(135deg, #1a1040 0%, #0a0820 60%, #12101f 100%); }
+.book-card-sand        { background: linear-gradient(135deg, #2a1f0e 0%, #16100a 60%, #1a1408 100%); }
+.book-card-emerald     { background: linear-gradient(135deg, #0d2820 0%, #071510 60%, #0a1e18 100%); }
+.book-card-obsidian    { background: linear-gradient(135deg, #1c1c1c 0%, #0a0a0a 60%, #141414 100%); }
+.book-card-royal       { background: linear-gradient(135deg, #1c0e3a 0%, #0e0720 60%, #180f32 100%); }
+.book-card-dark-academia { background: linear-gradient(135deg, #261d0e 0%, #140e06 60%, #1e1810 100%); }
