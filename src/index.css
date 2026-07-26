@@ -19,8 +19,8 @@
 
   /* Accent (Midnight default) */
   --accent:       #6c63ff;
-  --accent-light: rgba(108,99,255,0.15);
   --accent-hover: #7c74ff;
+  --accent-light: rgba(108,99,255,0.15);
 
   /* Text */
   --text-primary:   rgba(255,255,255,0.92);
@@ -28,16 +28,18 @@
   --text-tertiary:  rgba(255,255,255,0.30);
   --text-disabled:  rgba(255,255,255,0.18);
 
-  /* Parchment (pages stay warm — ALWAYS PRESERVED) */
+  /* Parchment Base */
   --parchment:      #f7f3ed;
   --parchment-dark: #ede7db;
   --parchment-line: #ddd5c5;
+  
+  /* Ink Colors */
   --ink-dark:       #2c2620;
   --ink-mid:        #5c4d3c;
   --ink-light:      #8a7968;
 }
 
-/* ---------- Theme Presets ---------- */
+/* ---------- Theme Configuration & Presets ---------- */
 
 [data-theme="midnight"] {
   --bg: #0a0a0f; --surface-1: #111118; --surface-2: #1a1a24; --surface-3: #22222f;
@@ -70,7 +72,11 @@
 }
 
 /* ---------- Base Reset ---------- */
-*, *::before, *::after { box-sizing: border-box; }
+*, 
+*::before, 
+*::after { 
+  box-sizing: border-box; 
+}
 
 body {
   background-color: var(--bg);
