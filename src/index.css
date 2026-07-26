@@ -28,10 +28,12 @@
   --text-tertiary:  rgba(255,255,255,0.30);
   --text-disabled:  rgba(255,255,255,0.18);
 
-  /* Parchment (pages stay warm — ALWAYS PRESERVED) */
+  /* Parchment Base */
   --parchment:      #f7f3ed;
   --parchment-dark: #ede7db;
   --parchment-line: #ddd5c5;
+  
+  /* Ink Colors */
   --ink-dark:       #2c2620;
   --ink-mid:        #5c4d3c;
   --ink-light:      #8a7968;
