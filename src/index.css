@@ -19,8 +19,8 @@
 
   /* Accent (Midnight default) */
   --accent:       #6c63ff;
-  --accent-light: rgba(108,99,255,0.15);
   --accent-hover: #7c74ff;
+  --accent-light: rgba(108,99,255,0.15);
 
   /* Text */
   --text-primary:   rgba(255,255,255,0.92);
