@@ -37,7 +37,7 @@
   --ink-light:      #8a7968;
 }
 
-/* ---------- Theme Presets ---------- */
+/* ---------- Theme Configuration & Presets ---------- */
 
 [data-theme="midnight"] {
   --bg: #0a0a0f; --surface-1: #111118; --surface-2: #1a1a24; --surface-3: #22222f;
