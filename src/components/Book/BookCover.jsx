@@ -12,8 +12,7 @@ const THEME_ACCENTS = {
   'dark-academia': { accent: '#c8a96e', glow: 'rgba(200,169,110,0.25)', text: '#faefd8', sub: '#a88650', shine: 'rgba(200,169,110,0.10)' },
 };
 
-// Subtle SVG noise pattern for paper texture feel
-const noiseUrl = `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
+// Subtle SVG noise pattern moved to index.css
 
 // Thin ornamental SVG line
 const OrnamentalLine = ({ accent }) => (
@@ -26,12 +25,20 @@ const OrnamentalLine = ({ accent }) => (
 
 export const BookCover = ({ isPreview = false }) => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken } = useJournal();
+  const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken, hasSeenGuestUpsell } = useJournal();
 
   const handleOpenAttempt = (e) => {
     if (e && e.target && (e.target.closest('button') || e.target.closest('input'))) return;
-    if (user || guestToken) {
+    
+    if (user) {
       goToNextSpread();
+    } else if (guestToken) {
+      if (hasSeenGuestUpsell) {
+        goToNextSpread();
+      } else {
+        setAuthMode('guest_welcome');
+        setAuthModalOpen(true);
+      }
     } else {
       setAuthMode('login');
       setAuthModalOpen(true);
@@ -45,6 +52,7 @@ export const BookCover = ({ isPreview = false }) => {
 
   const cover = currentBook?.cover || {};
   const themeKey = cover.theme || 'midnight';
+  const patternKey = cover.pattern || 'noise';
   const t = THEME_ACCENTS[themeKey] || THEME_ACCENTS.midnight;
 
   // Base cover color
@@ -91,11 +99,8 @@ export const BookCover = ({ isPreview = false }) => {
           e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.06), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.4) inset, 0 24px 60px rgba(0,0,0,0.65), 0 48px 100px rgba(0,0,0,0.4), 0 0 80px ${t.glow}`;
         }}
       >
-        {/* Subtle noise paper texture overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04] mix-blend-overlay"
-          style={{ backgroundImage: noiseUrl, backgroundSize: '256px' }}
-        />
+        {/* Selected Pattern Overlay */}
+        <div className={`absolute inset-0 pointer-events-none pattern-${patternKey}`} />
 
         {/* Fine inner border frame */}
         <div

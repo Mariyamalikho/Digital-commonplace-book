@@ -17,6 +17,7 @@ export const JournalProvider = ({ children }) => {
   const [guestToken, setGuestToken] = useState(null);
   const [guestRole, setGuestRole] = useState(null);
   const [guestName, setGuestName] = useState('');
+  const [hasSeenGuestUpsell, setHasSeenGuestUpsell] = useState(false);
   const [isTearing, setIsTearing] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState('next');
@@ -504,6 +505,8 @@ export const JournalProvider = ({ children }) => {
       guestRole,
       guestName,
       setGuestName,
+      hasSeenGuestUpsell,
+      setHasSeenGuestUpsell,
       leaveBook
     }}>
       {children}
