@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { X, AlertCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useJournal } from '../../context/JournalContext';
 import { firebaseSignInWithGoogle, isFirebaseConfigured } from '../../services/firebaseService';
 
 export const AuthModal = () => {
   const { authModalOpen, setAuthModalOpen, authMode, setAuthMode, login, signup, forgotPassword } = useAuth();
+  const { setHasSeenGuestUpsell, goToNextSpread, guestRole, guestToken } = useJournal();
 
   const [name, setName]             = useState('');
   const [email, setEmail]           = useState('');
@@ -16,11 +18,19 @@ export const AuthModal = () => {
 
   if (!authModalOpen) return null;
 
+  const handleClose = () => {
+    if (authMode === 'guest_welcome') {
+      setHasSeenGuestUpsell(true);
+      goToNextSpread();
+    }
+    setAuthModalOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); setInfoMsg(''); setLoading(true);
     try {
-      if (authMode === 'signup') {
+      if (authMode === 'signup' || authMode === 'guest_welcome') {
         if (!email || !password) throw new Error('Email and password are required.');
         await signup(name, email, password, rememberMe);
       } else if (authMode === 'login') {
@@ -54,15 +64,16 @@ export const AuthModal = () => {
     login:  { title: 'Welcome back', sub: 'Sign in to your library', btn: 'Sign In' },
     signup: { title: 'Create account', sub: 'Start your private journal workspace', btn: 'Create Account' },
     forgot: { title: 'Reset password', sub: 'We\'ll send you a reset link', btn: 'Send Reset Link' },
+    guest_welcome: { title: 'Welcome to the Journal', sub: `You are joining in ${guestRole || 'visitor'} mode. Join to create your own!`, btn: 'Create Account' },
   };
   const { title, sub, btn } = modeLabels[authMode];
 
   return (
-    <div className="modal-overlay" onClick={() => setAuthModalOpen(false)}>
+    <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-panel w-full max-w-sm p-8" onClick={e => e.stopPropagation()}>
         {/* Close */}
         <button
-          onClick={() => setAuthModalOpen(false)}
+          onClick={handleClose}
           className="absolute top-5 right-5 w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
           style={{ color: 'var(--text-tertiary)' }}
           onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-3)'}
@@ -119,7 +130,7 @@ export const AuthModal = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          {authMode === 'signup' && (
+          {(authMode === 'signup' || authMode === 'guest_welcome') && (
             <input
               type="text"
               value={name}
@@ -188,6 +199,14 @@ export const AuthModal = () => {
             </>
           )}
           {authMode === 'signup' && (
+            <p>
+              Already have an account?{' '}
+              <button onClick={() => setAuthMode('login')} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
+                Sign in
+              </button>
+            </p>
+          )}
+          {authMode === 'guest_welcome' && (
             <p>
               Already have an account?{' '}
               <button onClick={() => setAuthMode('login')} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
