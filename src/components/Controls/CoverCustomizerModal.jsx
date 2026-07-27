@@ -19,6 +19,15 @@ const FONTS = [
   { id: 'Noto Nastaliq Urdu', label: 'Nastaliq (Urdu)' },
 ];
 
+const PATTERNS = [
+  { id: 'none',       label: 'Solid Color' },
+  { id: 'noise',      label: 'Classic Paper' },
+  { id: 'dots',       label: 'Polka Dots' },
+  { id: 'grid',       label: 'Fine Grid' },
+  { id: 'stripes',    label: 'Diagonal Stripes' },
+  { id: 'crosshatch', label: 'Crosshatch' },
+];
+
 export const CoverCustomizerModal = () => {
   const { currentBook, updateCover, updateJournalTitle, saveCurrentBookState, coverCustomizerOpen, setCoverCustomizerOpen } = useJournal();
 
@@ -31,6 +40,7 @@ export const CoverCustomizerModal = () => {
   const [customColor, setCustomColor] = useState(cv.color || THEMES[cv.theme || 'midnight'].color);
   const [ribbonColor, setRibbonColor] = useState(cv.ribbonColor || THEMES[cv.theme || 'midnight'].accent);
   const [font, setFont]             = useState(cv.font || 'DM Serif Display');
+  const [pattern, setPattern]       = useState(cv.pattern || 'noise');
   const [privacy, setPrivacy]       = useState(currentBook.privacy || 'private');
 
   const selectedTheme = THEMES[theme];
@@ -45,8 +55,8 @@ export const CoverCustomizerModal = () => {
 
   const handleSave = () => {
     updateJournalTitle(title, subtitle);
-    updateCover({ theme, color: customColor, ribbonColor, font });
-    saveCurrentBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font } }, false);
+    updateCover({ theme, color: customColor, ribbonColor, font, pattern });
+    saveCurrentBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font, pattern } }, false);
     setCoverCustomizerOpen(false);
   };
 
@@ -59,9 +69,10 @@ export const CoverCustomizerModal = () => {
         <div className="flex h-full min-h-[500px]">
           {/* Live Preview Panel */}
           <div
-            className="hidden md:flex w-48 flex-col items-center justify-center p-6 gap-4 shrink-0"
+            className="hidden md:flex w-48 flex-col items-center justify-center p-6 gap-4 shrink-0 relative overflow-hidden"
             style={{ background: previewBg }}
           >
+            <div className={`absolute inset-0 pointer-events-none pattern-${pattern}`} style={{ opacity: 0.3 }} />
             <div className="w-full h-1 rounded-full" style={{ background: ribbonColor }} />
             <p className="font-display text-white/90 text-sm text-center leading-snug" style={{ fontFamily: font }}>
               {title || 'Journal'}
@@ -163,18 +174,33 @@ export const CoverCustomizerModal = () => {
               </div>
 
               {/* Font */}
-              <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
-                  <Type size={11} className="inline mr-1" />
-                  Typography
-                </label>
-                <select
-                  value={font}
-                  onChange={e => setFont(e.target.value)}
-                  className="input-field text-sm"
-                >
-                  {FONTS.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
-                </select>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
+                    <Type size={11} className="inline mr-1" />
+                    Typography
+                  </label>
+                  <select
+                    value={font}
+                    onChange={e => setFont(e.target.value)}
+                    className="input-field text-sm"
+                  >
+                    {FONTS.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
+                    <Sparkles size={11} className="inline mr-1" />
+                    Cover Pattern
+                  </label>
+                  <select
+                    value={pattern}
+                    onChange={e => setPattern(e.target.value)}
+                    className="input-field text-sm"
+                  >
+                    {PATTERNS.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
+                  </select>
+                </div>
               </div>
 
               {/* Privacy */}
