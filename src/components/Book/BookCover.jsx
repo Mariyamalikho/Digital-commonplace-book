@@ -23,16 +23,32 @@ const OrnamentalLine = ({ accent }) => (
   </svg>
 );
 
+/**
+ * BookCover Component
+ * Renders the interactive 3D front cover of a journal with dynamic titles,
+ * customizable CSS patterns, and access control actions (share/customize).
+ *
+ * @param {Object} props
+ * @param {boolean} [props.isPreview=false] - If true, disables interaction for preview mode
+ */
 export const BookCover = ({ isPreview = false }) => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
   const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken, hasSeenGuestUpsell } = useJournal();
 
+  /**
+   * Handles user attempts to open the book.
+   * If the user is unauthenticated but has a guest token, we show a one-time
+   * "guest_welcome" upsell modal. If they dismiss it, we let them in.
+   */
   const handleOpenAttempt = (e) => {
+    // Ignore clicks on buttons or inputs within the cover
     if (e && e.target && (e.target.closest('button') || e.target.closest('input'))) return;
     
     if (user) {
+      // Authenticated users go straight in
       goToNextSpread();
     } else if (guestToken) {
+      // Guests go straight in ONLY if they have already seen the upsell
       if (hasSeenGuestUpsell) {
         goToNextSpread();
       } else {
@@ -40,6 +56,7 @@ export const BookCover = ({ isPreview = false }) => {
         setAuthModalOpen(true);
       }
     } else {
+      // Completely unauthenticated users without a token must log in
       setAuthMode('login');
       setAuthModalOpen(true);
     }
@@ -99,7 +116,9 @@ export const BookCover = ({ isPreview = false }) => {
           e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.06), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.4) inset, 0 24px 60px rgba(0,0,0,0.65), 0 48px 100px rgba(0,0,0,0.4), 0 0 80px ${t.glow}`;
         }}
       >
-        {/* Selected Pattern Overlay */}
+        {/* Selected Pattern Overlay 
+            Applies a CSS background pattern utility class (e.g. pattern-noise, pattern-dots)
+            defined in index.css based on user's customization choices. */}
         <div className={`absolute inset-0 pointer-events-none pattern-${patternKey}`} />
 
         {/* Fine inner border frame */}

@@ -11,6 +11,12 @@ import { AccountSettingsModal } from '../Auth/AccountSettingsModal';
 import { TearAnimationOverlay } from '../Controls/TearAnimationOverlay';
 import { GuestNameModal } from '../Controls/GuestNameModal';
 
+/**
+ * BookContainer Component
+ * The main layout wrapper for the journal interface.
+ * Handles parsing invite tokens from the URL and loading the appropriate book data,
+ * as well as rendering the core PageSpread and all global UI modals.
+ */
 export const BookContainer = () => {
   const { currentBook, joinBookViaToken, loadGuestBook } = useJournal();
   const { user, loading, setAuthModalOpen, setAuthMode } = useAuth();
