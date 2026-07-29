@@ -71,16 +71,6 @@ export const Navbar = () => {
                 </button>
               )}
 
-              <button
-                onClick={() => setCoverCustomizerOpen(true)}
-                className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] text-xs transition-all"
-                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
-                onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
-                onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
-              >
-                <Palette size={11} />
-                <span>Style</span>
-              </button>
             </>
           )}
 
