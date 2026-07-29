@@ -98,28 +98,31 @@ export const BookCover = ({ isPreview = false }) => {
           background: coverBg,
           minHeight: '620px',
           boxShadow: `
-            0 0 0 1px rgba(255,255,255,0.06),
-            0 2px 1px rgba(255,255,255,0.08) inset,
-            0 -1px 1px rgba(0,0,0,0.4) inset,
-            0 24px 60px rgba(0,0,0,0.65),
-            0 48px 100px rgba(0,0,0,0.4),
-            0 0 80px ${t.glow}
+            0 0 0 1px rgba(255,255,255,0.05),
+            0 2px 1px rgba(255,255,255,0.06) inset,
+            0 -1px 1px rgba(0,0,0,0.3) inset,
+            0 24px 50px rgba(0,0,0,0.45),
+            0 48px 80px rgba(0,0,0,0.3),
+            0 0 60px ${t.glow}
           `,
           transition: 'box-shadow 0.4s ease, transform 0.3s ease',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'translateY(-4px)';
-          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.08), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.4) inset, 0 32px 80px rgba(0,0,0,0.75), 0 64px 120px rgba(0,0,0,0.4), 0 0 100px ${t.glow}`;
+          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.06), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.3) inset, 0 32px 60px rgba(0,0,0,0.55), 0 64px 100px rgba(0,0,0,0.35), 0 0 80px ${t.glow}`;
         }}
         onMouseLeave={e => {
           e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.06), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.4) inset, 0 24px 60px rgba(0,0,0,0.65), 0 48px 100px rgba(0,0,0,0.4), 0 0 80px ${t.glow}`;
+          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.05), 0 2px 1px rgba(255,255,255,0.06) inset, 0 -1px 1px rgba(0,0,0,0.3) inset, 0 24px 50px rgba(0,0,0,0.45), 0 48px 80px rgba(0,0,0,0.3), 0 0 60px ${t.glow}`;
         }}
       >
         {/* Selected Pattern Overlay 
             Applies a CSS background pattern utility class (e.g. pattern-noise, pattern-dots)
             defined in index.css based on user's customization choices. */}
-        <div className={`absolute inset-0 pointer-events-none pattern-${patternKey}`} />
+        <div 
+          className={`absolute inset-0 pointer-events-none pattern-${patternKey}`}
+          style={{ opacity: (themeKey === 'obsidian' || themeKey === 'midnight' || themeKey === 'royal') ? 0.03 : 0.06 }} 
+        />
 
         {/* Fine inner border frame */}
         <div
@@ -150,7 +153,7 @@ export const BookCover = ({ isPreview = false }) => {
         </div>
 
         {/* Top-left action (Share) */}
-        <div className="absolute top-5 left-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute top-5 left-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-[250ms]">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setShareModalOpen(true); }}
@@ -169,7 +172,7 @@ export const BookCover = ({ isPreview = false }) => {
         </div>
 
         {/* Bottom-right Customize button */}
-        <div className="absolute bottom-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute bottom-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-[250ms]">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setCoverCustomizerOpen(true); }}
@@ -291,7 +294,7 @@ export const BookCover = ({ isPreview = false }) => {
                 onClick={(e) => { e.stopPropagation(); handleOpenAttempt(); }}
                 onMouseEnter={() => setHoveringOpen(true)}
                 onMouseLeave={() => setHoveringOpen(false)}
-                className="mt-2 flex items-center gap-2 px-7 py-3 rounded-[14px] text-sm font-medium transition-all duration-300"
+                className="mt-2 flex items-center gap-2 px-7 py-3 rounded-[14px] text-sm font-medium transition-all duration-[250ms]"
                 style={{
                   background: hoveringOpen ? t.accent : 'rgba(255,255,255,0.06)',
                   backdropFilter: 'blur(12px)',
