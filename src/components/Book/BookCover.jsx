@@ -17,9 +17,9 @@ const THEME_ACCENTS = {
 // Thin ornamental SVG line
 const OrnamentalLine = ({ accent }) => (
   <svg width="120" height="12" viewBox="0 0 120 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="6" x2="44" y2="6" stroke={accent} strokeOpacity="0.35" strokeWidth="0.75"/>
-    <path d="M50 6 L55 2 L60 6 L55 10 Z" fill={accent} fillOpacity="0.5"/>
-    <line x1="66" y1="6" x2="120" y2="6" stroke={accent} strokeOpacity="0.35" strokeWidth="0.75"/>
+    <line x1="0" y1="6" x2="44" y2="6" stroke={accent} strokeOpacity="0.8" strokeWidth="1"/>
+    <path d="M50 6 L55 2 L60 6 L55 10 Z" fill={accent} fillOpacity="0.9"/>
+    <line x1="66" y1="6" x2="120" y2="6" stroke={accent} strokeOpacity="0.8" strokeWidth="1"/>
   </svg>
 );
 
@@ -121,6 +121,10 @@ export const BookCover = ({ isPreview = false }) => {
             defined in index.css based on user's customization choices. */}
         <div 
           className={`absolute inset-0 pointer-events-none pattern-${patternKey}`}
+          style={{
+            WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.8) 45%, black 100%)',
+            maskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.8) 45%, black 100%)'
+          }}
         />
 
         {/* Fine inner border frame */}
@@ -245,7 +249,7 @@ export const BookCover = ({ isPreview = false }) => {
                   style={{
                     color: t.text,
                     fontSize: 'clamp(2rem, 5vw, 3rem)',
-                    textShadow: `0 2px 40px ${t.glow}, 0 0 80px ${t.glow}`,
+                    textShadow: `0 4px 60px ${t.glow}, 0 0 100px ${t.glow}, 0 2px 10px rgba(0,0,0,0.5)`,
                   }}
                 >
                   {currentBook?.title || 'My Journal'}
@@ -254,8 +258,8 @@ export const BookCover = ({ isPreview = false }) => {
                 {/* Subtitle row with edit pencil */}
                 <div className="flex items-center justify-center gap-2">
                   <p
-                    className="text-xs tracking-[0.2em] uppercase font-light"
-                    style={{ color: t.sub }}
+                    className="text-xs tracking-[0.2em] uppercase font-medium"
+                    style={{ color: t.sub, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
                   >
                     {currentBook?.subtitle || 'A Commonplace Journal'}
                   </p>
@@ -282,8 +286,8 @@ export const BookCover = ({ isPreview = false }) => {
 
               {/* Author */}
               <p
-                className="text-[11px] tracking-[0.3em] uppercase"
-                style={{ color: `${t.accent}60` }}
+                className="text-[11px] tracking-[0.3em] uppercase font-medium"
+                style={{ color: `${t.accent}cc`, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
               >
                 {currentBook?.ownerName || (isPreview ? 'Your Name' : 'Scholar')}
               </p>
