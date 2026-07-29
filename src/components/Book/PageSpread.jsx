@@ -67,7 +67,7 @@ export const PageSpread = () => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className="absolute top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition-all disabled:opacity-0 disabled:pointer-events-none z-30"
+      className={`absolute top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition-all disabled:opacity-0 disabled:pointer-events-none z-30 ${!disabled ? 'hover:scale-110' : ''}`}
       style={{
         [direction === 'left' ? 'left' : 'right']: '-20px',
         background: 'rgba(10,10,15,0.8)',
