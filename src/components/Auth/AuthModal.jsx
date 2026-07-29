@@ -216,7 +216,7 @@ export const AuthModal = () => {
           )}
           {authMode === 'forgot' && (
             <p>
-              <button onClick={() => setAuthMode('login')} className="underline hover:text-white transition-colors">
+              <button onClick={() => setAuthMode('login')} className="underline hover:text-white transition-all duration-[250ms] inline-block hover:scale-105">
                 Back to sign in
               </button>
             </p>
