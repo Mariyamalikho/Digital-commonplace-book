@@ -31,17 +31,17 @@ const PATTERNS = [
 export const CoverCustomizerModal = () => {
   const { currentBook, updateCover, updateJournalTitle, saveCurrentBookState, coverCustomizerOpen, setCoverCustomizerOpen } = useJournal();
 
-  if (!coverCustomizerOpen || !currentBook) return null;
-
-  const cv = currentBook.cover || {};
-  const [title, setTitle]           = useState(currentBook.title || '');
-  const [subtitle, setSubtitle]     = useState(currentBook.subtitle || '');
+  const cv = currentBook?.cover || {};
+  const [title, setTitle]           = useState(currentBook?.title || '');
+  const [subtitle, setSubtitle]     = useState(currentBook?.subtitle || '');
   const [theme, setTheme]           = useState(cv.theme || 'midnight');
   const [customColor, setCustomColor] = useState(cv.color || THEMES[cv.theme || 'midnight'].color);
   const [ribbonColor, setRibbonColor] = useState(cv.ribbonColor || THEMES[cv.theme || 'midnight'].accent);
   const [font, setFont]             = useState(cv.font || 'DM Serif Display');
   const [pattern, setPattern]       = useState(cv.pattern || 'noise');
-  const [privacy, setPrivacy]       = useState(currentBook.privacy || 'private');
+  const [privacy, setPrivacy]       = useState(currentBook?.privacy || 'private');
+
+  if (!coverCustomizerOpen || !currentBook) return null;
 
   const selectedTheme = THEMES[theme];
   const previewBg = `linear-gradient(145deg, ${customColor}f0 0%, ${customColor}99 100%)`;

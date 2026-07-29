@@ -121,7 +121,7 @@ export const BookCover = ({ isPreview = false }) => {
             defined in index.css based on user's customization choices. */}
         <div 
           className={`absolute inset-0 pointer-events-none pattern-${patternKey}`}
-          style={{ opacity: (themeKey === 'obsidian' || themeKey === 'midnight' || themeKey === 'royal') ? 0.03 : 0.06 }} 
+          style={{ opacity: (themeKey === 'obsidian' || themeKey === 'midnight' || themeKey === 'royal') ? 0.5 : 1 }} 
         />
 
         {/* Fine inner border frame */}
@@ -171,24 +171,6 @@ export const BookCover = ({ isPreview = false }) => {
           )}
         </div>
 
-        {/* Bottom-right Customize button */}
-        <div className="absolute bottom-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-[250ms]">
-          {canWrite && (
-            <button
-              onClick={e => { e.stopPropagation(); setCoverCustomizerOpen(true); }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] text-xs font-medium transition-all"
-              style={{
-                background: 'rgba(0,0,0,0.45)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.75)',
-              }}
-            >
-              <Palette size={11} />
-              Customize
-            </button>
-          )}
-        </div>
 
         {/* Central Content */}
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[620px] px-10 text-center gap-5">
