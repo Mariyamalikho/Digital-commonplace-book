@@ -337,27 +337,26 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 256px;
   mix-blend-mode: overlay;
-  opacity: 0.04;
 }
 
 .pattern-dots {
-  background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
   background-size: 16px 16px;
 }
 
 .pattern-grid {
-  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-image: linear-gradient(#ffffff 1px, transparent 1px),
+                    linear-gradient(90deg, #ffffff 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .pattern-stripes {
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 12px);
+  background-image: repeating-linear-gradient(45deg, #ffffff 0, #ffffff 2px, transparent 2px, transparent 12px);
 }
 
 .pattern-crosshatch {
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 10px),
-                    repeating-linear-gradient(-45deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 10px);
+  background-image: repeating-linear-gradient(45deg, #ffffff 0, #ffffff 1px, transparent 1px, transparent 10px),
+                    repeating-linear-gradient(-45deg, #ffffff 0, #ffffff 1px, transparent 1px, transparent 10px);
 }
 
 .pattern-none {
