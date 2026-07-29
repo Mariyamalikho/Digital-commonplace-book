@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, Type, Lock, Sparkles } from 'lucide-react';
+import { X, Check, Type, Lock } from 'lucide-react';
 import { useJournal } from '../../context/JournalContext';
 
 const THEMES = {
@@ -115,7 +115,6 @@ export const CoverCustomizerModal = () => {
               {/* Theme Presets */}
               <div>
                 <label className="block text-xs font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
-                  <Sparkles size={11} className="inline mr-1" />
                   Theme Preset
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -190,7 +189,6 @@ export const CoverCustomizerModal = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
-                    <Sparkles size={11} className="inline mr-1" />
                     Cover Pattern
                   </label>
                   <select
