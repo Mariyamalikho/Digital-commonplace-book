@@ -342,7 +342,7 @@ export const BookshelfDashboard = () => {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button
+                <button aria-label="Close modal"
                   type="button"
                   onClick={() => setIsCreatingBook(false)}
                   className="btn btn-secondary flex-1"

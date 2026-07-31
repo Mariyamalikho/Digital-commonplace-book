@@ -51,7 +51,7 @@ export const EditorNotes = ({ pageId, notes = [], accent = '#6c63ff' }) => {
               <Pencil size={14} style={{ color: accent }} />
               <span>Page Notes</span>
             </span>
-            <button onClick={() => setIsOpen(false)} style={{ color: 'var(--text-tertiary)' }} className="hover:text-white transition-colors">
+            <button aria-label="Close modal" onClick={() => setIsOpen(false)} style={{ color: 'var(--text-tertiary)' }} className="hover:text-white transition-colors">
               <X size={14} />
             </button>
           </div>

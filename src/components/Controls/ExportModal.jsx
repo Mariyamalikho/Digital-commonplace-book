@@ -55,7 +55,7 @@ export const ExportModal = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-1">
           <h2 className="font-display text-xl" style={{ color: 'var(--text-primary)' }}>Export Journal</h2>
-          <button onClick={() => setIsOpen(false)} className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
+          <button aria-label="Close modal" onClick={() => setIsOpen(false)} className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
             style={{ color: 'var(--text-tertiary)' }}
             onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-3)'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>

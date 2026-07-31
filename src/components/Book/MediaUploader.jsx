@@ -87,7 +87,7 @@ export const MediaUploader = ({ pageId, accent = '#6c63ff' }) => {
           {/* Header */}
           <div className="flex items-center justify-between mb-3 pb-2.5" style={{ borderBottom: `1px solid ${accentLight}` }}>
             <span className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Embed Media</span>
-            <button onClick={() => setIsOpen(false)} style={{ color: 'var(--text-tertiary)' }} className="hover:text-white transition-colors">
+            <button aria-label="Close modal" onClick={() => setIsOpen(false)} style={{ color: 'var(--text-tertiary)' }} className="hover:text-white transition-colors">
               <X size={14} />
             </button>
           </div>

@@ -94,7 +94,7 @@ export const CoverCustomizerModal = () => {
                 <h2 className="font-display text-xl" style={{ color: 'var(--text-primary)' }}>Customize Cover</h2>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Style your journal's appearance</p>
               </div>
-              <button onClick={() => setCoverCustomizerOpen(false)} className="btn-ghost w-8 h-8 rounded-[8px] flex items-center justify-center">
+              <button aria-label="Close modal" onClick={() => setCoverCustomizerOpen(false)} className="btn-ghost w-8 h-8 rounded-[8px] flex items-center justify-center">
                 <X size={16} style={{ color: 'var(--text-secondary)' }} />
               </button>
             </div>
@@ -221,7 +221,7 @@ export const CoverCustomizerModal = () => {
 
               {/* Actions */}
               <div className="flex gap-3 pt-2">
-                <button onClick={() => setCoverCustomizerOpen(false)} className="btn btn-secondary flex-1">Cancel</button>
+                <button aria-label="Close modal" onClick={() => setCoverCustomizerOpen(false)} className="btn btn-secondary flex-1">Cancel</button>
                 <button onClick={handleSave} className="btn btn-primary flex-1" style={{ background: 'var(--accent)' }}>
                   <Check size={14} /> Save Changes
                 </button>

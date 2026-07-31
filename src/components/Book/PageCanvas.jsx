@@ -260,7 +260,7 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
 
           <div className="w-px h-5 mx-1" style={{ background: 'var(--border)' }} />
 
-          <button
+          <button aria-label="Close modal"
             onClick={onClose}
             className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-all"
             style={{ color: 'var(--text-tertiary)' }}
