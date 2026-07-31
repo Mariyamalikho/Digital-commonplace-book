@@ -38,7 +38,7 @@ export const ShareModal = () => {
           color: 'var(--theme-text-accent)'
         }}
       >
-        <button
+        <button aria-label="Close modal"
           onClick={() => setShareModalOpen(false)}
           className="absolute top-4 right-4 opacity-60 hover:opacity-100 transition-opacity"
         >

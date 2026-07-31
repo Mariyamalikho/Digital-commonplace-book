@@ -43,7 +43,7 @@ export const AccountSettingsModal = () => {
   return (
     <div className="modal-overlay" onClick={() => setAccountModalOpen(false)}>
       <div className="modal-panel w-full max-w-md p-8" onClick={e => e.stopPropagation()}>
-        <button
+        <button aria-label="Close modal"
           onClick={() => setAccountModalOpen(false)}
           className="absolute top-5 right-5 w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
           style={{ color: 'var(--text-tertiary)' }}
@@ -148,7 +148,7 @@ export const AccountSettingsModal = () => {
                 className="input-field text-sm"
               />
               <div className="flex gap-2 pt-2">
-                <button
+                <button aria-label="Close modal"
                   type="button"
                   onClick={() => setIsDeleting(false)}
                   className="flex-1 py-2 rounded-[8px] text-xs font-medium transition-colors"
