@@ -47,10 +47,7 @@ export const supabaseSignup = async (name, email, password) => {
   // Note: we still try to create a default book here, but if email confirmations are enabled,
   // the user won't have a valid session to bypass RLS yet. It will fail silently, 
   // and supabaseGetUserBooks will handle it upon their first actual login.
-  const { error: dbError } = await supabase.from('books').insert([newBook]);
-  if (dbError) {
-    console.log("Failed to create default book during signup (expected if email confirmation is required). It will be created on first login.");
-  }
+  await supabase.from('books').insert([newBook]);
 
   return user;
 };

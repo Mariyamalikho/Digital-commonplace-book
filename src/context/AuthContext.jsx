@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { 
   supabase, 
-  supabaseSignup, 
+  supabaseChangePassword,
+  supabaseForgotPassword, 
+  supabaseGetCurrentUser,
   supabaseLogin, 
   supabaseLogout, 
-  supabaseForgotPassword, 
-  supabaseChangePassword,
-  supabaseGetCurrentUser 
+  supabaseSignup 
 } from '../services/supabaseService';
 
 const AuthContext = createContext();

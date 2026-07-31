@@ -1,9 +1,16 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { supabaseGetUserBooks, supabaseSaveBook, supabaseCreateShareToken, supabaseJoinBookViaToken, supabaseGetBookViaToken, supabaseUpdateBookViaToken } from '../services/supabaseService';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
 import { soundEngine } from '../services/audioService';
 import { syncBookToFirestore } from '../services/firebaseService';
+import { 
+  supabaseCreateShareToken, 
+  supabaseGetBookViaToken, 
+  supabaseGetUserBooks, 
+  supabaseJoinBookViaToken, 
+  supabaseSaveBook, 
+  supabaseUpdateBookViaToken 
+} from '../services/supabaseService';
 import { versionService } from '../services/versionService';
-import { useAuth } from './AuthContext';
 
 const JournalContext = createContext();
 

@@ -95,8 +95,6 @@ body {
 .font-body      { font-family: 'Inter', system-ui, sans-serif; }
 .font-serifTitle   { font-family: 'DM Serif Display', Georgia, serif; }
 .font-serifHeading { font-family: 'DM Serif Display', Georgia, serif; }
-.font-handwriting  { font-family: 'Caveat', cursive; }
-.font-bodyText     { font-family: 'EB Garamond', Georgia, serif; }
 .font-urdu         { font-family: 'Noto Nastaliq Urdu', 'Gulzar', 'Amiri', serif; }
 
 /* ---------- Glass & Surface Utilities ---------- */
@@ -175,12 +173,7 @@ body {
 }
 .btn-ghost:hover { background: var(--surface-2); color: var(--text-primary); border-color: var(--border); }
 
-.btn-danger {
-  background: rgba(239,68,68,0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239,68,68,0.25);
-}
-.btn-danger:hover { background: rgba(239,68,68,0.25); }
+
 
 /* ---------- Premium Inputs ---------- */
 .input-field {
