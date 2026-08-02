@@ -12,6 +12,17 @@ import {
 
 const AuthContext = createContext();
 
+/**
+ * AuthProvider Component
+ * 
+ * Manages the global authentication state, communicating with Supabase.
+ * 
+ * @example
+ * // Wrap your app entry point:
+ * <AuthProvider>
+ *   <App />
+ * </AuthProvider>
+ */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -108,4 +119,16 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+/**
+ * useAuth Hook
+ * 
+ * Custom hook to consume the authentication context.
+ * 
+ * @example
+ * const { user, login, logout, authModalOpen } = useAuth();
+ * 
+ * if (user) {
+ *   return <button onClick={logout}>Sign Out</button>;
+ * }
+ */
 export const useAuth = () => useContext(AuthContext);

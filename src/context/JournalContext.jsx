@@ -15,6 +15,18 @@ import { versionService } from '../services/versionService';
 
 const JournalContext = createContext();
 
+/**
+ * JournalProvider Component
+ * 
+ * Provides global state management for the entire journal application.
+ * This context manages the currently active book, user books, page flipping
+ * animations, drawing mode state, and access control (role-based permissions).
+ * It also handles syncing book state to both Supabase and Firestore, and
+ * manages guest/visitor access via share tokens.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - The child components wrapped by this provider
+ */
 export const JournalProvider = ({ children }) => {
   const { user } = useAuth();
 
@@ -22,6 +34,10 @@ export const JournalProvider = ({ children }) => {
   const [currentBook, setCurrentBook] = useState(null);
   const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
   const [viewMode, setViewMode] = useState('reader'); // 'dashboard' | 'reader'
+  // Guest Access State
+  // guestToken: The token used by an unauthenticated visitor to view/edit a shared book.
+  // guestRole: The permissions associated with the token (e.g., 'visitor', 'editor').
+  // hasSeenGuestUpsell: True if the visitor has dismissed the one-time "join now" promotional modal.
   const [guestToken, setGuestToken] = useState(null);
   const [guestRole, setGuestRole] = useState(null);
   const [guestName, setGuestName] = useState('');
@@ -78,10 +94,21 @@ export const JournalProvider = ({ children }) => {
     root.style.setProperty('--theme-text-accent', theme.textAccent);
   }, [currentBook]);
 
+  /**
+   * Determines the user's role and permission level for a given book.
+   * This is derived state calculated dynamically on render.
+   */
   const getRole = (book, userId) => {
+    // 1. Guest Access via Token
     if (!userId && guestToken && currentBook?.id === book?.id) return guestRole;
+    
+    // 2. Unauthenticated / No Book Context
     if (!book) return 'visitor';
+    
+    // 3. Absolute Ownership
     if (book.ownerId === userId) return 'owner';
+    
+    // 4. Shared Membership Resolution
     const member = book.members ? book.members.find(m => m.userId === userId) : null;
     return member ? member.role : 'visitor';
   };
