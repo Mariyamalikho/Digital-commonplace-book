@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
+import { COLOR_THEMES } from '../utils/constants';
 import { soundEngine } from '../services/audioService';
 import { syncBookToFirestore } from '../services/firebaseService';
 import { 
@@ -66,52 +67,7 @@ export const JournalProvider = ({ children }) => {
     const cover = currentBook.cover || {};
     const themeKey = cover.theme || 'midnight';
 
-    let theme = {
-      bgDarkest: '#07040d',
-      cardBg: '#140b29',
-      cardBorder: '#2b1b4d',
-      accent: '#6c63ff',
-      accentHover: '#5a52d5',
-      textAccent: '#e8e6ff'
-    };
-
-    if (themeKey === 'emerald') {
-      theme = {
-        bgDarkest: '#040d08',
-        cardBg: '#0a1f18',
-        cardBorder: '#173d27',
-        accent: '#34d399',
-        accentHover: '#25a876',
-        textAccent: '#d1fae5'
-      };
-    } else if (themeKey === 'sand' || themeKey === 'dark-academia') {
-      theme = {
-        bgDarkest: '#0d0603',
-        cardBg: '#1f1508',
-        cardBorder: '#3b2010',
-        accent: '#c9a96e',
-        accentHover: '#b89660',
-        textAccent: '#faefd8'
-      };
-    } else if (themeKey === 'royal') {
-      theme = {
-        bgDarkest: '#090207',
-        cardBg: '#160a30',
-        cardBorder: '#361654',
-        accent: '#9f7aea',
-        accentHover: '#7c5ec0',
-        textAccent: '#ede9fe'
-      };
-    } else if (themeKey === 'obsidian') {
-      theme = {
-        bgDarkest: '#090909',
-        cardBg: '#141414',
-        cardBorder: '#333333',
-        accent: '#b0b0b0',
-        accentHover: '#808080',
-        textAccent: '#f4f4f4'
-      };
-    }
+    let theme = COLOR_THEMES[themeKey] || COLOR_THEMES['midnight'];
 
     const root = document.documentElement;
     root.style.setProperty('--theme-bg-darkest', theme.bgDarkest);
