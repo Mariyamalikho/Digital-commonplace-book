@@ -34,6 +34,10 @@ export const JournalProvider = ({ children }) => {
   const [currentBook, setCurrentBook] = useState(null);
   const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
   const [viewMode, setViewMode] = useState('reader'); // 'dashboard' | 'reader'
+  // Guest Access State
+  // guestToken: The token used by an unauthenticated visitor to view/edit a shared book.
+  // guestRole: The permissions associated with the token (e.g., 'visitor', 'editor').
+  // hasSeenGuestUpsell: True if the visitor has dismissed the one-time "join now" promotional modal.
   const [guestToken, setGuestToken] = useState(null);
   const [guestRole, setGuestRole] = useState(null);
   const [guestName, setGuestName] = useState('');
