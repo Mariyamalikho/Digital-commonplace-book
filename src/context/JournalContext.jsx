@@ -90,10 +90,21 @@ export const JournalProvider = ({ children }) => {
     root.style.setProperty('--theme-text-accent', theme.textAccent);
   }, [currentBook]);
 
+  /**
+   * Determines the user's role and permission level for a given book.
+   * This is derived state calculated dynamically on render.
+   */
   const getRole = (book, userId) => {
+    // 1. Guest Access via Token
     if (!userId && guestToken && currentBook?.id === book?.id) return guestRole;
+    
+    // 2. Unauthenticated / No Book Context
     if (!book) return 'visitor';
+    
+    // 3. Absolute Ownership
     if (book.ownerId === userId) return 'owner';
+    
+    // 4. Shared Membership Resolution
     const member = book.members ? book.members.find(m => m.userId === userId) : null;
     return member ? member.role : 'visitor';
   };
