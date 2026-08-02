@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AUTH_MODES } from '../utils/constants';
 import { 
   supabase, 
   supabaseChangePassword,
@@ -15,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState('login'); // 'login' | 'signup' | 'forgot'
+  const [authMode, setAuthMode] = useState(AUTH_MODES.LOGIN);
   const [accountModalOpen, setAccountModalOpen] = useState(false);
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { X, AlertCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useJournal } from '../../context/JournalContext';
 import { firebaseSignInWithGoogle, isFirebaseConfigured } from '../../services/firebaseService';
+import { AUTH_MODES } from '../../utils/constants';
 
 export const AuthModal = () => {
   const { authModalOpen, setAuthModalOpen, authMode, setAuthMode, login, signup, forgotPassword } = useAuth();
@@ -19,7 +20,7 @@ export const AuthModal = () => {
   if (!authModalOpen) return null;
 
   const handleClose = () => {
-    if (authMode === 'guest_welcome') {
+    if (authMode === AUTH_MODES.GUEST_WELCOME) {
       setHasSeenGuestUpsell(true);
       goToNextSpread();
     }
@@ -30,10 +31,10 @@ export const AuthModal = () => {
     e.preventDefault();
     setError(''); setInfoMsg(''); setLoading(true);
     try {
-      if (authMode === 'signup' || authMode === 'guest_welcome') {
+      if (authMode === AUTH_MODES.SIGNUP || authMode === AUTH_MODES.GUEST_WELCOME) {
         if (!email || !password) throw new Error('Email and password are required.');
         await signup(name, email, password, rememberMe);
-      } else if (authMode === 'login') {
+      } else if (authMode === AUTH_MODES.LOGIN) {
         if (!email || !password) throw new Error('Email and password are required.');
         await login(email, password, rememberMe);
       } else {
@@ -61,10 +62,10 @@ export const AuthModal = () => {
   };
 
   const modeLabels = {
-    login:  { title: 'Welcome back', sub: 'Sign in to your library', btn: 'Sign In' },
-    signup: { title: 'Create account', sub: 'Start your private journal workspace', btn: 'Create Account' },
-    forgot: { title: 'Reset password', sub: 'We\'ll send you a reset link', btn: 'Send Reset Link' },
-    guest_welcome: { title: 'Welcome to the Journal', sub: `You are joining in ${guestRole || 'visitor'} mode. Join to create your own!`, btn: 'Create Account' },
+    [AUTH_MODES.LOGIN]:  { title: 'Welcome back', sub: 'Sign in to your library', btn: 'Sign In' },
+    [AUTH_MODES.SIGNUP]: { title: 'Create account', sub: 'Start your private journal workspace', btn: 'Create Account' },
+    [AUTH_MODES.FORGOT]: { title: 'Reset password', sub: 'We\'ll send you a reset link', btn: 'Send Reset Link' },
+    [AUTH_MODES.GUEST_WELCOME]: { title: 'Welcome to the Journal', sub: `You are joining in ${guestRole || 'visitor'} mode. Join to create your own!`, btn: 'Create Account' },
   };
   const { title, sub, btn } = modeLabels[authMode];
 
@@ -87,7 +88,7 @@ export const AuthModal = () => {
         <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>{sub}</p>
 
         {/* Google Button */}
-        {isFirebaseConfigured() && authMode !== 'forgot' && (
+        {isFirebaseConfigured() && authMode !== AUTH_MODES.FORGOT && (
           <button
             onClick={handleGoogle}
             disabled={loading}
@@ -106,7 +107,7 @@ export const AuthModal = () => {
         )}
 
         {/* Divider */}
-        {isFirebaseConfigured() && authMode !== 'forgot' && (
+        {isFirebaseConfigured() && authMode !== AUTH_MODES.FORGOT && (
           <div className="flex items-center gap-3 mb-5">
             <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
             <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>or</span>
@@ -131,7 +132,7 @@ export const AuthModal = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          {(authMode === 'signup' || authMode === 'guest_welcome') && (
+          {(authMode === AUTH_MODES.SIGNUP || authMode === AUTH_MODES.GUEST_WELCOME) && (
             <input
               type="text"
               value={name}
@@ -148,7 +149,7 @@ export const AuthModal = () => {
             className="input-field text-sm"
             autoFocus
           />
-          {authMode !== 'forgot' && (
+          {authMode !== AUTH_MODES.FORGOT && (
             <input
               type="password"
               value={password}
@@ -158,7 +159,7 @@ export const AuthModal = () => {
             />
           )}
 
-          {authMode !== 'forgot' && (
+          {authMode !== AUTH_MODES.FORGOT && (
             <label className="flex items-center gap-2 cursor-pointer py-1">
               <input
                 type="checkbox"
@@ -184,40 +185,40 @@ export const AuthModal = () => {
 
         {/* Mode Switch */}
         <div className="mt-5 text-center text-xs space-y-2" style={{ color: 'var(--text-tertiary)' }}>
-          {authMode === 'login' && (
+          {authMode === AUTH_MODES.LOGIN && (
             <>
               <p>
-                <button onClick={() => { setAuthMode('forgot'); setError(''); }} className="underline hover:text-white transition-colors">
+                <button onClick={() => { setAuthMode(AUTH_MODES.FORGOT); setError(''); }} className="underline hover:text-white transition-colors">
                   Forgot password?
                 </button>
               </p>
               <p>
                 Don't have an account?{' '}
-                <button onClick={() => setAuthMode('signup')} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
+                <button onClick={() => setAuthMode(AUTH_MODES.SIGNUP)} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
                   Sign up
                 </button>
               </p>
             </>
           )}
-          {authMode === 'signup' && (
+          {authMode === AUTH_MODES.SIGNUP && (
             <p>
               Already have an account?{' '}
-              <button onClick={() => setAuthMode('login')} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
+              <button onClick={() => setAuthMode(AUTH_MODES.LOGIN)} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
                 Sign in
               </button>
             </p>
           )}
-          {authMode === 'guest_welcome' && (
+          {authMode === AUTH_MODES.GUEST_WELCOME && (
             <p>
               Already have an account?{' '}
-              <button onClick={() => setAuthMode('login')} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
+              <button onClick={() => setAuthMode(AUTH_MODES.LOGIN)} className="underline font-medium hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>
                 Sign in
               </button>
             </p>
           )}
-          {authMode === 'forgot' && (
+          {authMode === AUTH_MODES.FORGOT && (
             <p>
-              <button onClick={() => setAuthMode('login')} className="underline hover:text-white transition-all duration-[250ms] inline-block hover:scale-105">
+              <button onClick={() => setAuthMode(AUTH_MODES.LOGIN)} className="underline hover:text-white transition-all duration-[250ms] inline-block hover:scale-105">
                 Back to sign in
               </button>
             </p>
