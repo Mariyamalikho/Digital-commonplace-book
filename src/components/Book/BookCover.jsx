@@ -3,14 +3,7 @@ import { Check, Pencil, Share2, Palette, ChevronRight } from 'lucide-react';
 import { useJournal } from '../../context/JournalContext';
 import { useAuth } from '../../context/AuthContext';
 
-const THEME_ACCENTS = {
-  midnight:        { accent: '#6c63ff', glow: 'rgba(108,99,255,0.25)', text: '#e8e6ff',  sub: '#9d97e8', shine: 'rgba(108,99,255,0.12)' },
-  sand:            { accent: '#c9a96e', glow: 'rgba(201,169,110,0.25)', text: '#faefd8', sub: '#b89660', shine: 'rgba(201,169,110,0.10)' },
-  emerald:         { accent: '#34d399', glow: 'rgba(52,211,153,0.20)',  text: '#d1fae5', sub: '#25a876', shine: 'rgba(52,211,153,0.08)'  },
-  obsidian:        { accent: '#b0b0b0', glow: 'rgba(176,176,176,0.15)', text: '#f4f4f4', sub: '#808080', shine: 'rgba(176,176,176,0.07)' },
-  royal:           { accent: '#9f7aea', glow: 'rgba(159,122,234,0.25)', text: '#ede9fe', sub: '#7c5ec0', shine: 'rgba(159,122,234,0.12)' },
-  'dark-academia': { accent: '#c8a96e', glow: 'rgba(200,169,110,0.25)', text: '#faefd8', sub: '#a88650', shine: 'rgba(200,169,110,0.10)' },
-};
+import { COVER_THEMES, DEFAULT_JOURNAL_TITLE, DEFAULT_JOURNAL_SUBTITLE } from '../../utils/constants';
 
 // Subtle SVG noise pattern moved to index.css
 
@@ -70,7 +63,7 @@ export const BookCover = ({ isPreview = false }) => {
   const cover = currentBook?.cover || {};
   const themeKey = cover.theme || 'midnight';
   const patternKey = cover.pattern || 'noise';
-  const t = THEME_ACCENTS[themeKey] || THEME_ACCENTS.midnight;
+  const t = COVER_THEMES[themeKey] || COVER_THEMES.midnight;
 
   // Base cover color
   const baseColor = cover.color || (themeKey === 'midnight' ? '#110d28' : themeKey === 'sand' ? '#1f1508' : themeKey === 'emerald' ? '#0a1f18' : themeKey === 'obsidian' ? '#141414' : themeKey === 'royal' ? '#160a30' : '#1c1408');
@@ -252,7 +245,7 @@ export const BookCover = ({ isPreview = false }) => {
                     textShadow: `0 4px 60px ${t.glow}, 0 0 100px ${t.glow}, 0 2px 10px rgba(0,0,0,0.5)`,
                   }}
                 >
-                  {currentBook?.title || 'My Journal'}
+                  {currentBook?.title || DEFAULT_JOURNAL_TITLE}
                 </h1>
 
                 {/* Subtitle row with edit pencil */}
@@ -261,7 +254,7 @@ export const BookCover = ({ isPreview = false }) => {
                     className="text-xs tracking-[0.2em] uppercase font-medium"
                     style={{ color: t.sub, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
                   >
-                    {currentBook?.subtitle || 'A Commonplace Journal'}
+                    {currentBook?.subtitle || DEFAULT_JOURNAL_SUBTITLE}
                   </p>
                   {canWrite && (
                     <button
