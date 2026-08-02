@@ -15,6 +15,18 @@ import { versionService } from '../services/versionService';
 
 const JournalContext = createContext();
 
+/**
+ * JournalProvider Component
+ * 
+ * Provides global state management for the entire journal application.
+ * This context manages the currently active book, user books, page flipping
+ * animations, drawing mode state, and access control (role-based permissions).
+ * It also handles syncing book state to both Supabase and Firestore, and
+ * manages guest/visitor access via share tokens.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - The child components wrapped by this provider
+ */
 export const JournalProvider = ({ children }) => {
   const { user } = useAuth();
 
