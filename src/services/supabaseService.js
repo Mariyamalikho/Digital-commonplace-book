@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { DEFAULT_INITIAL_BOOK } from './storageService';
+import { DEFAULT_JOURNAL_TITLE } from '../utils/constants';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -40,7 +41,7 @@ export const supabaseSignup = async (name, email, password) => {
     id: crypto.randomUUID(),
     ownerId: user.id,
     ownerName: user.name,
-    title: `${user.name}'s Commonplace Book`,
+    title: `${user.name}'s ${DEFAULT_JOURNAL_TITLE}`,
     members: [{ userId: user.id, name: user.name, role: 'owner', email: user.email }]
   };
 
@@ -122,7 +123,7 @@ export const supabaseGetUserBooks = async (user) => {
       id: crypto.randomUUID(),
       ownerId: user.id,
       ownerName: user.name,
-      title: `${user.name}'s Commonplace Book`,
+      title: `${user.name}'s ${DEFAULT_JOURNAL_TITLE}`,
       members: [{ userId: user.id, name: user.name, role: 'owner', email: user.email }]
     };
     

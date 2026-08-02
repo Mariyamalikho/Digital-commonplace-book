@@ -6,15 +6,7 @@ import { EditorNotes } from './EditorNotes';
 import { MediaUploader, ResizableMediaItem } from './MediaUploader';
 import { VoiceRecorderWidget, VoiceNotePlayer } from './VoiceRecorder';
 
-// Derive accent color from cover theme
-const THEME_ACCENTS = {
-  midnight:        '#6c63ff',
-  sand:            '#c9a96e',
-  emerald:         '#34d399',
-  obsidian:        '#a0a0a0',
-  royal:           '#9f7aea',
-  'dark-academia': '#c8a96e',
-};
+import { THEME_ACCENTS } from '../../utils/constants';
 
 export const PageContent = ({ page, side = 'left' }) => {
   const {

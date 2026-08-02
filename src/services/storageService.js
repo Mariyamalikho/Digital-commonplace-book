@@ -1,20 +1,15 @@
 // Storage & Data Persistence Service for Digital Commonplace Journal
 // Supports zero-config LocalStorage persistence + Firebase/Supabase synchronization adapters
 
-const STORAGE_KEYS = {
-  USERS: 'grimoire_users_db',
-  CURRENT_USER: 'grimoire_current_user',
-  BOOKS: 'grimoire_books_db',
-  SHARE_LINKS: 'grimoire_share_links',
-};
+import { STORAGE_KEYS, DEFAULT_JOURNAL_TITLE, DEFAULT_JOURNAL_SUBTITLE } from '../utils/constants';
 
 // Initial Default Journal Data
 export const DEFAULT_INITIAL_BOOK = {
   id: 'book-default-001',
   ownerId: 'user-guest-001',
   ownerName: 'Scholar',
-  title: 'Grimoire of Thoughts',
-  subtitle: 'A Digital Commonplace Journal & Anthology',
+  title: DEFAULT_JOURNAL_TITLE,
+  subtitle: DEFAULT_JOURNAL_SUBTITLE,
   dedication: 'Dedicated to the curious minds, the late-night readers, and the seekers of ancient wisdom.',
   createdAt: new Date().toISOString(),
   cover: {
@@ -185,7 +180,7 @@ class StorageService {
       id: 'book-' + Date.now(),
       ownerId: newUser.id,
       ownerName: newUser.name,
-      title: `${newUser.name}'s Commonplace Book`,
+      title: `${newUser.name}'s ${DEFAULT_JOURNAL_TITLE}`,
       members: [{ userId: newUser.id, name: newUser.name, role: 'owner', email: newUser.email }]
     };
     const books = this.getBooks();
