@@ -1,5 +1,4 @@
-// Version History Snapshot Service
-const VERSION_KEY = 'grimoire_version_history';
+import { STORAGE_KEYS } from '../utils/constants';
 
 class VersionService {
   constructor() {
@@ -7,14 +6,14 @@ class VersionService {
   }
 
   initStorage() {
-    if (!localStorage.getItem(VERSION_KEY)) {
-      localStorage.setItem(VERSION_KEY, JSON.stringify({}));
+    if (!localStorage.getItem(STORAGE_KEYS.VERSION_HISTORY)) {
+      localStorage.setItem(STORAGE_KEYS.VERSION_HISTORY, JSON.stringify({}));
     }
   }
 
   getSnapshots(bookId) {
     try {
-      const data = JSON.parse(localStorage.getItem(VERSION_KEY)) || {};
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEYS.VERSION_HISTORY)) || {};
       return data[bookId] || [];
     } catch {
       return [];
@@ -24,7 +23,7 @@ class VersionService {
   createSnapshot(book, note = 'Automatic Autosave Snapshot') {
     if (!book) return;
     try {
-      const data = JSON.parse(localStorage.getItem(VERSION_KEY)) || {};
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEYS.VERSION_HISTORY)) || {};
       const snapshots = data[book.id] || [];
 
       const newSnapshot = {
@@ -38,7 +37,7 @@ class VersionService {
       // Keep latest 25 version snapshots per book
       const updatedSnapshots = [newSnapshot, ...snapshots.slice(0, 24)];
       data[book.id] = updatedSnapshots;
-      localStorage.setItem(VERSION_KEY, JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEYS.VERSION_HISTORY, JSON.stringify(data));
       return newSnapshot;
     } catch (err) {
       console.warn("Version snapshot error:", err.message);
@@ -54,9 +53,9 @@ class VersionService {
 
   clearHistory(bookId) {
     try {
-      const data = JSON.parse(localStorage.getItem(VERSION_KEY)) || {};
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEYS.VERSION_HISTORY)) || {};
       delete data[bookId];
-      localStorage.setItem(VERSION_KEY, JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEYS.VERSION_HISTORY, JSON.stringify(data));
     } catch (err) {
       console.warn("Clear version history error:", err.message);
     }
