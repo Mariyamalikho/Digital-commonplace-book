@@ -66,6 +66,15 @@ export const THEME_ACCENTS = {
   'dark-academia': '#c8a96e',
 };
 
+export const COVER_THEMES = {
+  midnight:        { accent: '#6c63ff', glow: 'rgba(108,99,255,0.25)', text: '#e8e6ff',  sub: '#9d97e8', shine: 'rgba(108,99,255,0.12)' },
+  sand:            { accent: '#c9a96e', glow: 'rgba(201,169,110,0.25)', text: '#faefd8', sub: '#b89660', shine: 'rgba(201,169,110,0.10)' },
+  emerald:         { accent: '#34d399', glow: 'rgba(52,211,153,0.20)',  text: '#d1fae5', sub: '#25a876', shine: 'rgba(52,211,153,0.08)'  },
+  obsidian:        { accent: '#b0b0b0', glow: 'rgba(176,176,176,0.15)', text: '#f4f4f4', sub: '#808080', shine: 'rgba(176,176,176,0.07)' },
+  royal:           { accent: '#9f7aea', glow: 'rgba(159,122,234,0.25)', text: '#ede9fe', sub: '#7c5ec0', shine: 'rgba(159,122,234,0.12)' },
+  'dark-academia': { accent: '#c8a96e', glow: 'rgba(200,169,110,0.25)', text: '#faefd8', sub: '#a88650', shine: 'rgba(200,169,110,0.10)' },
+};
+
 export const DEFAULT_JOURNAL_TITLE = "My Journal";
 export const DEFAULT_JOURNAL_SUBTITLE = "A Commonplace Journal";
 
