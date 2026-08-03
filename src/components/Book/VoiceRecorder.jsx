@@ -79,7 +79,7 @@ export const VoiceRecorderWidget = ({ pageId, accent = '#6c63ff' }) => {
           onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; e.currentTarget.style.color = 'var(--ink-mid)'; e.currentTarget.style.borderColor = 'var(--parchment-line)'; }}
           title="Record Voice Note"
         >
-          <Mic size={12} />
+          <Mic size={11} />
           <span>Voice Note</span>
         </button>
       )}
