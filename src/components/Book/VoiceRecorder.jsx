@@ -65,6 +65,7 @@ export const VoiceRecorderWidget = ({ pageId, accent = '#6c63ff' }) => {
             onClick={stopRecording}
             className="w-5 h-5 rounded-full flex items-center justify-center ml-1"
             style={{ background: '#ef4444', color: '#fff' }}
+            title="Stop Recording"
           >
             <Square size={8} />
           </button>
@@ -111,6 +112,7 @@ export const VoiceNotePlayer = ({ note, pageId, canWrite, accent = '#6c63ff' }) 
         onClick={togglePlay}
         className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-white transition-all active:scale-95"
         style={{ background: accent }}
+        title={isPlaying ? "Pause" : "Play"}
       >
         {isPlaying ? <Pause size={12} /> : <Play size={12} className="ml-0.5" />}
       </button>
