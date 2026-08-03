@@ -61,7 +61,7 @@ export const MembersPanelModal = () => {
           {members.map((m) => (
             <div key={m.userId} className="p-3 rounded-xl border flex items-center justify-between" style={{ backgroundColor: 'var(--theme-bg-darkest)', borderColor: 'var(--theme-card-border)' }}>
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full border flex items-center justify-center" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-accent)', color: 'var(--theme-text-accent)' }}>
+                <div className="w-8 h-8 rounded-full border flex items-center justify-center" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-accent)', color: 'var(--theme-text-accent)' }} title={`Role: ${m.role}`}>
                   {getRoleIcon(m.role)}
                 </div>
                 <div>
@@ -71,7 +71,7 @@ export const MembersPanelModal = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border font-semibold opacity-90" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-accent)', color: 'var(--theme-text-accent)' }}>
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border font-semibold opacity-90" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-accent)', color: 'var(--theme-text-accent)' }} title={`Current role is ${m.role}`}>
                   {m.role}
                 </span>
 

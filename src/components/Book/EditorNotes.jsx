@@ -31,7 +31,7 @@ export const EditorNotes = ({ pageId, notes = [], accent = '#6c63ff' }) => {
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; e.currentTarget.style.color = 'var(--ink-mid)'; e.currentTarget.style.borderColor = 'var(--parchment-line)'; }}
         title="Leave a Sticky Note"
       >
-        <Pencil size={12} />
+        <Pencil size={11} />
         <span>Leave a Note</span>
         {notes.length > 0 && <span style={{ color: accent, fontWeight: 'bold' }}>({notes.length})</span>}
       </button>

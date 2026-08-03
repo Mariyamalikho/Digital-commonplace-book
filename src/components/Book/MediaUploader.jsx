@@ -69,7 +69,7 @@ export const MediaUploader = ({ pageId, accent = '#6c63ff' }) => {
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; e.currentTarget.style.color = 'var(--ink-mid)'; e.currentTarget.style.borderColor = 'var(--parchment-line)'; }}
         title="Add Image or Video"
       >
-        <Paperclip size={12} />
+        <Paperclip size={11} />
         <span>Add Image / Video</span>
       </button>
 
