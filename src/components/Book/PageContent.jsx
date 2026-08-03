@@ -127,7 +127,7 @@ export const PageContent = ({ page, side = 'left' }) => {
               style={{ background: accentLight, color: accent, border: `1px solid ${accentBorder}` }}
               title="Draw on page"
             >
-              <PenTool size={11} />
+              <PenTool size={11} strokeWidth={1.5} />
               <span>Draw</span>
             </button>
           )}
@@ -242,7 +242,7 @@ export const PageContent = ({ page, side = 'left' }) => {
             style={{ background: accentLight, color: accent, border: `1px solid ${accentBorder}` }}
             title="Draw on page"
           >
-            <PenTool size={12} />
+            <PenTool size={12} strokeWidth={1.5} />
           </button>
         )}
       </div>
