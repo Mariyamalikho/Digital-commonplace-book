@@ -124,8 +124,8 @@ export const AccountSettingsModal = () => {
             <button
               onClick={() => setIsDeleting(true)}
               className="w-full py-2.5 rounded-[10px] text-xs font-medium flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-              style={{ 
-                background: 'rgba(239,68,68,0.1)', 
+              style={{
+                background: 'rgba(239,68,68,0.1)',
                 color: '#ef4444',
                 border: '1px solid rgba(239,68,68,0.2)'
               }}

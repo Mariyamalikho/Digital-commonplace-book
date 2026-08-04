@@ -5,7 +5,7 @@ import { Edit3 } from 'lucide-react';
 export const GuestNameModal = () => {
   const { guestRole, guestName, setGuestName } = useJournal();
   const [nameInput, setNameInput] = useState('');
-  
+
   // Only show this modal if they are a Guest Editor and haven't set their name yet
   const shouldShow = guestRole === 'editor' && !guestName;
 
@@ -19,10 +19,10 @@ export const GuestNameModal = () => {
 
   return (
     <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
-      <div 
+      <div
         className="rounded-2xl max-w-sm w-full p-8 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative flex flex-col items-center text-center border animate-scale-in"
-        style={{ 
-          backgroundColor: 'var(--theme-card-bg)', 
+        style={{
+          backgroundColor: 'var(--theme-card-bg)',
           borderColor: 'var(--theme-card-border)',
           color: 'var(--theme-text-accent)'
         }}

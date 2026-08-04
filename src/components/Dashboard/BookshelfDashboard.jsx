@@ -113,9 +113,9 @@ export const BookshelfDashboard = () => {
   const [newBookTheme, setNewBookTheme] = useState('midnight');
 
   const filteredBooks = userBooks.filter(book => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       book.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTheme = filterTheme === 'all' || 
+    const matchesTheme = filterTheme === 'all' ||
       (book.cover?.theme || 'midnight') === filterTheme;
     return matchesSearch && matchesTheme;
   });
@@ -177,7 +177,7 @@ export const BookshelfDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col animate-fade-in" style={{ background: 'var(--bg)', color: 'var(--text-primary)' }}>
-      
+
       {/* ---- Hero Header ---- */}
       <div className="flex flex-col items-center pt-20 pb-12 px-6 text-center relative overflow-hidden">
         {/* Ambient glow */}
