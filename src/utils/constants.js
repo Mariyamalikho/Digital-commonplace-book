@@ -75,8 +75,8 @@ export const COVER_THEMES = {
   'dark-academia': { accent: '#c8a96e', glow: 'rgba(200,169,110,0.25)', text: '#faefd8', sub: '#a88650', shine: 'rgba(200,169,110,0.10)' },
 };
 
-export const DEFAULT_JOURNAL_TITLE = "My Journal";
-export const DEFAULT_JOURNAL_SUBTITLE = "A Commonplace Journal";
+export const DEFAULT_JOURNAL_TITLE = 'My Journal';
+export const DEFAULT_JOURNAL_SUBTITLE = 'A Commonplace Journal';
 
 export const AUTH_MODES = {
   LOGIN: 'login',

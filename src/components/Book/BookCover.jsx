@@ -36,7 +36,7 @@ export const BookCover = ({ isPreview = false }) => {
   const handleOpenAttempt = (e) => {
     // Ignore clicks on buttons or inputs within the cover
     if (e && e.target && (e.target.closest('button') || e.target.closest('input'))) return;
-    
+
     if (user) {
       // Authenticated users go straight in
       goToNextSpread();
@@ -109,10 +109,10 @@ export const BookCover = ({ isPreview = false }) => {
           e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.05), 0 2px 1px rgba(255,255,255,0.06) inset, 0 -1px 1px rgba(0,0,0,0.3) inset, 0 24px 50px rgba(0,0,0,0.45), 0 48px 80px rgba(0,0,0,0.3), 0 0 60px ${t.glow}`;
         }}
       >
-        {/* Selected Pattern Overlay 
+        {/* Selected Pattern Overlay
             Applies a CSS background pattern utility class (e.g. pattern-noise, pattern-dots)
             defined in index.css based on user's customization choices. */}
-        <div 
+        <div
           className={`absolute inset-0 pointer-events-none pattern-${patternKey}`}
           style={{
             WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.8) 45%, black 100%)',

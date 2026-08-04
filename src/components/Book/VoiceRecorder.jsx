@@ -32,11 +32,11 @@ export const VoiceRecorderWidget = ({ pageId, accent = '#6c63ff' }) => {
     clearInterval(timerRef.current);
     const audioData = await recorderRef.current.stop();
     setIsRecording(false);
-    
+
     try {
       const path = `voice_${Date.now()}.webm`;
       const url = await supabaseUploadMedia(audioData.blob, path);
-      
+
       addVoiceNoteToPage(pageId, {
         id: 'voice-' + Date.now(),
         date: new Date().toISOString().replace('T', ' ').substring(0, 16),
@@ -46,7 +46,7 @@ export const VoiceRecorderWidget = ({ pageId, accent = '#6c63ff' }) => {
     } catch (err) {
       alert("Failed to upload voice note: " + err.message);
     }
-    
+
     setRecordingTime(0);
   };
 

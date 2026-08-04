@@ -17,12 +17,12 @@ export const MediaUploader = ({ pageId, accent = '#6c63ff' }) => {
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    
+
     try {
       const type = file.type.startsWith('video/') ? 'video' : 'image';
       const path = `${Date.now()}_${file.name}`;
       const url = await supabaseUploadMedia(file, path);
-      
+
       addMediaToPage(pageId, {
         id: 'media-' + Date.now(),
         type,

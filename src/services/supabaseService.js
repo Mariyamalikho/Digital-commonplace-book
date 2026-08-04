@@ -1,38 +1,38 @@
-import { createClient } from '@supabase/supabase-js';
-import { DEFAULT_INITIAL_BOOK } from './storageService';
-import { DEFAULT_JOURNAL_TITLE } from '../utils/constants';
+import { createClient } from "@supabase/supabase-js";
+import { DEFAULT_INITIAL_BOOK } from "./storageService";
+import { DEFAULT_JOURNAL_TITLE } from "../utils/constants";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 export const isSupabaseConfigured = () => {
   return Boolean(supabaseUrl && supabaseAnonKey);
 };
 
-export const supabase = isSupabaseConfigured() 
-  ? createClient(supabaseUrl, supabaseAnonKey) 
+export const supabase = isSupabaseConfigured()
+  ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 // --- AUTHENTICATION ---
 export const supabaseSignup = async (name, email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
-        full_name: name
-      }
-    }
+        full_name: name,
+      },
+    },
   });
 
   if (error) throw new Error(error.message);
-  
+
   const user = {
     id: data.user.id,
-    name: name || email.split('@')[0],
-    email: data.user.email
+    name: name || email.split("@")[0],
+    email: data.user.email,
   };
 
   // Create default book in Supabase
@@ -42,31 +42,33 @@ export const supabaseSignup = async (name, email, password) => {
     ownerId: user.id,
     ownerName: user.name,
     title: `${user.name}'s ${DEFAULT_JOURNAL_TITLE}`,
-    members: [{ userId: user.id, name: user.name, role: 'owner', email: user.email }]
+    members: [
+      { userId: user.id, name: user.name, role: "owner", email: user.email },
+    ],
   };
 
   // Note: we still try to create a default book here, but if email confirmations are enabled,
-  // the user won't have a valid session to bypass RLS yet. It will fail silently, 
+  // the user won't have a valid session to bypass RLS yet. It will fail silently,
   // and supabaseGetUserBooks will handle it upon their first actual login.
-  await supabase.from('books').insert([newBook]);
+  await supabase.from("books").insert([newBook]);
 
   return user;
 };
 
 export const supabaseLogin = async (email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
+
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
-    password
+    password,
   });
 
   if (error) throw new Error(error.message);
-  
+
   return {
     id: data.user.id,
-    name: data.user.user_metadata?.full_name || email.split('@')[0],
-    email: data.user.email
+    name: data.user.user_metadata?.full_name || email.split("@")[0],
+    email: data.user.email,
   };
 };
 
@@ -91,24 +93,27 @@ export const supabaseChangePassword = async (newPassword) => {
 
 export const supabaseGetCurrentUser = async () => {
   if (!supabase) return null;
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   if (error || !user) return null;
   return {
     id: user.id,
-    name: user.user_metadata?.full_name || user.email.split('@')[0],
-    email: user.email
+    name: user.user_metadata?.full_name || user.email.split("@")[0],
+    email: user.email,
   };
 };
 
 // --- DATABASE (BOOKS) ---
 export const supabaseGetUserBooks = async (user) => {
   if (!supabase || !user || !user.id) return [];
-  
+
   // RLS handles visibility, so we just select
   const { data, error } = await supabase
-    .from('books')
-    .select('*')
-    .order('createdAt', { ascending: false });
+    .from("books")
+    .select("*")
+    .order("createdAt", { ascending: false });
 
   if (error) {
     console.error("Error fetching books:", error);
@@ -124,10 +129,14 @@ export const supabaseGetUserBooks = async (user) => {
       ownerId: user.id,
       ownerName: user.name,
       title: `${user.name}'s ${DEFAULT_JOURNAL_TITLE}`,
-      members: [{ userId: user.id, name: user.name, role: 'owner', email: user.email }]
+      members: [
+        { userId: user.id, name: user.name, role: "owner", email: user.email },
+      ],
     };
-    
-    const { error: insertError } = await supabase.from('books').insert([newBook]);
+
+    const { error: insertError } = await supabase
+      .from("books")
+      .insert([newBook]);
     if (!insertError) {
       return [newBook];
     } else {
@@ -140,7 +149,7 @@ export const supabaseGetUserBooks = async (user) => {
 
 export const supabaseSaveBook = async (book) => {
   if (!supabase) return;
-  
+
   // Format for DB insertion (omit id if it's new, though our app generates UUIDs, so it's fine)
   // Ensure JSON structure is intact
   const bookData = {
@@ -154,12 +163,10 @@ export const supabaseSaveBook = async (book) => {
     updatedAt: new Date().toISOString(),
     cover: book.cover,
     spreads: book.spreads,
-    members: book.members
+    members: book.members,
   };
 
-  const { error } = await supabase
-    .from('books')
-    .upsert(bookData);
+  const { error } = await supabase.from("books").upsert(bookData);
 
   if (error) {
     console.error("Error saving book:", error);
@@ -168,7 +175,7 @@ export const supabaseSaveBook = async (book) => {
 
 export const supabaseDeleteBook = async (bookId) => {
   if (!supabase) return false;
-  const { error } = await supabase.from('books').delete().eq('id', bookId);
+  const { error } = await supabase.from("books").delete().eq("id", bookId);
   if (error) {
     console.error("Error deleting book:", error);
     return false;
@@ -179,41 +186,50 @@ export const supabaseDeleteBook = async (bookId) => {
 // --- STORAGE (MEDIA) ---
 export const supabaseUploadMedia = async (file, path) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
+
   const { data, error } = await supabase.storage
-    .from('media')
+    .from("media")
     .upload(path, file, {
-      cacheControl: '3600',
-      upsert: true
+      cacheControl: "3600",
+      upsert: true,
     });
 
   if (error) throw new Error(error.message);
 
-  const { data: { publicUrl } } = supabase.storage
-    .from('media')
-    .getPublicUrl(data.path);
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("media").getPublicUrl(data.path);
 
   return publicUrl;
 };
 
 // --- SHARING (TOKENS) ---
-export const supabaseCreateShareToken = async (bookId, role = 'visitor', expiresInDays = 30) => {
+export const supabaseCreateShareToken = async (
+  bookId,
+  role = "visitor",
+  expiresInDays = 30,
+) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
+
   const user = await supabaseGetCurrentUser();
   if (!user) throw new Error("Must be logged in to create share link.");
 
-  const token = 'tok_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+  const token =
+    "tok_" +
+    Math.random().toString(36).substring(2, 10) +
+    Date.now().toString(36);
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + expiresInDays);
 
-  const { error } = await supabase.from('share_tokens').insert([{
-    token,
-    book_id: bookId,
-    role,
-    expires_at: expiresAt.toISOString(),
-    created_by: user.id
-  }]);
+  const { error } = await supabase.from("share_tokens").insert([
+    {
+      token,
+      book_id: bookId,
+      role,
+      expires_at: expiresAt.toISOString(),
+      created_by: user.id,
+    },
+  ]);
 
   if (error) throw new Error(error.message);
   return token;
@@ -221,39 +237,45 @@ export const supabaseCreateShareToken = async (bookId, role = 'visitor', expires
 
 export const supabaseJoinBookViaToken = async (token) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
+
   // Call the secure RPC function to safely bypass RLS
-  const { data, error } = await supabase.rpc('join_book_via_token', { invite_token: token });
-  
+  const { data, error } = await supabase.rpc("join_book_via_token", {
+    invite_token: token,
+  });
+
   if (error) {
     throw new Error(error.message);
   }
-  
+
   return data;
 };
 
 // --- GUEST ACCESS (NO LOGIN) ---
 export const supabaseGetBookViaToken = async (token) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
-  const { data, error } = await supabase.rpc('get_book_via_token', { invite_token: token });
-  
+
+  const { data, error } = await supabase.rpc("get_book_via_token", {
+    invite_token: token,
+  });
+
   if (error) {
     throw new Error(error.message);
   }
-  
+
   return data;
 };
 
 export const supabaseUpdateBookViaToken = async (token, bookData) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  
-  const { data, error } = await supabase.rpc('update_book_via_token', { invite_token: token, book_data: bookData });
-  
+
+  const { data, error } = await supabase.rpc("update_book_via_token", {
+    invite_token: token,
+    book_data: bookData,
+  });
+
   if (error) {
     throw new Error(error.message);
   }
-  
+
   return data;
 };
-

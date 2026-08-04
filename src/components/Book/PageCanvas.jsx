@@ -5,10 +5,10 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [history, setHistory] = useState([]);
-  
+
   // Tools: 'pen' | 'pencil' | 'eraser'
   const [tool, setTool] = useState('pen');
-  const [selectedColor, setSelectedColor] = useState(drawingColor || '#1c1917'); 
+  const [selectedColor, setSelectedColor] = useState(drawingColor || '#1c1917');
   const [strokeWidth, setStrokeWidth] = useState(brushSize || 3);
 
   const accentLight = `${accent}15`;
@@ -140,9 +140,9 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
   return (
     <div className="absolute inset-0 z-30 flex flex-col rounded-[16px] overflow-hidden shadow-2xl"
          style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(2px)', border: `2px solid ${accent}` }}>
-      
+
       {/* ── Toolbar ── */}
-      <div 
+      <div
         className="px-3 py-2 flex flex-wrap items-center justify-between text-xs gap-2"
         style={{ background: 'var(--surface-1)', borderBottom: `1px solid ${accentMid}` }}
       >
@@ -151,19 +151,19 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
           <button
             onClick={() => setTool('pen')}
             className="px-3 py-1.5 rounded-[8px] flex items-center gap-1.5 transition-all font-medium"
-            style={tool === 'pen' 
-              ? { background: accent, color: '#fff' } 
+            style={tool === 'pen'
+              ? { background: accent, color: '#fff' }
               : { background: 'var(--surface-2)', color: 'var(--text-secondary)' }}
           >
             <Pen size={12} />
             <span>Pen</span>
           </button>
-          
+
           <button
             onClick={() => setTool('pencil')}
             className="px-3 py-1.5 rounded-[8px] flex items-center gap-1.5 transition-all font-medium"
-            style={tool === 'pencil' 
-              ? { background: accent, color: '#fff' } 
+            style={tool === 'pencil'
+              ? { background: accent, color: '#fff' }
               : { background: 'var(--surface-2)', color: 'var(--text-secondary)' }}
           >
             <Pencil size={12} />
@@ -173,8 +173,8 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
           <button
             onClick={() => setTool('eraser')}
             className="px-3 py-1.5 rounded-[8px] flex items-center gap-1.5 transition-all font-medium"
-            style={tool === 'eraser' 
-              ? { background: '#ef4444', color: '#fff' } 
+            style={tool === 'eraser'
+              ? { background: '#ef4444', color: '#fff' }
               : { background: 'var(--surface-2)', color: 'var(--text-secondary)' }}
           >
             <Eraser size={12} />
@@ -192,8 +192,8 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
                   key={c.id}
                   onClick={() => setSelectedColor(c.id)}
                   className="w-[22px] h-[22px] rounded-full transition-transform"
-                  style={{ 
-                    backgroundColor: c.id, 
+                  style={{
+                    backgroundColor: c.id,
                     border: selectedColor === c.id ? `2px solid var(--text-primary)` : `2px solid transparent`,
                     transform: selectedColor === c.id ? 'scale(1.15)' : 'scale(1)',
                     boxShadow: selectedColor === c.id ? `0 2px 8px rgba(0,0,0,0.4)` : 'none'
@@ -214,8 +214,8 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
                 key={w}
                 onClick={() => setStrokeWidth(w)}
                 className="w-6 h-6 rounded-full text-[10px] flex items-center justify-center font-bold transition-all"
-                style={strokeWidth === w 
-                  ? { background: accent, color: '#fff' } 
+                style={strokeWidth === w
+                  ? { background: accent, color: '#fff' }
                   : { background: 'var(--surface-2)', color: 'var(--text-secondary)' }}
               >
                 {w}
@@ -237,7 +237,7 @@ export const PageCanvas = ({ initialDrawing, onSaveDrawing, onClose, drawingColo
           >
             <RotateCcw size={13} />
           </button>
-          
+
           <button
             onClick={handleClear}
             className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-all"

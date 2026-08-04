@@ -14,7 +14,7 @@ export const PageSpread = () => {
   if (!currentBook) {
     return (
       <div className="flex flex-col md:flex-row items-center justify-center min-h-[70vh] gap-12 px-4 animate-scale-in">
-        
+
         {/* Render the actual BookCover at full size so it acts as the primary aesthetic element */}
         <div className="w-full max-w-[480px] shrink-0 cursor-pointer">
           <BookCover isPreview={true} />
@@ -28,7 +28,7 @@ export const PageSpread = () => {
             A private, aesthetic space to collect your thoughts, marginalia, quotes, and memories.
           </p>
           <div className="flex items-center justify-center md:justify-start gap-4">
-            <button 
+            <button
               onClick={() => { setAuthMode('login'); setAuthModalOpen(true); }}
               className="px-6 py-2.5 rounded-[10px] text-sm font-medium transition-all"
               style={{ border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
@@ -37,7 +37,7 @@ export const PageSpread = () => {
             >
               Sign In
             </button>
-            <button 
+            <button
               onClick={() => { setAuthMode('signup'); setAuthModalOpen(true); }}
               className="px-6 py-2.5 rounded-[10px] text-sm font-medium transition-all shadow-xl"
               style={{ background: 'var(--accent)', color: '#fff' }}
