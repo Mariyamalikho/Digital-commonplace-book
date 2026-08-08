@@ -120,7 +120,7 @@ export const AuthModal = () => {
           <div className="flex items-start gap-2.5 p-3 rounded-[10px] mb-4 text-xs"
             style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444' }} aria-live="assertive" role="alert">
             <AlertCircle size={14} className="shrink-0 mt-0.5" />
-            {error}
+            {error.endsWith('.') ? error : error + '.'}
           </div>
         )}
         {infoMsg && (
