@@ -43,7 +43,7 @@ export const AuthModal = () => {
         setInfoMsg(res);
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message ? err.message.charAt(0).toUpperCase() + err.message.slice(1) : 'An error occurred.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export const AuthModal = () => {
       await firebaseSignInWithGoogle(rememberMe);
       setAuthModalOpen(false);
     } catch (err) {
-      setError(err.message);
+      setError(err.message ? err.message.charAt(0).toUpperCase() + err.message.slice(1) : 'An error occurred.');
     } finally {
       setLoading(false);
     }
