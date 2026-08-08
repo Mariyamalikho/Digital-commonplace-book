@@ -16,7 +16,8 @@ export const supabase = isSupabaseConfigured()
 // --- AUTHENTICATION ---
 export const supabaseSignup = async (name, email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-
+  
+  // TODO: Handle edge case where user signs up with an already existing but unconfirmed email
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -116,6 +117,7 @@ export const supabaseGetUserBooks = async (user) => {
     .order("createdAt", { ascending: false });
 
   if (error) {
+    // TODO: Handle offline mode where we can't reach the database
     console.error("Error fetching books:", error);
     return [];
   }
