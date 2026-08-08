@@ -143,7 +143,7 @@ export const ShareModal = () => {
                 onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--theme-accent)'}
               >
                 {copied ? <Check size={16} /> : <Copy size={16} />}
-                <span>{copied ? 'Copied' : 'Copy'}</span>
+                <span>{copied ? 'Link copied!' : 'Copy link'}</span>
               </button>
             </div>
           </div>
