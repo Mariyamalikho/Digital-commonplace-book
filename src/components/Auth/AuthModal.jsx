@@ -71,7 +71,7 @@ export const AuthModal = () => {
 
   return (
     <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-panel w-full max-w-sm p-8" onClick={e => e.stopPropagation()}>
+      <div className="modal-panel w-full max-w-sm p-8 md:p-10" onClick={e => e.stopPropagation()}>
         {/* Close */}
         <button aria-label="Close modal"
           onClick={handleClose}
