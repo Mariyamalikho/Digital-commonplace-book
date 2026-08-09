@@ -226,7 +226,7 @@ export const PageContent = ({ page, side = 'left' }) => {
           <MediaUploader pageId={page.id} accent={accent} />
           <VoiceRecorderWidget pageId={page.id} accent={accent} />
         </div>
-        <div className="w-full">
+        <div className="w-full mt-1">
           <EditorNotes pageId={page.id} notes={page.notes || []} accent={accent} />
         </div>
       </div>
