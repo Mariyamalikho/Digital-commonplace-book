@@ -203,7 +203,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
         {/* Attached media */}
         {page.media && page.media.length > 0 && (
-          <div className="my-2 flex flex-wrap gap-2 shrink-0">
+          <div className="my-2 flex flex-wrap gap-3 shrink-0">
             {page.media.map(m => (
               <ResizableMediaItem key={m.id} media={m} pageId={page.id} canWrite={canWrite} accent={accent} />
             ))}
