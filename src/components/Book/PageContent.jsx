@@ -75,7 +75,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
   return (
     <div
-      className="relative h-[580px] md:h-[640px] max-h-[640px] p-5 md:p-8 lined-paper flex flex-col justify-between overflow-hidden"
+      className="relative h-[580px] md:h-[640px] max-h-[640px] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
       style={{ color: 'var(--ink-mid)', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.03)' }}
     >
       {/* Saved drawing layer */}
@@ -203,7 +203,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
         {/* Attached media */}
         {page.media && page.media.length > 0 && (
-          <div className="my-2 flex flex-wrap gap-2 shrink-0">
+          <div className="my-2 flex flex-wrap gap-3 shrink-0">
             {page.media.map(m => (
               <ResizableMediaItem key={m.id} media={m} pageId={page.id} canWrite={canWrite} accent={accent} />
             ))}
@@ -226,7 +226,7 @@ export const PageContent = ({ page, side = 'left' }) => {
           <MediaUploader pageId={page.id} accent={accent} />
           <VoiceRecorderWidget pageId={page.id} accent={accent} />
         </div>
-        <div className="w-full">
+        <div className="w-full mt-1">
           <EditorNotes pageId={page.id} notes={page.notes || []} accent={accent} />
         </div>
       </div>
