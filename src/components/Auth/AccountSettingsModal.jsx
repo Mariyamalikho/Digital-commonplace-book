@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { X, AlertCircle, CheckCircle, Trash2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 export const AccountSettingsModal = () => {
   const { user, accountModalOpen, setAccountModalOpen, changePassword, deleteAccount } = useAuth();
@@ -11,6 +12,9 @@ export const AccountSettingsModal = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const modalRef = useRef(null);
+
+  useFocusTrap(modalRef, accountModalOpen);
 
   if (!accountModalOpen || !user) return null;
 
@@ -42,7 +46,7 @@ export const AccountSettingsModal = () => {
 
   return (
     <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setAccountModalOpen(false)}>
-      <div className="modal-panel w-full max-w-md p-8 md:p-10" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="modal-panel w-full max-w-md p-8 md:p-10" onClick={e => e.stopPropagation()}>
         <button aria-label="Close modal"
           onClick={() => setAccountModalOpen(false)}
           className="absolute top-5 right-5 w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
