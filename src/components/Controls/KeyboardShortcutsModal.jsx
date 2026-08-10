@@ -38,7 +38,7 @@ export const KeyboardShortcutsModal = () => {
   }
 
   return (
-    <div className="modal-overlay" onClick={() => setIsOpen(false)}>
+    <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
       <div className="modal-panel w-full max-w-xs p-5" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">

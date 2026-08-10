@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { X, AlertCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useJournal } from '../../context/JournalContext';
 import { firebaseSignInWithGoogle, isFirebaseConfigured } from '../../services/firebaseService';
 import { AUTH_MODES } from '../../utils/constants';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 export const AuthModal = () => {
   const { authModalOpen, setAuthModalOpen, authMode, setAuthMode, login, signup, forgotPassword } = useAuth();
@@ -15,7 +16,9 @@ export const AuthModal = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError]           = useState('');
   const [infoMsg, setInfoMsg]       = useState('');
-  const [loading, setLoading]       = useState(false);
+  const modalRef = useRef(null);
+  
+  useFocusTrap(modalRef, authModalOpen);
 
   if (!authModalOpen) return null;
 
@@ -70,8 +73,8 @@ export const AuthModal = () => {
   const { title, sub, btn } = modeLabels[authMode];
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-panel w-full max-w-sm p-8 md:p-10" onClick={e => e.stopPropagation()}>
+    <div className="modal-overlay" role="button" tabIndex={0} onClick={handleClose}>
+      <div ref={modalRef} className="modal-panel w-full max-w-sm p-8 md:p-10" onClick={e => e.stopPropagation()}>
         {/* Close */}
         <button aria-label="Close modal"
           onClick={handleClose}

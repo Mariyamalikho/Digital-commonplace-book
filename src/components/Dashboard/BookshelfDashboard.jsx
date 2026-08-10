@@ -293,7 +293,7 @@ export const BookshelfDashboard = () => {
 
       {/* ---- Create New Book Modal ---- */}
       {isCreatingBook && (
-        <div className="modal-overlay" onClick={() => setIsCreatingBook(false)}>
+        <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setIsCreatingBook(false)}>
           <div className="modal-panel w-full max-w-md p-8 md:p-10" onClick={e => e.stopPropagation()}>
             <h2 className="font-display text-2xl font-normal mb-1" style={{ color: 'var(--text-primary)' }}>
               Create Journal

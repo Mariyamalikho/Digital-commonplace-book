@@ -61,7 +61,7 @@ export const CoverCustomizerModal = () => {
   };
 
   return (
-    <div className="modal-overlay" onClick={() => setCoverCustomizerOpen(false)}>
+    <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setCoverCustomizerOpen(false)}>
       <div
         className="modal-panel w-full max-w-2xl p-0 overflow-hidden"
         onClick={e => e.stopPropagation()}
