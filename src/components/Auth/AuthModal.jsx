@@ -70,7 +70,7 @@ export const AuthModal = () => {
   const { title, sub, btn } = modeLabels[authMode];
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
+    <div className="modal-overlay" role="button" tabIndex={0} onClick={handleClose}>
       <div className="modal-panel w-full max-w-sm p-8 md:p-10" onClick={e => e.stopPropagation()}>
         {/* Close */}
         <button aria-label="Close modal"
