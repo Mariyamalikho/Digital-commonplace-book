@@ -104,7 +104,7 @@ const BookCard = ({ book, onOpen, onDuplicate }) => {
 
 export const BookshelfDashboard = () => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { userBooks, switchBook, setViewMode, saveCurrentBookState } = useJournal();
+  const { userBooks, switchBook, setViewMode, syncBookState } = useJournal();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTheme, setFilterTheme] = useState('all');
@@ -130,7 +130,7 @@ export const BookshelfDashboard = () => {
     dup.id = 'book-' + Date.now();
     dup.title = `${book.title} — Copy`;
     dup.createdAt = new Date().toISOString();
-    saveCurrentBookState(dup, false);
+    syncBookState(dup, false);
   };
 
   const handleCreateBook = (e) => {
@@ -169,7 +169,7 @@ export const BookshelfDashboard = () => {
       ],
       members: [{ userId: user ? user.id : 'user-guest-001', name: user ? user.name : 'Scholar', role: 'owner' }]
     };
-    saveCurrentBookState(newBook, false);
+    syncBookState(newBook, false);
     handleOpenBook(newBook.id);
     setNewBookTitle('');
     setIsCreatingBook(false);

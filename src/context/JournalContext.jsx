@@ -30,29 +30,46 @@ const JournalContext = createContext();
 export const JournalProvider = ({ children }) => {
   const { user } = useAuth();
 
+  // ==========================================
+  // DATA STATE
+  // ==========================================
   const [userBooks, setUserBooks] = useState([]);
   const [currentBook, setCurrentBook] = useState(null);
-  const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
-  const [viewMode, setViewMode] = useState('reader'); // 'dashboard' | 'reader'
-  // Guest Access State
+
+  // ==========================================
+  // GUEST ACCESS STATE
+  // ==========================================
   // guestToken: The token used by an unauthenticated visitor to view/edit a shared book.
   // guestRole: The permissions associated with the token (e.g., 'visitor', 'editor').
-  // hasSeenGuestUpsell: True if the visitor has dismissed the one-time "join now" promotional modal.
   const [guestToken, setGuestToken] = useState(null);
   const [guestRole, setGuestRole] = useState(null);
   const [guestName, setGuestName] = useState('');
   const [hasSeenGuestUpsell, setHasSeenGuestUpsell] = useState(false);
+
+  // ==========================================
+  // UI STATE: Navigation & Modes
+  // ==========================================
+  const [viewMode, setViewMode] = useState('reader'); // 'dashboard' | 'reader'
+  const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
+
+  // ==========================================
+  // UI STATE: Animations
+  // ==========================================
   const [isTearing, setIsTearing] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState('next');
 
-  // Drawing state
+  // ==========================================
+  // UI STATE: Drawing Tools
+  // ==========================================
   const [isDrawingMode, setIsDrawingMode] = useState(false);
   const [activeDrawingPage, setActiveDrawingPage] = useState('right');
   const [drawingColor, setDrawingColor] = useState('#231f20');
   const [brushSize, setBrushSize] = useState(3);
 
-  // UI Modals
+  // ==========================================
+  // UI STATE: Modals
+  // ==========================================
   const [coverCustomizerOpen, setCoverCustomizerOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [membersModalOpen, setMembersModalOpen] = useState(false);
@@ -98,7 +115,7 @@ export const JournalProvider = ({ children }) => {
    * Determines the user's role and permission level for a given book.
    * This is derived state calculated dynamically on render.
    */
-  const getRole = (book, userId) => {
+  const calculateUserRole = (book, userId) => {
     // 1. Guest Access via Token
     if (!userId && guestToken && currentBook?.id === book?.id) return guestRole;
     
@@ -113,14 +130,14 @@ export const JournalProvider = ({ children }) => {
     return member ? member.role : 'visitor';
   };
 
-  const role = getRole(currentBook, user ? user.id : null);
+  const role = calculateUserRole(currentBook, user ? user.id : null);
 
   const canWrite = role === 'owner';
   const canDraw = role === 'owner';
   const canAddEditorNotes = role === 'owner' || role === 'editor';
   const canShare = role === 'owner';
 
-  const saveCurrentBookState = useCallback((updatedBook, createVersionSnapshot = true) => {
+  const syncBookState = useCallback((updatedBook, createVersionSnapshot = true) => {
     setCurrentBook(updatedBook);
     
     // Fire and forget to Supabase
@@ -216,7 +233,7 @@ export const JournalProvider = ({ children }) => {
 
     const updatedSpreads = [...currentBook.spreads, newSpread];
     const updatedBook = { ...currentBook, spreads: updatedSpreads };
-    saveCurrentBookState(updatedBook);
+    syncBookState(updatedBook);
     goToNextSpread();
   };
 
@@ -236,7 +253,7 @@ export const JournalProvider = ({ children }) => {
       });
 
       const updatedBook = { ...currentBook, spreads: updatedSpreads };
-      saveCurrentBookState(updatedBook);
+      syncBookState(updatedBook);
 
       setIsTearing(false);
       if (currentSpreadIndex > updatedSpreads.length) {
@@ -257,17 +274,17 @@ export const JournalProvider = ({ children }) => {
       return newSpread;
     });
 
-    saveCurrentBookState({ ...currentBook, spreads: updatedSpreads });
+    syncBookState({ ...currentBook, spreads: updatedSpreads });
   };
 
   const updateJournalTitle = (title, subtitle) => {
     if (!currentBook || !canWrite) return;
-    saveCurrentBookState({ ...currentBook, title, subtitle });
+    syncBookState({ ...currentBook, title, subtitle });
   };
 
   const updateCover = (coverConfig) => {
     if (!currentBook || !canWrite) return;
-    saveCurrentBookState({
+    syncBookState({
       ...currentBook,
       cover: { ...currentBook.cover, ...coverConfig }
     });
@@ -284,7 +301,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const deleteMediaFromPage = (pageId, mediaId) => {
@@ -298,7 +315,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const addVoiceNoteToPage = (pageId, voiceNote) => {
@@ -312,7 +329,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const deleteVoiceNoteFromPage = (pageId, noteId) => {
@@ -326,7 +343,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const addEditorNoteToPage = (pageId, text) => {
@@ -348,7 +365,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const deleteEditorNoteFromPage = (pageId, noteId) => {
@@ -362,7 +379,7 @@ export const JournalProvider = ({ children }) => {
       });
       return sp;
     });
-    saveCurrentBookState({ ...currentBook, spreads });
+    syncBookState({ ...currentBook, spreads });
   };
 
   const switchBook = (bookId) => {
@@ -480,7 +497,7 @@ export const JournalProvider = ({ children }) => {
       updatePage,
       updateJournalTitle,
       updateCover,
-      saveCurrentBookState,
+      syncBookState,
       addMediaToPage,
       deleteMediaFromPage,
       addVoiceNoteToPage,
