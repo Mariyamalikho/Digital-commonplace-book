@@ -4,7 +4,7 @@ import { useJournal } from '../../context/JournalContext';
 import { versionService } from '../../services/versionService';
 
 export const VersionHistoryModal = () => {
-  const { currentBook, saveCurrentBookState, canWrite } = useJournal();
+  const { currentBook, syncBookState, canWrite } = useJournal();
   const [isOpen, setIsOpen] = useState(false);
   const [snapshots, setSnapshots] = useState([]);
   const [restored, setRestored] = useState('');
@@ -33,7 +33,7 @@ export const VersionHistoryModal = () => {
   const handleRestore = (snap) => {
     try {
       const book = versionService.restoreSnapshot(snap);
-      saveCurrentBookState(book, false);
+      syncBookState(book, false);
       setRestored(`Restored snapshot from ${new Date(snap.timestamp).toLocaleTimeString()}`);
       setTimeout(() => setRestored(''), 3000);
     } catch (err) {

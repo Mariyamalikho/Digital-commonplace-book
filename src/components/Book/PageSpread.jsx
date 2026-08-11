@@ -7,7 +7,7 @@ import { BookCover } from './BookCover';
 
 export const PageSpread = () => {
   const { currentBook, currentSpreadIndex, isTearing, isFlipping, flipDirection, goToNextSpread, goToPrevSpread } = useJournal();
-  const [mobilePageSide, setMobilePageSide] = useState('left');
+  const [activeMobileTab, setActiveMobileTab] = useState('left');
 
   const { setAuthMode, setAuthModalOpen } = useAuth();
 
@@ -124,23 +124,23 @@ export const PageSpread = () => {
         style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex text-xs border-b" style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}>
           <button
-            onClick={() => setMobilePageSide('left')}
+            onClick={() => setActiveMobileTab('left')}
             className="flex-1 py-2.5 font-medium transition-colors"
-            style={{ color: mobilePageSide === 'left' ? 'var(--text-primary)' : 'var(--text-tertiary)', borderBottom: mobilePageSide === 'left' ? '2px solid var(--accent)' : '2px solid transparent' }}
+            style={{ color: activeMobileTab === 'left' ? 'var(--text-primary)' : 'var(--text-tertiary)', borderBottom: activeMobileTab === 'left' ? '2px solid var(--accent)' : '2px solid transparent' }}
           >
             Page {currentSpread.leftPage.pageNumber}
           </button>
           <button
-            onClick={() => setMobilePageSide('right')}
+            onClick={() => setActiveMobileTab('right')}
             className="flex-1 py-2.5 font-medium transition-colors"
-            style={{ color: mobilePageSide === 'right' ? 'var(--text-primary)' : 'var(--text-tertiary)', borderBottom: mobilePageSide === 'right' ? '2px solid var(--accent)' : '2px solid transparent' }}
+            style={{ color: activeMobileTab === 'right' ? 'var(--text-primary)' : 'var(--text-tertiary)', borderBottom: activeMobileTab === 'right' ? '2px solid var(--accent)' : '2px solid transparent' }}
           >
             Page {currentSpread.rightPage.pageNumber}
           </button>
         </div>
         <PageContent
-          page={mobilePageSide === 'left' ? currentSpread.leftPage : currentSpread.rightPage}
-          side={mobilePageSide}
+          page={activeMobileTab === 'left' ? currentSpread.leftPage : currentSpread.rightPage}
+          side={activeMobileTab}
         />
       </div>
 

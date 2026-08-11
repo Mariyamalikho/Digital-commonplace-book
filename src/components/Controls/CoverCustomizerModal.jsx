@@ -29,7 +29,7 @@ const PATTERNS = [
 ];
 
 export const CoverCustomizerModal = () => {
-  const { currentBook, updateCover, updateJournalTitle, saveCurrentBookState, coverCustomizerOpen, setCoverCustomizerOpen } = useJournal();
+  const { currentBook, updateCover, updateJournalTitle, syncBookState, coverCustomizerOpen, setCoverCustomizerOpen } = useJournal();
 
   const cv = currentBook?.cover || {};
   const [title, setTitle]           = useState(currentBook?.title || '');
@@ -56,7 +56,7 @@ export const CoverCustomizerModal = () => {
   const handleSave = () => {
     updateJournalTitle(title, subtitle);
     updateCover({ theme, color: customColor, ribbonColor, font, pattern });
-    saveCurrentBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font, pattern } }, false);
+    syncBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font, pattern } }, false);
     setCoverCustomizerOpen(false);
   };
 

@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export const MembersPanelModal = () => {
   const { user } = useAuth();
-  const { currentBook, membersModalOpen, setMembersModalOpen, role, saveCurrentBookState } = useJournal();
+  const { currentBook, membersModalOpen, setMembersModalOpen, role, syncBookState } = useJournal();
 
   if (!membersModalOpen || !currentBook) return null;
 
@@ -16,7 +16,7 @@ export const MembersPanelModal = () => {
     if (!isOwner) return;
     const updatedMembers = currentBook.members.filter(m => m.userId !== userId);
     const updatedBook = { ...currentBook, members: updatedMembers };
-    saveCurrentBookState(updatedBook);
+    syncBookState(updatedBook);
   };
 
   const getRoleIcon = (memberRole) => {
