@@ -95,7 +95,7 @@ body {
 .font-body      { font-family: 'Inter', system-ui, sans-serif; }
 .font-serifTitle   { font-family: 'DM Serif Display', Georgia, serif; }
 .font-serifHeading { font-family: 'DM Serif Display', Georgia, serif; }
-.font-urdu         { font-family: 'Noto Nastaliq Urdu', 'Gulzar', 'Amiri', serif; }
+.font-urdu         { font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Gulzar', 'Amiri', serif; }
 
 /* ---------- Glass & Surface Utilities ---------- */
 .glass {

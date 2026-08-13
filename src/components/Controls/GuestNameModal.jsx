@@ -31,7 +31,7 @@ export const GuestNameModal = () => {
           <Edit3 size={24} />
         </div>
 
-        <h2 className="font-serifTitle text-2xl font-bold tracking-wide mb-2">
+        <h2 className="font-serifTitle text-2xl font-normal tracking-wide mb-2">
           Welcome, Guest Editor!
         </h2>
         <p className="font-serifHeading italic text-sm opacity-80 mb-6 leading-relaxed">

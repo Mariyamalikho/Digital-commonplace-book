@@ -238,7 +238,7 @@ export const BookCover = ({ isPreview = false }) => {
               {/* Title */}
               <div className="space-y-3">
                 <h1
-                  className="font-display font-normal leading-[1.1] tracking-[0.04em]"
+                  className="font-display font-normal leading-[1.1] tracking-[0.06em]"
                   style={{
                     color: t.text,
                     fontSize: 'clamp(2rem, 5vw, 3rem)',
