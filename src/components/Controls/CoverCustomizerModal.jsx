@@ -91,7 +91,7 @@ export const CoverCustomizerModal = () => {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="font-display text-xl" style={{ color: 'var(--text-primary)' }}>Customize Cover</h2>
+                <h2 className="font-display font-normal text-xl" style={{ color: 'var(--text-primary)' }}>Customize Cover</h2>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Style your journal's appearance</p>
               </div>
               <button aria-label="Close modal" onClick={() => setCoverCustomizerOpen(false)} className="btn-ghost w-8 h-8 rounded-[8px] flex items-center justify-center">

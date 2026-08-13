@@ -43,7 +43,7 @@ export const KeyboardShortcutsModal = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Keyboard size={15} style={{ color: 'var(--accent)' }} />
-            <h2 className="font-display text-lg" style={{ color: 'var(--text-primary)' }}>Shortcuts</h2>
+            <h2 className="font-display font-normal text-lg" style={{ color: 'var(--text-primary)' }}>Shortcuts</h2>
           </div>
           <button aria-label="Close modal" onClick={() => setIsOpen(false)} className="w-6 h-6 rounded-[6px] flex items-center justify-center"
             style={{ color: 'var(--text-tertiary)' }}>

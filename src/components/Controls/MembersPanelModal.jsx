@@ -50,7 +50,7 @@ export const MembersPanelModal = () => {
 
         <div className="text-sm mb-2" style={{ color: 'var(--theme-accent)' }}>✦</div>
 
-        <h2 className="font-serifTitle text-2xl font-bold tracking-wide mb-1">
+        <h2 className="font-serifTitle text-2xl font-normal tracking-wide mb-1">
           Members & Access
         </h2>
         <p className="font-serifHeading italic text-xs opacity-70 mb-5">

@@ -183,7 +183,7 @@ export const PageContent = ({ page, side = 'left' }) => {
               value={page.content || ''}
               onChange={handleTextChange}
               placeholder={placeholder}
-              className={`w-full flex-grow bg-transparent text-base md:text-lg leading-[2.2rem] resize-none focus:outline-none placeholder:italic ${
+              className={`w-full flex-grow bg-transparent text-base md:text-lg leading-[2.3rem] resize-none focus:outline-none placeholder:italic ${
                 isUrduMode ? 'font-urdu text-right font-medium' : 'font-serifHeading italic'
               }`}
               style={{ color: 'var(--ink-dark)', placeholderColor: 'var(--ink-light)' }}
@@ -191,7 +191,7 @@ export const PageContent = ({ page, side = 'left' }) => {
           ) : (
             <div
               dir={isUrduMode ? 'rtl' : 'auto'}
-              className={`w-full flex-grow text-base md:text-lg leading-[2.2rem] whitespace-pre-wrap ${
+              className={`w-full flex-grow text-base md:text-lg leading-[2.3rem] whitespace-pre-wrap ${
                 isUrduMode ? 'font-urdu text-right font-medium' : 'font-serifHeading italic'
               }`}
               style={{ color: 'var(--ink-dark)' }}

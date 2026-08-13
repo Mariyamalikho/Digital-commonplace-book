@@ -47,7 +47,7 @@ export const ShareModal = () => {
 
         <div className="text-sm mb-2" style={{ color: 'var(--theme-accent)' }}>✦</div>
 
-        <h2 className="font-serifTitle text-2xl font-bold tracking-wide mb-1">
+        <h2 className="font-serifTitle text-2xl font-normal tracking-wide mb-1">
           Share Journal Access
         </h2>
         <p className="font-serifHeading italic text-sm opacity-90 mb-5">
