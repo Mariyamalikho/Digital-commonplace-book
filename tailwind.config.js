@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      animation: {
+        spin: 'spin 1.2s linear infinite',
+      },
       colors: {
         academia: {
           darkest: "#120c08",
