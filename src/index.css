@@ -280,8 +280,8 @@ body {
   100% { transform: perspective(1600px) rotateY(180deg); transform-origin: right center; box-shadow: 0 0 0 transparent; }
 }
 
-.animate-single-page-next { animation: singlePageFlipNext 0.42s cubic-bezier(0.4, 0.2, 0.2, 1) forwards; }
-.animate-single-page-prev { animation: singlePageFlipPrev 0.42s cubic-bezier(0.4, 0.2, 0.2, 1) forwards; }
+.animate-single-page-next { animation: singlePageFlipNext 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+.animate-single-page-prev { animation: singlePageFlipPrev 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
 
 /* ---------- Paper Tear Animations (PRESERVED EXACTLY) ---------- */
 @keyframes pageTearFalling {
@@ -305,8 +305,9 @@ body {
 @keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 
 .animate-fade-in  { animation: fadeIn  0.3s ease forwards; }
+.animate-fade-in-delayed { animation: fadeIn 0.4s ease forwards; animation-delay: 0.3s; opacity: 0; }
 .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
-.animate-scale-in { animation: scaleIn 0.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+.animate-scale-in { animation: scaleIn 0.25s cubic-bezier(0.16,1,0.3,1) forwards; }
 
 /* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }

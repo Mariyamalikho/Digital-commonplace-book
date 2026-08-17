@@ -248,7 +248,7 @@ export const BookshelfDashboard = () => {
       {/* ---- Book Cards Grid ---- */}
       <div className="max-w-5xl mx-auto w-full px-6 pb-24">
         {filteredBooks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-5 animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-24 gap-5 animate-fade-in-delayed">
             <div className="w-16 h-16 rounded-[20px] flex items-center justify-center"
               style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
               <BookOpen size={24} style={{ color: 'var(--text-tertiary)' }} />

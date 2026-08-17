@@ -57,7 +57,7 @@ export const PageSpread = () => {
   const currentSpread = currentBook.spreads[currentSpreadIndex - 1];
   if (!currentSpread) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
+      <div className="flex flex-col items-center justify-center py-24 gap-4 animate-fade-in-delayed">
         <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>No pages in this spread.</p>
       </div>
     );
