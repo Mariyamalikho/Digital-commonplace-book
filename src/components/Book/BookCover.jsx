@@ -83,7 +83,7 @@ export const BookCover = ({ isPreview = false }) => {
   const ribbonColor = cover.ribbonColor || t.accent;
 
   return (
-    <div className="w-full max-w-[480px] mx-auto px-4 py-8 md:py-12 animate-fade-in">
+    <div className="w-full max-w-[480px] mx-auto px-5 py-8 md:py-12 animate-fade-in">
       <div
         onClick={handleOpenAttempt}
         className="relative rounded-[24px] overflow-hidden cursor-pointer group"

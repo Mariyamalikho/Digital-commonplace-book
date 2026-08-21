@@ -20,7 +20,7 @@ export const GuestNameModal = () => {
   return (
     <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
       <div
-        className="rounded-2xl max-w-sm w-full p-8 md:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative flex flex-col items-center text-center border animate-scale-in"
+        className="rounded-2xl max-w-sm md:max-w-md w-full p-8 md:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative flex flex-col items-center text-center border animate-scale-in"
         style={{
           backgroundColor: 'var(--theme-card-bg)',
           borderColor: 'var(--theme-card-border)',

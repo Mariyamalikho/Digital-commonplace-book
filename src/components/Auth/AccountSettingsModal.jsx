@@ -46,7 +46,7 @@ export const AccountSettingsModal = () => {
 
   return (
     <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setAccountModalOpen(false)}>
-      <div ref={modalRef} className="modal-panel w-full max-w-md p-8 md:p-10" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="modal-panel w-full max-w-md md:max-w-lg p-8 md:p-10" onClick={e => e.stopPropagation()}>
         <button aria-label="Close modal"
           onClick={() => setAccountModalOpen(false)}
           className="absolute top-5 right-5 w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors"
