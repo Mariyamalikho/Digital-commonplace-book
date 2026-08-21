@@ -183,7 +183,7 @@ export const PageContent = ({ page, side = 'left' }) => {
               value={page.content || ''}
               onChange={handleTextChange}
               placeholder={placeholder}
-              className={`w-full flex-grow bg-transparent text-base md:text-lg leading-[2.3rem] resize-none focus:outline-none placeholder:italic ${
+              className={`w-full flex-grow bg-transparent text-[15px] md:text-lg leading-[2.3rem] resize-none focus:outline-none placeholder:italic ${
                 isUrduMode ? 'font-urdu text-right font-medium' : 'font-serifHeading italic'
               }`}
               style={{ color: 'var(--ink-dark)', placeholderColor: 'var(--ink-light)' }}
@@ -191,7 +191,7 @@ export const PageContent = ({ page, side = 'left' }) => {
           ) : (
             <div
               dir={isUrduMode ? 'rtl' : 'auto'}
-              className={`w-full flex-grow text-base md:text-lg leading-[2.3rem] whitespace-pre-wrap ${
+              className={`w-full flex-grow text-[15px] md:text-lg leading-[2.3rem] whitespace-pre-wrap ${
                 isUrduMode ? 'font-urdu text-right font-medium' : 'font-serifHeading italic'
               }`}
               style={{ color: 'var(--ink-dark)' }}
@@ -222,7 +222,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
       {/* ── BOTTOM TOOLBAR ── */}
       <div className="relative z-20 space-y-2 mt-2 shrink-0">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <MediaUploader pageId={page.id} accent={accent} />
           <VoiceRecorderWidget pageId={page.id} accent={accent} />
         </div>

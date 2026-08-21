@@ -51,7 +51,7 @@ export const ExportModal = () => {
 
   return (
     <div className="modal-overlay" role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
-      <div className="modal-panel w-full max-w-sm p-6" onClick={e => e.stopPropagation()}>
+      <div className="modal-panel w-full max-w-sm md:max-w-md p-6" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between mb-1">
           <h2 className="font-display font-normal text-xl" style={{ color: 'var(--text-primary)' }}>Export Journal</h2>
