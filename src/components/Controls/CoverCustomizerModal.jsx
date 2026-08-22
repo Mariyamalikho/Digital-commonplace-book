@@ -54,9 +54,15 @@ export const CoverCustomizerModal = () => {
   };
 
   const handleSave = () => {
-    updateJournalTitle(title, subtitle);
-    updateCover({ theme, color: customColor, ribbonColor, font, pattern });
-    syncBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font, pattern } }, false);
+    const updatedCover = { ...cv, theme, color: customColor, ribbonColor, font, pattern };
+    const updatedBook = {
+      ...currentBook,
+      title,
+      subtitle,
+      privacy,
+      cover: updatedCover
+    };
+    syncBookState(updatedBook, true);
     setCoverCustomizerOpen(false);
   };
 
@@ -219,13 +225,14 @@ export const CoverCustomizerModal = () => {
                 </select>
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-3 pt-2">
-                <button aria-label="Close modal" onClick={() => setCoverCustomizerOpen(false)} className="btn btn-secondary flex-1">Cancel</button>
-                <button onClick={handleSave} className="btn btn-primary flex-1" style={{ background: 'var(--accent)' }}>
-                  <Check size={14} /> Save Changes
-                </button>
-              </div>
+            </div>
+
+            {/* Actions - Pinned to bottom */}
+            <div className="flex gap-3 pt-4 pb-2 border-t border-white/10 mt-4">
+              <button aria-label="Close modal" onClick={() => setCoverCustomizerOpen(false)} className="btn btn-secondary flex-1">Cancel</button>
+              <button onClick={handleSave} className="btn btn-primary flex-1" style={{ background: 'var(--accent)' }}>
+                <Check size={14} /> Save Changes
+              </button>
             </div>
           </div>
         </div>

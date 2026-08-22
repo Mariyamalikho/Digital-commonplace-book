@@ -17,7 +17,6 @@ export const supabase = isSupabaseConfigured()
 export const supabaseSignup = async (name, email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
   
-  // TODO: Handle edge case where user signs up with an already existing but unconfirmed email
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -29,6 +28,10 @@ export const supabaseSignup = async (name, email, password) => {
   });
 
   if (error) throw new Error(error.message);
+
+  if (!data.session) {
+    throw new Error("Please check your email to confirm your account before signing in.");
+  }
 
   const user = {
     id: data.user.id,
@@ -48,9 +51,6 @@ export const supabaseSignup = async (name, email, password) => {
     ],
   };
 
-  // Note: we still try to create a default book here, but if email confirmations are enabled,
-  // the user won't have a valid session to bypass RLS yet. It will fail silently,
-  // and supabaseGetUserBooks will handle it upon their first actual login.
   await supabase.from("books").insert([newBook]);
 
   return user;
@@ -168,10 +168,14 @@ export const supabaseSaveBook = async (book) => {
     members: book.members,
   };
 
-  const { error } = await supabase.from("books").upsert(bookData);
+  const { error } = await supabase
+    .from("books")
+    .update(bookData)
+    .eq("id", bookData.id);
 
   if (error) {
     console.error("Error saving book:", error);
+    alert(`Failed to save to database: ${error.message}. Your changes might be lost on refresh.`);
   }
 };
 
