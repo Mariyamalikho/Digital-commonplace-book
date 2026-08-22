@@ -26,7 +26,7 @@ const OrnamentalLine = ({ accent }) => (
  */
 export const BookCover = ({ isPreview = false }) => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken, hasSeenGuestUpsell } = useJournal();
+  const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken, hasSeenGuestUpsell, liveCoverPreview } = useJournal();
 
   /**
    * Handles user attempts to open the book.
@@ -60,7 +60,7 @@ export const BookCover = ({ isPreview = false }) => {
   const [subtitleInput, setSubtitleInput] = useState(currentBook?.subtitle || '');
   const [hoveringOpen, setHoveringOpen] = useState(false);
 
-  const cover = currentBook?.cover || {};
+  const cover = liveCoverPreview || currentBook?.cover || {};
   const themeKey = cover.theme || 'midnight';
   const patternKey = cover.pattern || 'noise';
   const t = COVER_THEMES[themeKey] || COVER_THEMES.midnight;

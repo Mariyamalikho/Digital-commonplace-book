@@ -51,6 +51,7 @@ export const JournalProvider = ({ children }) => {
   // ==========================================
   const [viewMode, setViewMode] = useState('reader'); // 'dashboard' | 'reader'
   const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
+  const [liveCoverPreview, setLiveCoverPreview] = useState(null); // Used for live previewing cover changes
 
   // ==========================================
   // UI STATE: Animations
@@ -465,6 +466,8 @@ export const JournalProvider = ({ children }) => {
       userBooks,
       currentBook,
       currentSpreadIndex,
+      liveCoverPreview,
+      setLiveCoverPreview,
       viewMode,
       setViewMode,
       isTearing,
