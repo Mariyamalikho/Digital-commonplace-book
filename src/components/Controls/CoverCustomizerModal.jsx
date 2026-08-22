@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Check, Type, Lock } from 'lucide-react';
 import { useJournal } from '../../context/JournalContext';
 
