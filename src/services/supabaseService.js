@@ -136,12 +136,9 @@ export const supabaseGetUserBooks = async (user) => {
       ],
     };
 
-    // Strip privacy before insert
-    const { privacy, ...dbBook } = newBook;
-
     const { error: insertError } = await supabase
       .from("books")
-      .insert([dbBook]);
+      .insert([newBook]);
     if (!insertError) {
       return [newBook];
     } else {

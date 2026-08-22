@@ -29,7 +29,7 @@ const PATTERNS = [
 ];
 
 export const CoverCustomizerModal = () => {
-  const { currentBook, updateCover, updateJournalTitle, syncBookState, coverCustomizerOpen, setCoverCustomizerOpen, setLiveCoverPreview } = useJournal();
+  const { currentBook, updateCover, updateJournalTitle, syncBookState, coverCustomizerOpen, setCoverCustomizerOpen } = useJournal();
 
   const cv = currentBook?.cover || {};
   const [title, setTitle]           = useState(currentBook?.title || '');
@@ -40,21 +40,6 @@ export const CoverCustomizerModal = () => {
   const [font, setFont]             = useState(cv.font || 'DM Serif Display');
   const [pattern, setPattern]       = useState(cv.pattern || 'noise');
   const [privacy, setPrivacy]       = useState(currentBook?.privacy || 'private');
-
-  // Push live preview updates to the main background BookCover component
-  useEffect(() => {
-    if (coverCustomizerOpen) {
-      setLiveCoverPreview({
-        theme,
-        color: customColor,
-        ribbonColor,
-        font,
-        pattern
-      });
-    } else {
-      setLiveCoverPreview(null);
-    }
-  }, [theme, customColor, ribbonColor, font, pattern, setLiveCoverPreview, coverCustomizerOpen]);
 
   if (!coverCustomizerOpen || !currentBook) return null;
 
