@@ -149,7 +149,7 @@ export const BookCover = ({ isPreview = false }) => {
         </div>
 
         {/* Top-left action (Share) */}
-        <div className="absolute top-5 left-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-[250ms]">
+        <div className="absolute top-5 left-5 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-[250ms]">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setShareModalOpen(true); }}
@@ -168,7 +168,7 @@ export const BookCover = ({ isPreview = false }) => {
         </div>
 
         {/* Bottom-right Customize button */}
-        <div className="absolute bottom-5 right-5 z-30 opacity-0 group-hover:opacity-100 transition-all duration-[250ms]">
+        <div className="absolute bottom-5 right-5 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-[250ms]">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setCoverCustomizerOpen(true); }}
@@ -264,7 +264,7 @@ export const BookCover = ({ isPreview = false }) => {
                         setTitleInput(currentBook?.title || '');
                         setSubtitleInput(currentBook?.subtitle || '');
                       }}
-                      className="opacity-0 group-hover:opacity-50 hover:!opacity-100 transition-opacity"
+                      className="opacity-100 md:opacity-0 md:group-hover:opacity-50 md:hover:!opacity-100 transition-opacity"
                       style={{ color: t.accent }}
                       title="Edit title"
                     >

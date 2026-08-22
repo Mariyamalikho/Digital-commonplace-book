@@ -54,9 +54,15 @@ export const CoverCustomizerModal = () => {
   };
 
   const handleSave = () => {
-    updateJournalTitle(title, subtitle);
-    updateCover({ theme, color: customColor, ribbonColor, font, pattern });
-    syncBookState({ ...currentBook, title, subtitle, privacy, cover: { ...cv, theme, color: customColor, ribbonColor, font, pattern } }, false);
+    const updatedCover = { ...cv, theme, color: customColor, ribbonColor, font, pattern };
+    const updatedBook = {
+      ...currentBook,
+      title,
+      subtitle,
+      privacy,
+      cover: updatedCover
+    };
+    syncBookState(updatedBook, true);
     setCoverCustomizerOpen(false);
   };
 
