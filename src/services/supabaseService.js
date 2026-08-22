@@ -168,10 +168,14 @@ export const supabaseSaveBook = async (book) => {
     members: book.members,
   };
 
-  const { error } = await supabase.from("books").upsert(bookData);
+  const { error } = await supabase
+    .from("books")
+    .update(bookData)
+    .eq("id", bookData.id);
 
   if (error) {
     console.error("Error saving book:", error);
+    alert(`Failed to save to database: ${error.message}. Your changes might be lost on refresh.`);
   }
 };
 
