@@ -86,7 +86,7 @@ export const BookCover = ({ isPreview = false }) => {
     <div className="w-full max-w-[480px] mx-auto px-4 py-8 md:py-12 animate-fade-in">
       <div
         onClick={handleOpenAttempt}
-        className="relative rounded-[24px] overflow-hidden cursor-pointer group"
+        className="relative rounded-r-[24px] rounded-l-[4px] overflow-hidden cursor-pointer group"
         style={{
           background: coverBg,
           minHeight: '620px',
@@ -120,15 +120,32 @@ export const BookCover = ({ isPreview = false }) => {
           }}
         />
 
+        {/* Book Spine (Left Edge Hinge & Curve) */}
+        <div 
+          className="absolute top-0 left-0 bottom-0 w-[30px] pointer-events-none z-10"
+          style={{
+            background: `linear-gradient(90deg, 
+              rgba(0,0,0,0.5) 0%, 
+              rgba(255,255,255,0.2) 4px, 
+              rgba(0,0,0,0.1) 18px, 
+              rgba(0,0,0,0.7) 22px, 
+              rgba(0,0,0,0.9) 25px, 
+              rgba(255,255,255,0.25) 28px, 
+              transparent 30px
+            )`,
+            boxShadow: 'inset 1px 0 1px rgba(255,255,255,0.3)'
+          }}
+        />
+
         {/* Fine inner border frame */}
         <div
-          className="absolute inset-[10px] rounded-[16px] pointer-events-none"
+          className="absolute inset-[10px] rounded-r-[16px] rounded-l-[2px] pointer-events-none"
           style={{ border: `1px solid ${t.accent}22` }}
         />
 
         {/* Top accent stripe (gradient → transparent) */}
         <div
-          className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[24px]"
+          className="absolute top-0 left-0 right-0 h-[3px] rounded-tr-[24px] rounded-tl-[4px]"
           style={{ background: `linear-gradient(90deg, transparent 0%, ${t.accent}cc 30%, ${t.accent} 50%, ${t.accent}cc 70%, transparent 100%)` }}
         />
 
