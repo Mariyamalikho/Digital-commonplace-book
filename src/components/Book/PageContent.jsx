@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PenTool, Globe } from 'lucide-react';
 import { useJournal } from '../../context/JournalContext';
 import { PageCanvas } from './PageCanvas';
@@ -23,6 +23,10 @@ export const PageContent = ({ page, side = 'left' }) => {
   } = useJournal();
 
   const [isUrduMode, setIsUrduMode] = useState(page?.isUrduMode || false);
+
+  useEffect(() => {
+    setIsUrduMode(page?.isUrduMode || false);
+  }, [page?.id, page?.isUrduMode]);
 
   if (!page) return null;
 
