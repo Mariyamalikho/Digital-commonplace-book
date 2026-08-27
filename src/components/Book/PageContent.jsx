@@ -76,7 +76,12 @@ export const PageContent = ({ page, side = 'left' }) => {
   return (
     <div
       className="relative h-[580px] md:h-[640px] max-h-[640px] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
-      style={{ color: 'var(--ink-mid)', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.03)' }}
+      style={{ 
+        color: 'var(--ink-mid)', 
+        boxShadow: side === 'left' 
+          ? 'inset -24px 0 40px -15px rgba(0,0,0,0.15), inset 0 0 40px rgba(0,0,0,0.03)'
+          : 'inset 24px 0 40px -15px rgba(0,0,0,0.15), inset 0 0 40px rgba(0,0,0,0.03)'
+      }}
     >
       {/* Saved drawing layer */}
       {page.drawing && (
