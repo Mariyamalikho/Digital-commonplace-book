@@ -79,7 +79,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
   return (
     <div
-      className="relative h-[400px] sm:h-[480px] md:h-[640px] max-h-[640px] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
+      className="relative aspect-[3/4] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
       style={{ 
         color: 'var(--ink-mid)', 
         boxShadow: side === 'left' 
@@ -158,7 +158,7 @@ export const PageContent = ({ page, side = 'left' }) => {
       </div>
 
       {/* ── SCROLLABLE CONTENT ── */}
-      <div className="relative z-20 flex-grow flex flex-col my-1 overflow-y-auto pr-1 space-y-2 max-h-[320px] md:max-h-[440px]">
+      <div className="relative z-20 flex-grow flex flex-col my-1 overflow-y-auto pr-1 space-y-2">
         {/* Title */}
         <div className="border-b pb-2 shrink-0" style={{ borderColor: 'var(--parchment-line)' }}>
           {canWrite ? (
