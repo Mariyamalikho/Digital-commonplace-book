@@ -67,7 +67,7 @@ export const BookContainer = () => {
 
   return (
     <main
-      className="min-h-screen pt-14 pb-24 px-2 flex flex-col items-center transition-all duration-700"
+      className="min-h-screen pt-4 pb-8 md:pt-14 md:pb-24 px-2 flex flex-col items-center transition-all duration-700"
       style={{ background: getAmbientBg() }}
     >
       <PageSpread />

@@ -79,7 +79,7 @@ export const PageContent = ({ page, side = 'left' }) => {
 
   return (
     <div
-      className="relative h-[480px] md:h-[640px] max-h-[640px] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
+      className="relative h-[400px] sm:h-[480px] md:h-[640px] max-h-[640px] p-5 pb-[22px] md:p-8 md:pb-[34px] lined-paper flex flex-col justify-between overflow-hidden"
       style={{ 
         color: 'var(--ink-mid)', 
         boxShadow: side === 'left' 
