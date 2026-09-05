@@ -9,7 +9,9 @@ import {
   supabaseGetUserBooks, 
   supabaseJoinBookViaToken, 
   supabaseSaveBook, 
-  supabaseUpdateBookViaToken 
+  supabaseUpdateBookViaToken,
+  supabaseCreateNewBook,
+  supabaseDeleteBook
 } from '../services/supabaseService';
 import { versionService } from '../services/versionService';
 
@@ -460,6 +462,37 @@ export const JournalProvider = ({ children }) => {
     setCurrentSpreadIndex(0);
   };
 
+  const createNewBook = async (title) => {
+    if (!user) return;
+    try {
+      const newBook = await supabaseCreateNewBook(user, title);
+      setUserBooks(prev => [newBook, ...prev]);
+      setCurrentBook(newBook);
+      setCurrentSpreadIndex(0);
+      return newBook;
+    } catch (error) {
+      console.error("Error creating new book:", error);
+      throw error;
+    }
+  };
+
+  const deleteBook = async (bookId) => {
+    if (!user) return;
+    try {
+      const success = await supabaseDeleteBook(bookId);
+      if (!success) throw new Error("Failed to delete book from database.");
+      const updatedBooks = userBooks.filter(b => b.id !== bookId);
+      setUserBooks(updatedBooks);
+      if (currentBook?.id === bookId) {
+        setCurrentBook(updatedBooks.length > 0 ? updatedBooks[0] : null);
+        setCurrentSpreadIndex(0);
+      }
+    } catch (error) {
+      console.error("Error deleting book:", error);
+      throw error;
+    }
+  };
+
   return (
     <JournalContext.Provider value={{
       userBooks,
@@ -514,7 +547,9 @@ export const JournalProvider = ({ children }) => {
       setGuestName,
       hasSeenGuestUpsell,
       setHasSeenGuestUpsell,
-      leaveBook
+      leaveBook,
+      createNewBook,
+      deleteBook
     }}>
       {children}
     </JournalContext.Provider>

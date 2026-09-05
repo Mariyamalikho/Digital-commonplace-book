@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, ChevronDown, LogOut, Settings, Plus, Scissors, Palette } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useJournal } from '../context/JournalContext';
+import { ManageJournalsModal } from './Controls/ManageJournalsModal';
 
 export const Navbar = () => {
   const { user, setAuthModalOpen, setAuthMode, setAccountModalOpen, logout } = useAuth();
@@ -17,9 +18,11 @@ export const Navbar = () => {
   } = useJournal();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [manageJournalsModalOpen, setManageJournalsModalOpen] = useState(false);
   const avatarLetter = user ? (user.name?.[0] || user.email?.[0] || 'S').toUpperCase() : '?';
 
   return (
+    <>
     <nav
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-6 h-14"
       style={{
@@ -33,47 +36,49 @@ export const Navbar = () => {
 
       {/* Center — Book title + page actions */}
       {currentBook && (
-        <div className="flex items-center gap-2">
-          {/* Book title pill */}
-          <div
-            className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-[8px] text-xs"
+        <div className="flex items-center gap-1 md:gap-2">
+          {/* Book title pill (Button to open Manage Journals) */}
+          <button
+            onClick={() => setManageJournalsModalOpen(true)}
+            className="flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-[8px] text-xs transition-colors hover:bg-white/5"
             style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
           >
             <BookOpen size={11} />
-            <span className="max-w-[160px] truncate" style={{ color: 'var(--text-primary)' }}>
+            <span className="max-w-[80px] md:max-w-[160px] truncate" style={{ color: 'var(--text-primary)' }}>
               {currentBook.title}
             </span>
-          </div>
+            <ChevronDown size={11} className="opacity-50" />
+          </button>
 
           {canWrite && (
             <>
               <button
                 onClick={addSpread}
-                className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] text-xs transition-all"
+                className="flex items-center gap-1.5 px-2 md:px-2.5 py-1 rounded-[8px] text-xs transition-all"
                 style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
                 onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
                 onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                title="Add Pages"
               >
                 <Plus size={11} />
-                <span>Add Pages</span>
+                <span className="hidden md:inline">Add Pages</span>
               </button>
 
               {currentSpreadIndex > 0 && (
                 <button
                   onClick={tearCurrentSpread}
-                  className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] text-xs transition-all"
+                  className="flex items-center gap-1.5 px-2 md:px-2.5 py-1 rounded-[8px] text-xs transition-all"
                   style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'rgba(239,68,68,0.6)' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                   onMouseLeave={e => e.currentTarget.style.color = 'rgba(239,68,68,0.6)'}
+                  title="Tear Pages"
                 >
                   <Scissors size={11} />
-                  <span>Tear</span>
+                  <span className="hidden md:inline">Tear</span>
                 </button>
               )}
-
             </>
           )}
-
         </div>
       )}
 
@@ -159,5 +164,7 @@ export const Navbar = () => {
         )}
       </div>
     </nav>
+    <ManageJournalsModal isOpen={manageJournalsModalOpen} onClose={() => setManageJournalsModalOpen(false)} />
+    </>
   );
 };
