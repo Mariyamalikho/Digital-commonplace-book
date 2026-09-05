@@ -149,6 +149,27 @@ export const supabaseGetUserBooks = async (user) => {
   return data;
 };
 
+export const supabaseCreateNewBook = async (user, title = "New Journal") => {
+  if (!supabase || !user) throw new Error("Not authenticated");
+  
+  const newBook = {
+    ...DEFAULT_INITIAL_BOOK,
+    id: crypto.randomUUID(),
+    ownerId: user.id,
+    ownerName: user.name,
+    title,
+    members: [
+      { userId: user.id, name: user.name, role: "owner", email: user.email },
+    ],
+  };
+
+  const { error } = await supabase.from("books").insert([newBook]);
+  if (error) throw error;
+  
+  return newBook;
+};
+
+
 export const supabaseSaveBook = async (book) => {
   if (!supabase) return;
 
