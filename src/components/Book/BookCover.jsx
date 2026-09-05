@@ -85,11 +85,10 @@ export const BookCover = ({ isPreview = false }) => {
   return (
     <div className="w-full max-w-[480px] mx-auto px-4 py-8 md:py-12 animate-fade-in">
       <div
+        className="relative w-full max-w-[480px] mx-auto rounded-r-[24px] rounded-l-[4px] p-8 md:p-12 overflow-hidden group select-none flex flex-col items-center justify-center cursor-pointer min-h-[500px] md:min-h-[620px]"
         onClick={handleOpenAttempt}
-        className="relative rounded-r-[24px] rounded-l-[4px] overflow-hidden cursor-pointer group"
         style={{
           background: coverBg,
-          minHeight: '620px',
           boxShadow: `
             0 0 0 1px rgba(255,255,255,0.05),
             0 2px 1px rgba(255,255,255,0.06) inset,
