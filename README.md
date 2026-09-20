@@ -1,37 +1,45 @@
-# 📖 Digital Commonplace Book
+<div align="center">
+  <h1>📖 Digital Commonplace Book</h1>
+  <p>A beautifully tactile, 3D digital journaling experience designed for writers, thinkers, and lifelong learners.</p>
 
-> A modern digital commonplace book designed for writers, students, researchers, creatives, and lifelong learners.
+  <!-- TODO: Add a GIF or screenshot of the 3D book cover and page flipping here! -->
+  <img src="https://via.placeholder.com/800x400?text=Replace+with+App+Screenshot" alt="Digital Commonplace Book App Screenshot" width="800" />
+</div>
 
-Digital Commonplace Book is an interactive web application that combines the tactile experience of a physical notebook with modern cloud technology. Users can write, sketch, organize ideas, upload media, and preserve knowledge inside beautifully designed digital books.
+<br />
+
+Digital Commonplace Book is an interactive web application that perfectly bridges the gap between the tactile, physical experience of a real notebook and the power of modern cloud technology. With a realistic 3D CSS spine, page-turning mechanics, and multi-language support, it provides a private, aesthetic space to collect your thoughts, marginalia, sketches, and memories.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-- 📖 **Interactive flipbook experience**: Realistic page turning animations
-- ✍️ **Rich text writing**: Express your thoughts seamlessly
-- 🎨 **Drawing canvas**: Sketch directly on any page
-- 🖼️ **Image uploads**: Embed images easily into your entries
-- 🎥 Video uploads
-- 🔊 Voice notes
-- ➕ Add new pages
-- 🗑️ Tear/remove pages
-- 🔒 Password-protected books
-- 👥 Owner / Editor / Reader roles
-- 🎨 Customizable book covers
-- 🌙 Multiple visual themes
-- ☁️ Cloud storage with Supabase
-- 💾 Auto-save
-- 📱 Responsive design
+### 📖 The Tactile Experience
+- **Realistic 3D UI**: A beautifully crafted book cover with a realistic spine, hinge groove, and dynamic shadows.
+- **Physical Page Flipping**: Smooth, hardware-accelerated 3D page-turning animations that make it feel like a real book.
+- **Page Tearing**: Don't like a page? Physically "tear" it out of the book with a custom CSS animation.
+- **Customizable Covers**: Choose from elegant themes (Midnight, Emerald, Obsidian, Dark Academia) and CSS patterns to personalize your journal.
+
+### ✍️ Powerful Content Creation
+- **Rich Media**: Embed images and voice notes directly into your entries.
+- **Drawing Canvas**: Sketch or write by hand directly onto the page.
+- **Bi-Directional Language Support**: Unique per-page toggle for **Urdu (RTL)** and **English (LTR)** writing modes, allowing you to mix languages without breaking formatting.
+
+### ☁️ Cloud & Security
+- **Multiple Journals**: Manage, create, and seamlessly switch between multiple different notebooks.
+- **Secure Cloud Storage**: Real-time auto-saving backed by Supabase (PostgreSQL) and Firebase.
+- **Role-Based Access Control**: Securely share a link to your book with friends. Assign permissions (Visitor, Editor) using secure token tunnels.
+- **Row Level Security (RLS)**: Enterprise-grade security ensures your private thoughts remain strictly yours.
+- **Responsive Design**: Flawlessly scales from a majestic desktop view down to a perfectly proportioned mobile experience.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Vite, Tailwind CSS
+- **Frontend:** React, Vite, Tailwind CSS, Lucide Icons
 - **Backend/Database:** Supabase (PostgreSQL)
-- **Language:** JavaScript (ES6+)
-- **Hosting:** Vercel (Recommended)
+- **Media Storage:** Firebase
+- **Deployment:** Vercel
 
 ---
 
@@ -42,67 +50,53 @@ Digital Commonplace Book is an interactive web application that combines the tac
 - A Supabase project set up with the provided SQL scripts
 
 ### Installation
-Clone the repository
-
+Clone the repository:
 ```bash
 git clone https://github.com/Mariyamalikho/Digital-commonplace-book.git
 ```
 
-Install dependencies
-
+Install dependencies:
 ```bash
 npm install
 ```
 
-Start development
-
+Start the development server:
 ```bash
 npm run dev
 ```
 
-Build
-
+Build for production:
 ```bash
 npm run build
 ```
 
 ---
 
-## 📂 Project Structure
+## 📸 Screenshots
 
-```
-src/
- ├── assets/
- ├── components/
- ├── context/
- ├── services/
- ├── App.jsx
- ├── main.jsx
-```
+<!-- TODO: Add your beautiful screenshots here! Replace the placeholder links below with your actual images once you take them. -->
+
+| Book Cover | Page Spread | Mobile View |
+| :---: | :---: | :---: |
+| <img src="https://via.placeholder.com/300x400?text=Cover+Screenshot" alt="Cover" /> | <img src="https://via.placeholder.com/300x400?text=Open+Book" alt="Open Book" /> | <img src="https://via.placeholder.com/300x400?text=Mobile+UI" alt="Mobile UI" /> |
 
 ---
 
-## 🌟 Future Plans
+## 🌟 Roadmap & Future Plans
 
-- User authentication
-- Real-time collaboration
-- Multiple books
-- Markdown support
-- AI writing assistant
-- PDF export
-- Offline mode
-- Mobile application
-- End-to-end encryption
-- Book templates
-- Plugin system
+- [x] Multiple books support
+- [x] Responsive mobile UI & Aspect Ratio fixing
+- [x] Right-to-Left (Urdu) language support
+- [ ] Global Search across all journals
+- [ ] Progressive Web App (Offline mode)
+- [ ] Rich Text Formatting (Markdown)
+- [ ] Audio Visualizer for voice notes
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, suggestions, and feature requests are welcome.
-
-Feel free to open an Issue or submit a Pull Request.
+Contributions, suggestions, and feature requests are welcome. Feel free to open an Issue or submit a Pull Request.
 
 ---
 
@@ -110,6 +104,6 @@ Feel free to open an Issue or submit a Pull Request.
 
 MIT License
 
----
-
-Made with ❤️ by Mariyam
+<div align="center">
+  Made with ❤️ by <a href="https://mariyamalikhokhar.com/">Mariyam</a>
+</div>
