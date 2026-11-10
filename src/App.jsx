@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { JournalProvider } from "./context/JournalContext";
 import { Navbar } from "./components/Navbar";
 import { BookContainer } from "./components/Book/BookContainer";
 import { Footer } from "./components/Footer";
-import { PrivacyModal } from "./components/PrivacyModal";
+
+const PrivacyModal = lazy(() => import("./components/PrivacyModal").then(m => ({ default: m.PrivacyModal })));
 
 function App() {
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -22,7 +23,12 @@ function App() {
           </div>
           <Footer onOpenPrivacy={() => setShowPrivacy(true)} />
         </div>
-        <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
+        
+        {showPrivacy && (
+          <Suspense fallback={null}>
+            <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
+          </Suspense>
+        )}
       </JournalProvider>
     </AuthProvider>
   );
