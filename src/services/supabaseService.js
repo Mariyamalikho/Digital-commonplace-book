@@ -10,19 +10,40 @@ export const isSupabaseConfigured = () => {
 };
 
 export const supabase = isSupabaseConfigured()
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    })
   : null;
+
+// --- QUERY CACHE (In-memory TTL to prevent redundant database queries) ---
+const queryCache = new Map();
+const CACHE_TTL_MS = 20000;
+
+export const invalidateBookCache = (userId) => {
+  if (userId) {
+    queryCache.delete(`books_${userId}`);
+  } else {
+    queryCache.clear();
+  }
+};
 
 // --- AUTHENTICATION ---
 export const supabaseSignup = async (name, email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
   
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanName = (name || "").trim();
+
   const { data, error } = await supabase.auth.signUp({
-    email,
+    email: cleanEmail,
     password,
     options: {
       data: {
-        full_name: name,
+        full_name: cleanName,
       },
     },
   });
@@ -35,7 +56,7 @@ export const supabaseSignup = async (name, email, password) => {
 
   const user = {
     id: data.user.id,
-    name: name || email.split("@")[0],
+    name: cleanName || cleanEmail.split("@")[0],
     email: data.user.email,
   };
 
@@ -52,6 +73,7 @@ export const supabaseSignup = async (name, email, password) => {
   };
 
   await supabase.from("books").insert([newBook]);
+  invalidateBookCache(user.id);
 
   return user;
 };
@@ -59,8 +81,9 @@ export const supabaseSignup = async (name, email, password) => {
 export const supabaseLogin = async (email, password) => {
   if (!supabase) throw new Error("Supabase is not configured.");
 
+  const cleanEmail = email.trim().toLowerCase();
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: cleanEmail,
     password,
   });
 
@@ -68,21 +91,23 @@ export const supabaseLogin = async (email, password) => {
 
   return {
     id: data.user.id,
-    name: data.user.user_metadata?.full_name || email.split("@")[0],
+    name: data.user.user_metadata?.full_name || cleanEmail.split("@")[0],
     email: data.user.email,
   };
 };
 
 export const supabaseLogout = async () => {
   if (!supabase) return;
+  invalidateBookCache();
   await supabase.auth.signOut();
 };
 
 export const supabaseForgotPassword = async (email) => {
   if (!supabase) throw new Error("Supabase is not configured.");
-  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  const cleanEmail = email.trim().toLowerCase();
+  const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail);
   if (error) throw new Error(error.message);
-  return `Password reset link sent to ${email}.`;
+  return `Password reset link sent to ${cleanEmail}.`;
 };
 
 export const supabaseChangePassword = async (newPassword) => {
@@ -107,24 +132,29 @@ export const supabaseGetCurrentUser = async () => {
 };
 
 // --- DATABASE (BOOKS) ---
-export const supabaseGetUserBooks = async (user) => {
+export const supabaseGetUserBooks = async (user, forceRefresh = false) => {
   if (!supabase || !user || !user.id) return [];
 
-  // RLS handles visibility, so we just select
+  const cacheKey = `books_${user.id}`;
+  const cached = queryCache.get(cacheKey);
+  const now = Date.now();
+
+  if (!forceRefresh && cached && (now - cached.timestamp < CACHE_TTL_MS)) {
+    return cached.data;
+  }
+
+  // RLS handles visibility at the database engine level
   const { data, error } = await supabase
     .from("books")
-    .select("*")
+    .select("id, ownerId, ownerName, title, subtitle, dedication, createdAt, updatedAt, cover, spreads, members")
     .order("createdAt", { ascending: false });
 
   if (error) {
-    // TODO: Handle offline mode where we can't reach the database
     console.error("Error fetching books:", error);
-    return [];
+    return cached ? cached.data : [];
   }
 
   if (data.length === 0) {
-    // Create default book since they might have signed up with email confirmation,
-    // which prevents book creation during the signup process due to RLS.
     const newBook = {
       ...DEFAULT_INITIAL_BOOK,
       id: crypto.randomUUID(),
@@ -140,24 +170,27 @@ export const supabaseGetUserBooks = async (user) => {
       .from("books")
       .insert([newBook]);
     if (!insertError) {
+      queryCache.set(cacheKey, { data: [newBook], timestamp: now });
       return [newBook];
     } else {
       console.error("Error inserting default book:", insertError);
     }
   }
 
+  queryCache.set(cacheKey, { data, timestamp: now });
   return data;
 };
 
 export const supabaseCreateNewBook = async (user, title = "New Journal") => {
   if (!supabase || !user) throw new Error("Not authenticated");
   
+  const cleanTitle = title.trim() || "New Journal";
   const newBook = {
     ...DEFAULT_INITIAL_BOOK,
     id: crypto.randomUUID(),
     ownerId: user.id,
     ownerName: user.name,
-    title,
+    title: cleanTitle,
     members: [
       { userId: user.id, name: user.name, role: "owner", email: user.email },
     ],
@@ -166,15 +199,13 @@ export const supabaseCreateNewBook = async (user, title = "New Journal") => {
   const { error } = await supabase.from("books").insert([newBook]);
   if (error) throw error;
   
+  invalidateBookCache(user.id);
   return newBook;
 };
 
-
 export const supabaseSaveBook = async (book) => {
-  if (!supabase) return;
+  if (!supabase || !book?.id) return;
 
-  // Format for DB insertion (omit id if it's new, though our app generates UUIDs, so it's fine)
-  // Ensure JSON structure is intact
   const bookData = {
     id: book.id,
     ownerId: book.ownerId,
@@ -196,7 +227,8 @@ export const supabaseSaveBook = async (book) => {
 
   if (error) {
     console.error("Error saving book:", error);
-    alert(`Failed to save to database: ${error.message}. Your changes might be lost on refresh.`);
+  } else {
+    invalidateBookCache(book.ownerId);
   }
 };
 
@@ -207,17 +239,68 @@ export const supabaseDeleteBook = async (bookId) => {
     console.error("Error deleting book:", error);
     return false;
   }
+  invalidateBookCache();
   return true;
 };
 
-// --- STORAGE (MEDIA) ---
+// --- MEDIA COMPRESSION & STORAGE ---
+export const compressImage = async (file, maxWidth = 1600, quality = 0.82) => {
+  if (!file.type.startsWith("image/") || file.type === "image/svg+xml") {
+    return file;
+  }
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result;
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(file);
+
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            if (blob && blob.size < file.size) {
+              const compressedFile = new File(
+                [blob],
+                file.name.replace(/\.[^.]+$/, ".webp"),
+                { type: "image/webp" }
+              );
+              resolve(compressedFile);
+            } else {
+              resolve(file);
+            }
+          },
+          "image/webp",
+          quality
+        );
+      };
+      img.onerror = () => resolve(file);
+    };
+    reader.onerror = () => resolve(file);
+  });
+};
+
 export const supabaseUploadMedia = async (file, path) => {
   if (!supabase) throw new Error("Supabase is not configured.");
 
+  const optimizedFile = await compressImage(file);
+
   const { data, error } = await supabase.storage
     .from("media")
-    .upload(path, file, {
-      cacheControl: "3600",
+    .upload(path, optimizedFile, {
+      cacheControl: "31536000, immutable",
       upsert: true,
     });
 
@@ -265,15 +348,12 @@ export const supabaseCreateShareToken = async (
 export const supabaseJoinBookViaToken = async (token) => {
   if (!supabase) throw new Error("Supabase is not configured.");
 
-  // Call the secure RPC function to safely bypass RLS
   const { data, error } = await supabase.rpc("join_book_via_token", {
-    invite_token: token,
+    invite_token: token.trim(),
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw new Error(error.message);
+  invalidateBookCache();
   return data;
 };
 
@@ -282,13 +362,10 @@ export const supabaseGetBookViaToken = async (token) => {
   if (!supabase) throw new Error("Supabase is not configured.");
 
   const { data, error } = await supabase.rpc("get_book_via_token", {
-    invite_token: token,
+    invite_token: token.trim(),
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw new Error(error.message);
   return data;
 };
 
@@ -296,13 +373,10 @@ export const supabaseUpdateBookViaToken = async (token, bookData) => {
   if (!supabase) throw new Error("Supabase is not configured.");
 
   const { data, error } = await supabase.rpc("update_book_via_token", {
-    invite_token: token,
+    invite_token: token.trim(),
     book_data: bookData,
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw new Error(error.message);
   return data;
 };

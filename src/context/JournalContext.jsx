@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useAuth } from './AuthContext';
 import { COLOR_THEMES } from '../utils/constants';
 import { soundEngine } from '../services/audioService';
-import { syncBookToFirestore } from '../services/firebaseService';
+import { syncBookToFirestore, isFirebaseConfigured } from '../services/firebaseService';
 import { 
   supabaseCreateShareToken, 
   supabaseGetBookViaToken, 
@@ -100,9 +100,9 @@ export const JournalProvider = ({ children }) => {
   useEffect(() => {
     if (!currentBook) return;
     const cover = currentBook.cover || {};
-    const themeKey = cover.theme || 'midnight';
+    const themeKey = cover.theme || 'dark-academia';
 
-    let theme = COLOR_THEMES[themeKey] || COLOR_THEMES['midnight'];
+    let theme = COLOR_THEMES[themeKey] || COLOR_THEMES['dark-academia'];
 
     const root = document.documentElement;
     root.style.setProperty('--theme-bg-darkest', theme.bgDarkest);
@@ -142,22 +142,29 @@ export const JournalProvider = ({ children }) => {
   const syncBookState = useCallback((updatedBook, createVersionSnapshot = true) => {
     setCurrentBook(updatedBook);
     
-    // Fire and forget to Supabase
+    // Direct sync to Supabase with in-memory state update to avoid redundant refetches
     if (guestToken && guestRole === 'editor') {
       supabaseUpdateBookViaToken(guestToken, updatedBook);
     } else {
       supabaseSaveBook(updatedBook);
-      syncBookToFirestore(updatedBook);
+      if (isFirebaseConfigured()) {
+        syncBookToFirestore(updatedBook);
+      }
     }
 
     if (createVersionSnapshot) {
       versionService.createSnapshot(updatedBook, 'Autosave Snapshot');
     }
 
-    if (user) {
-      supabaseGetUserBooks(user).then(books => setUserBooks(books));
-    }
-  }, [user, guestToken, guestRole]);
+    // Optimistically update userBooks list in-memory without hitting the network repeatedly
+    setUserBooks(prev => {
+      const exists = prev.some(b => b.id === updatedBook.id);
+      if (exists) {
+        return prev.map(b => b.id === updatedBook.id ? updatedBook : b);
+      }
+      return [updatedBook, ...prev];
+    });
+  }, [guestToken, guestRole]);
 
   // Navigation
   const goToNextSpread = () => {
