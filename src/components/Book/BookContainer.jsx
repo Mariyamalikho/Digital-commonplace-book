@@ -48,18 +48,18 @@ export const BookContainer = () => {
     }
   }, [joinBookViaToken, loadGuestBook, user, loading, setAuthModalOpen, setAuthMode]);
 
-  // Ambient bookmaker atmosphere derived from leather/cloth cover tone
+  // Ambient background derived from book theme
   const getAmbientBg = () => {
-    const theme = currentBook?.cover?.theme || 'dark-academia';
+    const theme = currentBook?.cover?.theme || 'midnight';
     const map = {
-      'dark-academia': 'radial-gradient(ellipse at 50% 0%, #1c1510 0%, #0e0c0a 70%)',
-      sand:            'radial-gradient(ellipse at 50% 0%, #1a1510 0%, #0e0c0a 70%)',
-      midnight:        'radial-gradient(ellipse at 50% 0%, #131c26 0%, #080d14 70%)',
-      emerald:         'radial-gradient(ellipse at 50% 0%, #132219 0%, #070e0a 70%)',
-      royal:           'radial-gradient(ellipse at 50% 0%, #201016 0%, #0e070a 70%)',
-      obsidian:        'radial-gradient(ellipse at 50% 0%, #1a1a1c 0%, #0a0a0b 70%)',
+      midnight:       'radial-gradient(ellipse at 50% 0%, #1a1040 0%, #0a0a0f 65%)',
+      sand:           'radial-gradient(ellipse at 50% 0%, #231608 0%, #0f0d0a 65%)',
+      emerald:        'radial-gradient(ellipse at 50% 0%, #0d2820 0%, #080f0c 65%)',
+      obsidian:       'radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #080808 65%)',
+      royal:          'radial-gradient(ellipse at 50% 0%, #1c0e3a 0%, #0c0a14 65%)',
+      'dark-academia':'radial-gradient(ellipse at 50% 0%, #261d0e 0%, #0d0b08 65%)',
     };
-    return map[theme] || map['dark-academia'];
+    return map[theme] || map.midnight;
   };
 
   return (

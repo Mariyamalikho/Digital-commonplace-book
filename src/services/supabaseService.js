@@ -43,9 +43,26 @@ const isNetworkOrTimeoutError = (err) => {
 // --- QUERY & LOCAL STORAGE CACHE ---
 const queryCache = new Map();
 const CACHE_TTL_MS = 20000;
-const LOCAL_BOOK_CACHE_PREFIX = "grimoire_books_cache_";
+const LOCAL_BOOK_CACHE_PREFIX = "grimoire_books_cache_v2_";
 const ACTIVE_USER_STORAGE_KEY = "grimoire_active_user";
 const LOCAL_USERS_STORAGE_KEY = "grimoire_local_users";
+
+const normalizeBookCover = (book) => {
+  if (!book?.cover) return book;
+  if (book.cover.color === "#1c140e" || book.cover.titleColor === "#c59b27") {
+    return {
+      ...book,
+      cover: {
+        ...book.cover,
+        theme: "midnight",
+        color: "#2b1b4d",
+        titleColor: "#e8e6ff",
+        foilAccent: "#6c63ff",
+      },
+    };
+  }
+  return book;
+};
 
 export const buildDefaultBookForUser = (user) => ({
   ...DEFAULT_INITIAL_BOOK,
@@ -61,11 +78,11 @@ export const buildDefaultBookForUser = (user) => ({
 export const getCachedUserBooks = (userId) => {
   if (!userId) return null;
   const mem = queryCache.get(`books_${userId}`);
-  if (mem?.data && mem.data.length > 0) return mem.data;
+  if (mem?.data && mem.data.length > 0) return mem.data.map(normalizeBookCover);
   try {
     const raw = localStorage.getItem(`${LOCAL_BOOK_CACHE_PREFIX}${userId}`);
     const parsed = raw ? JSON.parse(raw) : null;
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed.map(normalizeBookCover) : null;
   } catch {
     return null;
   }
