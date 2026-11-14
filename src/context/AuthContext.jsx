@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AUTH_MODES } from '../utils/constants';
 import { 
+  getInitialSessionUser,
   supabase, 
   supabaseChangePassword,
   supabaseForgotPassword, 
-  supabaseGetCachedSessionUser,
   supabaseGetCurrentUser,
   supabaseLogin, 
   supabaseLogout, 
@@ -25,29 +25,26 @@ const AuthContext = createContext();
  * </AuthProvider>
  */
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(() => getInitialSessionUser());
+  const [loading, setLoading] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState(AUTH_MODES.LOGIN);
   const [accountModalOpen, setAccountModalOpen] = useState(false);
 
   useEffect(() => {
-    // Instant local session lookup to avoid blocking initial paint on auth network round-trip
-    supabaseGetCachedSessionUser().then(currentUser => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    setLoading(false);
 
     // Listen to auth state changes from Supabase across tabs/refreshes
     if (supabase) {
-      const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
         if (session?.user) {
-          setUser({
+          const nextUser = {
             id: session.user.id,
             name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
             email: session.user.email
-          });
-        } else {
+          };
+          setUser(prev => (prev?.id === nextUser.id && prev?.email === nextUser.email ? prev : nextUser));
+        } else if (event === 'SIGNED_OUT') {
           setUser(null);
         }
       });

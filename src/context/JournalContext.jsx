@@ -4,7 +4,7 @@ import { COLOR_THEMES } from '../utils/constants';
 import { soundEngine } from '../services/audioService';
 import { syncBookToFirestore, isFirebaseConfigured } from '../services/firebaseService';
 import { 
-  getCachedUserBooks,
+  getOrInitCachedUserBooks,
   supabaseCreateShareToken, 
   supabaseGetBookViaToken, 
   supabaseGetUserBooks, 
@@ -36,8 +36,12 @@ export const JournalProvider = ({ children }) => {
   // ==========================================
   // DATA STATE
   // ==========================================
-  const [userBooks, setUserBooks] = useState([]);
-  const [currentBook, setCurrentBook] = useState(null);
+  const [userBooks, setUserBooks] = useState(() => (user ? getOrInitCachedUserBooks(user) : []));
+  const [currentBook, setCurrentBook] = useState(() => {
+    if (!user) return null;
+    const initial = getOrInitCachedUserBooks(user);
+    return initial.length > 0 ? initial[0] : null;
+  });
   const [booksLoading, setBooksLoading] = useState(false);
 
   // ==========================================
@@ -86,8 +90,8 @@ export const JournalProvider = ({ children }) => {
       return;
     }
 
-    // Instant hydration from local cache (stale-while-revalidate)
-    const cachedBooks = getCachedUserBooks(user.id);
+    // Instant hydration from local cache (or initialize default book immediately)
+    const cachedBooks = getOrInitCachedUserBooks(user);
     if (cachedBooks && cachedBooks.length > 0) {
       setUserBooks(cachedBooks);
       setCurrentBook(prev => {
@@ -104,7 +108,7 @@ export const JournalProvider = ({ children }) => {
 
     // Background network revalidation from Supabase
     let isMounted = true;
-    supabaseGetUserBooks(user, Boolean(cachedBooks)).then(books => {
+    supabaseGetUserBooks(user, true).then(books => {
       if (!isMounted) return;
       setUserBooks(books);
       if (books.length > 0) {
