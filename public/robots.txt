@@ -1,0 +1,6 @@
+# Robots.txt for Digital Commonplace Book
+User-agent: *
+Allow: /
+
+# Sitemap Index
+Sitemap: https://digital-commonplace-book.vercel.app/sitemap.xml

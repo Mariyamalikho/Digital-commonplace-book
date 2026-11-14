@@ -35,15 +35,20 @@ export const NavigationDots = () => {
             <button
               key={idx}
               onClick={() => goToSpread(idx)}
+              aria-label={idx === 0 ? 'Navigate to book cover' : `Navigate to spread ${idx}`}
               title={idx === 0 ? 'Cover' : `Spread ${idx}`}
-              className="transition-all duration-200"
-              style={{
-                width: isActive ? '20px' : '6px',
-                height: '6px',
-                borderRadius: '3px',
-                background: isActive ? 'var(--accent)' : 'rgba(255,255,255,0.2)',
-              }}
-            />
+              className="p-1.5 focus:outline-none transition-all duration-200"
+            >
+              <span
+                className="block transition-all duration-200"
+                style={{
+                  width: isActive ? '20px' : '6px',
+                  height: '6px',
+                  borderRadius: '3px',
+                  background: isActive ? 'var(--accent)' : 'rgba(255,255,255,0.25)',
+                }}
+              />
+            </button>
           );
         })}
       </div>

@@ -39,40 +39,43 @@ export const Navbar = () => {
             {/* Book title button */}
             <button
               onClick={() => setManageJournalsModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 md:px-3 py-1 rounded-[6px] text-xs transition-colors hover:bg-white/5"
+              aria-label={`Manage Journals: Current is ${currentBook.title}`}
+              className="flex items-center gap-1.5 px-2.5 md:px-3 py-1.5 rounded-[6px] text-xs transition-colors hover:bg-white/5"
               style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
             >
-              <BookOpen size={12} style={{ color: 'var(--accent)' }} />
+              <BookOpen size={12} style={{ color: 'var(--accent)' }} aria-hidden="true" />
               <span className="max-w-[100px] md:max-w-[200px] truncate font-serifTitle" style={{ color: 'var(--text-primary)' }}>
                 {currentBook.title}
               </span>
-              <ChevronDown size={11} className="opacity-50" />
+              <ChevronDown size={11} className="opacity-50" aria-hidden="true" />
             </button>
 
             {canWrite && (
               <>
                 <button
                   onClick={addSpread}
-                  className="flex items-center gap-1 px-2 md:px-2.5 py-1 rounded-[6px] text-xs transition-colors"
+                  aria-label="Add new spread to journal"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-[6px] text-xs transition-colors"
                   style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
                   onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
                   onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
                   title="Add Pages"
                 >
-                  <Plus size={12} />
+                  <Plus size={12} aria-hidden="true" />
                   <span className="hidden md:inline">Add Pages</span>
                 </button>
 
                 {currentSpreadIndex > 0 && (
                   <button
                     onClick={tearCurrentSpread}
-                    className="flex items-center gap-1 px-2 md:px-2.5 py-1 rounded-[6px] text-xs transition-colors"
+                    aria-label="Tear out current spread"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-[6px] text-xs transition-colors"
                     style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'rgba(239,68,68,0.7)' }}
                     onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                     onMouseLeave={e => e.currentTarget.style.color = 'rgba(239,68,68,0.7)'}
                     title="Tear Pages"
                   >
-                    <Scissors size={12} />
+                    <Scissors size={12} aria-hidden="true" />
                     <span className="hidden md:inline">Tear</span>
                   </button>
                 )}
@@ -87,6 +90,8 @@ export const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
+                aria-label="User Account Menu"
+                aria-expanded={dropdownOpen}
                 className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-[8px] transition-colors"
                 style={{ background: dropdownOpen ? 'var(--surface-3)' : 'transparent' }}
                 onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-2)'}
