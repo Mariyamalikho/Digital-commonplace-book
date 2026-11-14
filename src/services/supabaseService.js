@@ -19,9 +19,44 @@ export const supabase = isSupabaseConfigured()
     })
   : null;
 
-// --- QUERY CACHE (In-memory TTL to prevent redundant database queries) ---
+// --- QUERY CACHE (In-memory TTL + localStorage stale-while-revalidate) ---
 const queryCache = new Map();
 const CACHE_TTL_MS = 20000;
+const LOCAL_BOOK_CACHE_PREFIX = "grimoire_books_cache_";
+
+export const getCachedUserBooks = (userId) => {
+  if (!userId) return null;
+  const mem = queryCache.get(`books_${userId}`);
+  if (mem?.data) return mem.data;
+  try {
+    const raw = localStorage.getItem(`${LOCAL_BOOK_CACHE_PREFIX}${userId}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const setCachedUserBooks = (userId, books) => {
+  if (!userId || !Array.isArray(books)) return;
+  queryCache.set(`books_${userId}`, { data: books, timestamp: Date.now() });
+  try {
+    localStorage.setItem(`${LOCAL_BOOK_CACHE_PREFIX}${userId}`, JSON.stringify(books));
+  } catch {
+    // Ignore storage quota errors
+  }
+};
+
+const clearLocalBookCache = () => {
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(LOCAL_BOOK_CACHE_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch {
+    // Ignore storage access errors
+  }
+};
 
 export const invalidateBookCache = (userId) => {
   if (userId) {
@@ -99,6 +134,7 @@ export const supabaseLogin = async (email, password) => {
 export const supabaseLogout = async () => {
   if (!supabase) return;
   invalidateBookCache();
+  clearLocalBookCache();
   await supabase.auth.signOut();
 };
 
@@ -115,6 +151,20 @@ export const supabaseChangePassword = async (newPassword) => {
   const { error } = await supabase.auth.updateUser({ password: newPassword });
   if (error) throw new Error(error.message);
   return true;
+};
+
+export const supabaseGetCachedSessionUser = async () => {
+  if (!supabase) return null;
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user;
+  if (!user) return null;
+  return {
+    id: user.id,
+    name: user.user_metadata?.full_name || user.email.split("@")[0],
+    email: user.email,
+  };
 };
 
 export const supabaseGetCurrentUser = async () => {
@@ -170,14 +220,14 @@ export const supabaseGetUserBooks = async (user, forceRefresh = false) => {
       .from("books")
       .insert([newBook]);
     if (!insertError) {
-      queryCache.set(cacheKey, { data: [newBook], timestamp: now });
+      setCachedUserBooks(user.id, [newBook]);
       return [newBook];
     } else {
       console.error("Error inserting default book:", insertError);
     }
   }
 
-  queryCache.set(cacheKey, { data, timestamp: now });
+  setCachedUserBooks(user.id, data);
   return data;
 };
 
@@ -199,7 +249,11 @@ export const supabaseCreateNewBook = async (user, title = "New Journal") => {
   const { error } = await supabase.from("books").insert([newBook]);
   if (error) throw error;
   
+  const existing = getCachedUserBooks(user.id);
   invalidateBookCache(user.id);
+  if (Array.isArray(existing)) {
+    setCachedUserBooks(user.id, [newBook, ...existing]);
+  }
   return newBook;
 };
 
@@ -229,6 +283,17 @@ export const supabaseSaveBook = async (book) => {
     console.error("Error saving book:", error);
   } else {
     invalidateBookCache(book.ownerId);
+    const cachedOwnerBooks = getCachedUserBooks(book.ownerId);
+    if (Array.isArray(cachedOwnerBooks)) {
+      const updated = cachedOwnerBooks.some((b) => b.id === book.id)
+        ? cachedOwnerBooks.map((b) => (b.id === book.id ? bookData : b))
+        : [bookData, ...cachedOwnerBooks];
+      try {
+        localStorage.setItem(`${LOCAL_BOOK_CACHE_PREFIX}${book.ownerId}`, JSON.stringify(updated));
+      } catch {
+        // Ignore quota errors
+      }
+    }
   }
 };
 
@@ -240,6 +305,18 @@ export const supabaseDeleteBook = async (bookId) => {
     return false;
   }
   invalidateBookCache();
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(LOCAL_BOOK_CACHE_PREFIX)) {
+        const list = JSON.parse(localStorage.getItem(key) || "[]");
+        if (Array.isArray(list)) {
+          localStorage.setItem(key, JSON.stringify(list.filter((b) => b.id !== bookId)));
+        }
+      }
+    });
+  } catch {
+    // Ignore storage errors
+  }
   return true;
 };
 

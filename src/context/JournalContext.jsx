@@ -4,6 +4,7 @@ import { COLOR_THEMES } from '../utils/constants';
 import { soundEngine } from '../services/audioService';
 import { syncBookToFirestore, isFirebaseConfigured } from '../services/firebaseService';
 import { 
+  getCachedUserBooks,
   supabaseCreateShareToken, 
   supabaseGetBookViaToken, 
   supabaseGetUserBooks, 
@@ -37,6 +38,7 @@ export const JournalProvider = ({ children }) => {
   // ==========================================
   const [userBooks, setUserBooks] = useState([]);
   const [currentBook, setCurrentBook] = useState(null);
+  const [booksLoading, setBooksLoading] = useState(false);
 
   // ==========================================
   // GUEST ACCESS STATE
@@ -80,9 +82,30 @@ export const JournalProvider = ({ children }) => {
     if (!user) {
       setUserBooks([]);
       setCurrentBook(null);
+      setBooksLoading(false);
       return;
     }
-    supabaseGetUserBooks(user).then(books => {
+
+    // Instant hydration from local cache (stale-while-revalidate)
+    const cachedBooks = getCachedUserBooks(user.id);
+    if (cachedBooks && cachedBooks.length > 0) {
+      setUserBooks(cachedBooks);
+      setCurrentBook(prev => {
+        if (!prev || !cachedBooks.some(b => b.id === prev.id)) {
+          setCurrentSpreadIndex(0);
+          return cachedBooks[0];
+        }
+        return prev;
+      });
+      setBooksLoading(false);
+    } else {
+      setBooksLoading(true);
+    }
+
+    // Background network revalidation from Supabase
+    let isMounted = true;
+    supabaseGetUserBooks(user, Boolean(cachedBooks)).then(books => {
+      if (!isMounted) return;
       setUserBooks(books);
       if (books.length > 0) {
         setCurrentBook(prev => {
@@ -90,10 +113,17 @@ export const JournalProvider = ({ children }) => {
             setCurrentSpreadIndex(0);
             return books[0];
           }
-          return prev;
+          return books.find(b => b.id === prev.id) || prev;
         });
       }
+      setBooksLoading(false);
+    }).catch(() => {
+      if (isMounted) setBooksLoading(false);
     });
+
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   // Dynamically update root CSS Theme Variables based on current book cover color/pattern
@@ -504,6 +534,7 @@ export const JournalProvider = ({ children }) => {
     <JournalContext.Provider value={{
       userBooks,
       currentBook,
+      booksLoading,
       currentSpreadIndex,
       viewMode,
       setViewMode,

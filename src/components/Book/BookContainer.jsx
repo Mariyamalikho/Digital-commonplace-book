@@ -20,7 +20,7 @@ const GuestNameModal = lazy(() => import('../Controls/GuestNameModal').then(m =>
  * Coordinates route/token hydration, ambient atmospheric background, and lazy secondary UI.
  */
 export const BookContainer = () => {
-  const { currentBook, joinBookViaToken, loadGuestBook } = useJournal();
+  const { currentBook, booksLoading, joinBookViaToken, loadGuestBook } = useJournal();
   const { user, loading, setAuthModalOpen, setAuthMode } = useAuth();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const BookContainer = () => {
     return map[theme] || map['dark-academia'];
   };
 
-  if (loading && !currentBook) {
+  if ((loading || (user && booksLoading)) && !currentBook) {
     return (
       <main className="flex-1 w-full py-6 md:py-12 px-2 flex flex-col items-center justify-center">
         <BookSkeleton />

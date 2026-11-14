@@ -4,6 +4,7 @@ import {
   supabase, 
   supabaseChangePassword,
   supabaseForgotPassword, 
+  supabaseGetCachedSessionUser,
   supabaseGetCurrentUser,
   supabaseLogin, 
   supabaseLogout, 
@@ -31,8 +32,8 @@ export const AuthProvider = ({ children }) => {
   const [accountModalOpen, setAccountModalOpen] = useState(false);
 
   useEffect(() => {
-    // Initial fetch
-    supabaseGetCurrentUser().then(currentUser => {
+    // Instant local session lookup to avoid blocking initial paint on auth network round-trip
+    supabaseGetCachedSessionUser().then(currentUser => {
       setUser(currentUser);
       setLoading(false);
     });
