@@ -13,10 +13,10 @@ export const DEFAULT_INITIAL_BOOK = {
   createdAt: new Date().toISOString(),
   cover: {
     texture: 'leather', // 'leather' | 'wood' | 'velvet' | 'canvas' | 'marbled'
-    color: '#1c140e',
+    color: '#2b1b4d',
     pattern: 'noise',
-    titleColor: '#c59b27',
-    foilAccent: '#d4af37',
+    titleColor: '#e8e6ff',
+    foilAccent: '#6c63ff',
   },
   spreads: [
     // Spread 0: Cover & Dedication (Spread 0 is special)

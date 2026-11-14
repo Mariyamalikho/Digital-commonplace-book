@@ -134,9 +134,9 @@ export const JournalProvider = ({ children }) => {
   useEffect(() => {
     if (!currentBook) return;
     const cover = currentBook.cover || {};
-    const themeKey = cover.theme || 'dark-academia';
+    const themeKey = cover.theme || 'midnight';
 
-    let theme = COLOR_THEMES[themeKey] || COLOR_THEMES['dark-academia'];
+    let theme = COLOR_THEMES[themeKey] || COLOR_THEMES.midnight;
 
     const root = document.documentElement;
     root.style.setProperty('--theme-bg-darkest', theme.bgDarkest);

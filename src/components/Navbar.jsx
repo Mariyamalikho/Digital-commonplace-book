@@ -98,8 +98,8 @@ export const Navbar = () => {
                 onMouseLeave={e => e.currentTarget.style.background = dropdownOpen ? 'var(--surface-3)' : 'transparent'}
               >
                 <div
-                  className="w-7 h-7 rounded-[6px] flex items-center justify-center text-xs font-bold"
-                  style={{ background: 'var(--accent)', color: '#120e09' }}
+                  className="w-7 h-7 rounded-[8px] flex items-center justify-center text-xs font-bold"
+                  style={{ background: 'var(--accent)', color: '#fff' }}
                 >
                   {avatarLetter}
                 </div>
