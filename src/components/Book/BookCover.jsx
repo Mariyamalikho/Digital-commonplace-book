@@ -2,46 +2,41 @@ import React, { useState } from 'react';
 import { Check, Pencil, Share2, Palette, ChevronRight } from 'lucide-react';
 import { useJournal } from '../../context/JournalContext';
 import { useAuth } from '../../context/AuthContext';
-
 import { COVER_THEMES, DEFAULT_JOURNAL_TITLE, DEFAULT_JOURNAL_SUBTITLE } from '../../utils/constants';
 
-// Subtle SVG noise pattern moved to index.css
-
-// Thin ornamental SVG line
+// Classical ornamental bookbinder line
 const OrnamentalLine = ({ accent }) => (
-  <svg width="120" height="12" viewBox="0 0 120 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="6" x2="44" y2="6" stroke={accent} strokeOpacity="0.8" strokeWidth="1"/>
-    <path d="M50 6 L55 2 L60 6 L55 10 Z" fill={accent} fillOpacity="0.9"/>
-    <line x1="66" y1="6" x2="120" y2="6" stroke={accent} strokeOpacity="0.8" strokeWidth="1"/>
+  <svg width="140" height="12" viewBox="0 0 140 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="6" x2="52" y2="6" stroke={accent} strokeOpacity="0.75" strokeWidth="1"/>
+    <path d="M58 6 L64 2 L70 6 L64 10 Z" fill={accent} fillOpacity="0.85"/>
+    <line x1="76" y1="6" x2="140" y2="6" stroke={accent} strokeOpacity="0.75" strokeWidth="1"/>
   </svg>
 );
 
 /**
  * BookCover Component
- * Renders the interactive 3D front cover of a journal with dynamic titles,
- * customizable CSS patterns, and access control actions (share/customize).
- *
- * @param {Object} props
- * @param {boolean} [props.isPreview=false] - If true, disables interaction for preview mode
+ * Renders the tactile, physical front cover of a journal with authentic bookbinder styling,
+ * gold-embossed typography, and clean interaction modes.
  */
 export const BookCover = ({ isPreview = false }) => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { currentBook, updateJournalTitle, canWrite, setShareModalOpen, setCoverCustomizerOpen, goToNextSpread, role, guestToken, hasSeenGuestUpsell } = useJournal();
+  const { 
+    currentBook, 
+    updateJournalTitle, 
+    canWrite, 
+    setShareModalOpen, 
+    setCoverCustomizerOpen, 
+    goToNextSpread, 
+    guestToken, 
+    hasSeenGuestUpsell 
+  } = useJournal();
 
-  /**
-   * Handles user attempts to open the book.
-   * If the user is unauthenticated but has a guest token, we show a one-time
-   * "guest_welcome" upsell modal. If they dismiss it, we let them in.
-   */
   const handleOpenAttempt = (e) => {
-    // Ignore clicks on buttons or inputs within the cover
     if (e && e.target && (e.target.closest('button') || e.target.closest('input'))) return;
 
     if (user) {
-      // Authenticated users go straight in
       goToNextSpread();
     } else if (guestToken) {
-      // Guests go straight in ONLY if they have already seen the upsell
       if (hasSeenGuestUpsell) {
         goToNextSpread();
       } else {
@@ -49,7 +44,6 @@ export const BookCover = ({ isPreview = false }) => {
         setAuthModalOpen(true);
       }
     } else {
-      // Completely unauthenticated users without a token must log in
       setAuthMode('login');
       setAuthModalOpen(true);
     }
@@ -61,18 +55,22 @@ export const BookCover = ({ isPreview = false }) => {
   const [hoveringOpen, setHoveringOpen] = useState(false);
 
   const cover = currentBook?.cover || {};
-  const themeKey = cover.theme || 'midnight';
+  const themeKey = cover.theme || 'dark-academia';
   const patternKey = cover.pattern || 'noise';
-  const t = COVER_THEMES[themeKey] || COVER_THEMES.midnight;
+  const t = COVER_THEMES[themeKey] || COVER_THEMES['dark-academia'];
 
-  // Base cover color
-  const baseColor = cover.color || (themeKey === 'midnight' ? '#110d28' : themeKey === 'sand' ? '#1f1508' : themeKey === 'emerald' ? '#0a1f18' : themeKey === 'obsidian' ? '#141414' : themeKey === 'royal' ? '#160a30' : '#1c1408');
+  // Base bookbinder surface tone
+  const baseColor = cover.color || (
+    themeKey === 'dark-academia' ? '#1c140e' :
+    themeKey === 'sand' ? '#211810' :
+    themeKey === 'midnight' ? '#0e1622' :
+    themeKey === 'emerald' ? '#0e1b13' :
+    themeKey === 'royal' ? '#210e16' : '#141416'
+  );
 
-  // Multi-stop gradient: rich, layered
+  // Authentic leather / textured bookcloth lighting gradient
   const coverBg = `
-    radial-gradient(ellipse at 30% 20%, ${t.glow} 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 80%, ${t.shine} 0%, transparent 50%),
-    linear-gradient(160deg, ${baseColor}ff 0%, ${baseColor}ee 40%, ${baseColor}dd 70%, ${baseColor}ff 100%)
+    linear-gradient(145deg, ${baseColor} 0%, ${baseColor}f0 40%, ${baseColor}d8 75%, ${baseColor} 100%)
   `;
 
   const handleSave = () => {
@@ -85,96 +83,92 @@ export const BookCover = ({ isPreview = false }) => {
   return (
     <div className="w-full max-w-[480px] mx-auto px-4 py-8 md:py-12 animate-fade-in">
       <div
-        className="relative w-full max-w-[480px] mx-auto rounded-r-[24px] rounded-l-[4px] p-8 md:p-12 overflow-hidden group select-none flex flex-col items-center justify-center cursor-pointer aspect-[3/4]"
+        className="relative w-full max-w-[480px] mx-auto rounded-r-[20px] rounded-l-[4px] p-8 md:p-12 overflow-hidden group select-none flex flex-col items-center justify-center cursor-pointer aspect-[3/4]"
         onClick={handleOpenAttempt}
         style={{
           background: coverBg,
           boxShadow: `
-            0 0 0 1px rgba(255,255,255,0.05),
-            0 2px 1px rgba(255,255,255,0.06) inset,
-            0 -1px 1px rgba(0,0,0,0.3) inset,
-            0 24px 50px rgba(0,0,0,0.45),
-            0 48px 80px rgba(0,0,0,0.3),
-            0 0 60px ${t.glow}
+            0 0 0 1px rgba(255,255,255,0.06),
+            0 2px 2px rgba(255,255,255,0.08) inset,
+            0 -2px 3px rgba(0,0,0,0.6) inset,
+            0 20px 50px rgba(0,0,0,0.7),
+            0 35px 80px rgba(0,0,0,0.5)
           `,
-          transition: 'box-shadow 0.4s ease, transform 0.3s ease',
+          transition: 'box-shadow 0.3s ease, transform 0.25s ease',
         }}
         onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-4px)';
-          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.06), 0 2px 1px rgba(255,255,255,0.08) inset, 0 -1px 1px rgba(0,0,0,0.3) inset, 0 32px 60px rgba(0,0,0,0.55), 0 64px 100px rgba(0,0,0,0.35), 0 0 80px ${t.glow}`;
+          e.currentTarget.style.transform = 'translateY(-3px)';
+          e.currentTarget.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.08), 0 2px 2px rgba(255,255,255,0.12) inset, 0 -2px 3px rgba(0,0,0,0.6) inset, 0 28px 65px rgba(0,0,0,0.85), 0 45px 95px rgba(0,0,0,0.6)';
         }}
         onMouseLeave={e => {
           e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.05), 0 2px 1px rgba(255,255,255,0.06) inset, 0 -1px 1px rgba(0,0,0,0.3) inset, 0 24px 50px rgba(0,0,0,0.45), 0 48px 80px rgba(0,0,0,0.3), 0 0 60px ${t.glow}`;
+          e.currentTarget.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.06), 0 2px 2px rgba(255,255,255,0.08) inset, 0 -2px 3px rgba(0,0,0,0.6) inset, 0 20px 50px rgba(0,0,0,0.7), 0 35px 80px rgba(0,0,0,0.5)';
         }}
       >
-        {/* Selected Pattern Overlay
-            Applies a CSS background pattern utility class (e.g. pattern-noise, pattern-dots)
-            defined in index.css based on user's customization choices. */}
+        {/* Subtle Texture Overlay */}
         <div
           className={`absolute inset-0 pointer-events-none pattern-${patternKey}`}
           style={{
-            WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.8) 45%, black 100%)',
-            maskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.8) 45%, black 100%)'
+            WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 60%, black 100%)',
+            maskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 60%, black 100%)'
           }}
         />
 
-        {/* Book Spine (Left Edge Hinge & Curve) */}
+        {/* Book Spine (Left Edge Embossing & Leather Hinge) */}
         <div 
-          className="absolute top-0 left-0 bottom-0 w-[30px] pointer-events-none z-10"
+          className="absolute top-0 left-0 bottom-0 w-[28px] pointer-events-none z-10"
           style={{
             background: `linear-gradient(90deg, 
-              rgba(0,0,0,0.5) 0%, 
-              rgba(255,255,255,0.2) 4px, 
-              rgba(0,0,0,0.1) 18px, 
-              rgba(0,0,0,0.7) 22px, 
-              rgba(0,0,0,0.9) 25px, 
-              rgba(255,255,255,0.25) 28px, 
-              transparent 30px
+              rgba(0,0,0,0.65) 0%, 
+              rgba(255,255,255,0.15) 3px, 
+              rgba(0,0,0,0.2) 16px, 
+              rgba(0,0,0,0.8) 20px, 
+              rgba(0,0,0,0.95) 24px, 
+              rgba(255,255,255,0.2) 26px, 
+              transparent 28px
             )`,
-            boxShadow: 'inset 1px 0 1px rgba(255,255,255,0.3)'
+            boxShadow: 'inset 1px 0 1px rgba(255,255,255,0.2)'
           }}
         />
 
-        {/* Fine inner border frame */}
+        {/* Inset Gold Tooling Frame */}
         <div
-          className="absolute inset-[10px] rounded-r-[16px] rounded-l-[2px] pointer-events-none"
-          style={{ border: `1px solid ${t.accent}22` }}
+          className="absolute inset-[12px] rounded-r-[14px] rounded-l-[2px] pointer-events-none"
+          style={{ border: `1px solid ${t.accent}33` }}
         />
 
-        {/* Top accent stripe (gradient → transparent) */}
+        {/* Top Accent Gilded Rule */}
         <div
-          className="absolute top-0 left-0 right-0 h-[3px] rounded-tr-[24px] rounded-tl-[4px]"
-          style={{ background: `linear-gradient(90deg, transparent 0%, ${t.accent}cc 30%, ${t.accent} 50%, ${t.accent}cc 70%, transparent 100%)` }}
+          className="absolute top-0 left-0 right-0 h-[2px] rounded-tr-[20px] rounded-tl-[4px]"
+          style={{ background: t.accent, opacity: 0.8 }}
         />
 
-        {/* Full-height Ribbon Bookmark — left side */}
+        {/* Bookbinder Silk Ribbon */}
         <div
-          className="absolute top-0 left-5 z-20 ribbon-wiggle-natural"
-          style={{ width: '32px', height: '100%', bottom: '0' }}
+          className="absolute top-0 left-6 z-20"
+          style={{ width: '28px', height: '100%', bottom: '0' }}
           title="Bookmark ribbon"
         >
           <div
-            className="w-full h-full shadow-lg"
+            className="w-full h-full shadow-md"
             style={{
-              background: `linear-gradient(180deg, ${ribbonColor} 0%, ${ribbonColor}dd 100%)`,
-              clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 16px), 50% 100%, 0 calc(100% - 16px))',
-              boxShadow: `0 6px 24px ${ribbonColor}66, inset 2px 0 0 rgba(255,255,255,0.18)`,
+              background: `linear-gradient(180deg, ${ribbonColor} 0%, ${ribbonColor}cc 100%)`,
+              clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 14px), 50% 100%, 0 calc(100% - 14px))',
+              boxShadow: `0 4px 16px rgba(0,0,0,0.5), inset 1px 0 0 rgba(255,255,255,0.2)`,
             }}
           />
         </div>
 
-        {/* Top-left action (Share) */}
-        <div className="absolute top-5 left-5 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-[250ms]">
+        {/* Top Action (Share) */}
+        <div className="absolute top-4 left-4 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity font-ui">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setShareModalOpen(true); }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] text-xs font-medium transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] text-xs font-medium transition-all"
               style={{
-                background: 'rgba(0,0,0,0.45)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.8)',
+                background: 'rgba(16,14,12,0.85)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-secondary)',
               }}
             >
               <Share2 size={11} />
@@ -183,17 +177,16 @@ export const BookCover = ({ isPreview = false }) => {
           )}
         </div>
 
-        {/* Bottom-right Customize button */}
-        <div className="absolute bottom-5 right-5 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-[250ms]">
+        {/* Bottom Customize Button */}
+        <div className="absolute bottom-4 right-4 z-30 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity font-ui">
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setCoverCustomizerOpen(true); }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] text-xs font-medium transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] text-xs font-medium transition-all"
               style={{
-                background: 'rgba(0,0,0,0.45)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.8)',
+                background: 'rgba(16,14,12,0.85)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-secondary)',
               }}
             >
               <Palette size={11} />
@@ -203,28 +196,25 @@ export const BookCover = ({ isPreview = false }) => {
         </div>
 
         {/* Central Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-[620px] px-10 text-center gap-5">
-
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-[580px] px-8 text-center gap-4">
           {isEditingTitle ? (
-            /* ---- Edit mode ---- */
             <div
-              className="w-full max-w-xs p-6 rounded-[18px] space-y-4 animate-scale-in"
+              className="w-full max-w-xs p-6 rounded-[12px] space-y-4 animate-scale-in"
               style={{
-                background: 'rgba(0,0,0,0.55)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border)',
               }}
               onClick={e => e.stopPropagation()}
             >
-              <p className="text-xs font-medium" style={{ color: `${t.accent}cc` }}>Edit Cover</p>
+              <p className="text-xs font-ui font-medium" style={{ color: t.accent }}>Edit Cover</p>
               <input
                 autoFocus
                 type="text"
                 value={titleInput}
                 onChange={e => setTitleInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSave()}
-                className="w-full text-center text-xl font-display bg-transparent border-b pb-2 focus:outline-none"
-                style={{ borderColor: 'rgba(255,255,255,0.18)', color: '#fff' }}
+                className="w-full text-center text-xl font-serifTitle bg-transparent border-b pb-2 focus:outline-none"
+                style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
                 placeholder="Journal Title"
               />
               <input
@@ -232,43 +222,42 @@ export const BookCover = ({ isPreview = false }) => {
                 value={subtitleInput}
                 onChange={e => setSubtitleInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSave()}
-                className="w-full text-center text-sm bg-transparent border-b pb-2 focus:outline-none"
-                style={{ borderColor: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.55)' }}
+                className="w-full text-center text-sm font-serifHeading bg-transparent border-b pb-2 focus:outline-none"
+                style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
                 placeholder="Subtitle"
               />
               <button
                 onClick={handleSave}
-                className="w-full py-2.5 rounded-[10px] text-sm font-medium flex items-center justify-center gap-2 text-white"
-                style={{ background: t.accent }}
+                className="w-full py-2.5 rounded-[6px] text-sm font-ui font-semibold flex items-center justify-center gap-2"
+                style={{ background: t.accent, color: '#120e09' }}
               >
                 <Check size={14} />
-                Save
+                Save Title
               </button>
             </div>
           ) : (
-            /* ---- Display mode ---- */
             <>
-              {/* Top ornamental line */}
+              {/* Ornamental Headpiece */}
               <OrnamentalLine accent={t.accent} />
 
-              {/* Title */}
-              <div className="space-y-3">
+              {/* Title Header */}
+              <div className="space-y-2">
                 <h1
-                  className="font-display font-normal leading-[1.1] tracking-[0.06em]"
+                  className="font-serifTitle font-normal leading-[1.12] tracking-wide"
                   style={{
                     color: t.text,
-                    fontSize: 'clamp(2rem, 5vw, 3rem)',
-                    textShadow: `0 4px 60px ${t.glow}, 0 0 100px ${t.glow}, 0 2px 10px rgba(0,0,0,0.5)`,
+                    fontSize: 'clamp(1.75rem, 4.5vw, 2.5rem)',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9)',
                   }}
                 >
                   {currentBook?.title || DEFAULT_JOURNAL_TITLE}
                 </h1>
 
-                {/* Subtitle row with edit pencil */}
+                {/* Subtitle with edit control */}
                 <div className="flex items-center justify-center gap-2">
                   <p
-                    className="text-xs tracking-[0.2em] uppercase font-medium"
-                    style={{ color: t.sub, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
+                    className="text-xs tracking-[0.16em] uppercase font-serifHeading"
+                    style={{ color: t.sub }}
                   >
                     {currentBook?.subtitle || DEFAULT_JOURNAL_SUBTITLE}
                   </p>
@@ -280,7 +269,7 @@ export const BookCover = ({ isPreview = false }) => {
                         setTitleInput(currentBook?.title || '');
                         setSubtitleInput(currentBook?.subtitle || '');
                       }}
-                      className="opacity-100 md:opacity-0 md:group-hover:opacity-50 md:hover:!opacity-100 transition-opacity"
+                      className="opacity-100 md:opacity-0 md:group-hover:opacity-75 md:hover:!opacity-100 transition-opacity"
                       style={{ color: t.accent }}
                       title="Edit title"
                     >
@@ -290,13 +279,13 @@ export const BookCover = ({ isPreview = false }) => {
                 </div>
               </div>
 
-              {/* Bottom ornamental line */}
+              {/* Ornamental Tailpiece */}
               <OrnamentalLine accent={t.accent} />
 
-              {/* Author */}
+              {/* Author / Scholar Attribution */}
               <p
-                className="text-[11px] tracking-[0.3em] uppercase font-medium"
-                style={{ color: `${t.accent}cc`, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
+                className="text-[11px] tracking-[0.2em] uppercase font-serifHeading"
+                style={{ color: t.accent }}
               >
                 {currentBook?.ownerName || (isPreview ? 'Your Name' : 'Scholar')}
               </p>
@@ -306,24 +295,22 @@ export const BookCover = ({ isPreview = false }) => {
                 onClick={(e) => { e.stopPropagation(); handleOpenAttempt(); }}
                 onMouseEnter={() => setHoveringOpen(true)}
                 onMouseLeave={() => setHoveringOpen(false)}
-                className="mt-2 flex items-center gap-2 px-7 py-3 rounded-[14px] text-sm font-medium transition-all duration-[250ms]"
+                className="mt-3 flex items-center gap-2 px-6 py-2.5 rounded-[8px] text-xs font-ui font-medium transition-all"
                 style={{
-                  background: hoveringOpen ? t.accent : 'rgba(255,255,255,0.06)',
-                  backdropFilter: 'blur(12px)',
-                  border: `1px solid ${hoveringOpen ? t.accent : t.accent + '40'}`,
-                  color: hoveringOpen ? '#fff' : t.text,
-                  boxShadow: hoveringOpen ? `0 8px 32px ${t.glow}` : 'none',
-                  transform: hoveringOpen ? 'scale(1.03)' : 'scale(1)',
+                  background: hoveringOpen ? t.accent : 'var(--surface-2)',
+                  color: hoveringOpen ? '#120e09' : t.text,
+                  border: `1px solid ${hoveringOpen ? t.accent : 'var(--border)'}`,
+                  fontWeight: hoveringOpen ? '600' : '500'
                 }}
               >
-                Open Journal
-                <ChevronRight size={14} className="transition-transform" style={{ transform: hoveringOpen ? 'translateX(2px)' : 'translateX(0)' }} />
+                <span>Open Journal</span>
+                <ChevronRight size={13} />
               </button>
 
-              {/* Page count hint */}
+              {/* Page count */}
               <p
-                className="text-[10px] tracking-widest"
-                style={{ color: `${t.accent}40` }}
+                className="text-[11px] tracking-wider font-serifHeading"
+                style={{ color: 'var(--text-tertiary)' }}
               >
                 {(currentBook?.spreads?.length || 0) * 2} pages
               </p>
@@ -331,10 +318,10 @@ export const BookCover = ({ isPreview = false }) => {
           )}
         </div>
 
-        {/* Bottom edge shadow for depth */}
+        {/* Bottom edge shadow */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 100%)' }}
+          className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)' }}
         />
       </div>
     </div>

@@ -14,10 +14,10 @@ export const DEFAULT_INITIAL_BOOK = {
   createdAt: new Date().toISOString(),
   cover: {
     texture: 'leather', // 'leather' | 'wood' | 'velvet' | 'canvas' | 'marbled'
-    color: '#010a37',
-    pattern: 'gold-filigree', // 'gold-filigree' | 'celestial' | 'damask' | 'minimal' | 'botanical'
-    titleColor: '#d4af37',
-    foilAccent: '#c59b27',
+    color: '#1c140e',
+    pattern: 'noise',
+    titleColor: '#c59b27',
+    foilAccent: '#d4af37',
   },
   spreads: [
     // Spread 0: Cover & Dedication (Spread 0 is special)
@@ -29,7 +29,7 @@ export const DEFAULT_INITIAL_BOOK = {
         pageNumber: 1,
         date: '2026-07-21',
         title: 'On the Art of Commonplacing',
-        content: `Commonplacing is an ancient habit of keeping a notebook into which one enters extracts, observations, quotes, and reflections.\n\n"We should hunt out the helpful pieces of teaching, and the spirited and noble sayings which are capable of immediate practical application." — Seneca\n\nWrite down your favorite quotes, record voice notes, upload vintage sketches, or draw freehand thoughts on these parchment pages.`,
+        content: `Commonplacing is an ancient habit of keeping a notebook into which one enters extracts, observations, quotes, and reflections.\n\n"We should hunt out the helpful pieces of teaching, and the spirited and noble sayings which are capable of immediate practical application." [Seneca, Epistulae Morales]\n\nWrite down your favorite quotes, record voice notes, upload vintage sketches, or draw freehand thoughts on these parchment pages.`,
         drawing: null, // Canvas dataURL
         media: [
           {
@@ -65,7 +65,7 @@ export const DEFAULT_INITIAL_BOOK = {
         pageNumber: 2,
         date: '2026-07-21',
         title: 'Reflections & Sketches',
-        content: `Ideas recorded in isolation gain depth when woven together side-by-side.\n\nUse the freehand pen (✒) on the top toolbar to sketch margin diagrams, or record spoken audio thoughts directly onto the parchment.\n\nYou can tear out unwanted spreads (✂), customize your leather cover design, and invite fellow scholars to review your journal!`,
+        content: `Ideas recorded in isolation gain depth when woven together side-by-side.\n\nUse the freehand pen on the toolbar to sketch margin diagrams, or record spoken audio thoughts directly onto the parchment.\n\nYou can tear out unwanted spreads, customize your leather cover design, and invite fellow scholars to review your journal!`,
         drawing: null,
         media: [],
         voiceNotes: [],
@@ -80,7 +80,7 @@ export const DEFAULT_INITIAL_BOOK = {
         pageNumber: 3,
         date: '2026-07-22',
         title: 'Aphorisms & Quotes',
-        content: `1. "The mind is not a vessel to be filled, but a fire to be kindled." — Plutarch\n\n2. "What is written without effort is in general read without pleasure." — Samuel Johnson\n\n3. "Books serve to show a man that those original thoughts of his aren't very new after all." — Abraham Lincoln`,
+        content: `1. "The mind is not a vessel to be filled, but a fire to be kindled." [Plutarch]\n\n2. "What is written without effort is in general read without pleasure." [Samuel Johnson]\n\n3. "Books serve to show a man that those original thoughts of his aren't very new after all." [Abraham Lincoln]`,
         drawing: null,
         media: [],
         voiceNotes: [],

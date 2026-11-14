@@ -7,72 +7,72 @@ export const STORAGE_KEYS = {
 };
 
 export const COLOR_THEMES = {
-  midnight: {
-    bgDarkest: '#07040d',
-    cardBg: '#140b29',
-    cardBorder: '#2b1b4d',
-    accent: '#6c63ff',
-    accentHover: '#5a52d5',
-    textAccent: '#e8e6ff'
-  },
-  emerald: {
-    bgDarkest: '#040d08',
-    cardBg: '#0a1f18',
-    cardBorder: '#173d27',
-    accent: '#34d399',
-    accentHover: '#25a876',
-    textAccent: '#d1fae5'
+  'dark-academia': {
+    bgDarkest: '#0c0a08',
+    cardBg: '#171410',
+    cardBorder: '#2a231b',
+    accent: '#c49b45',
+    accentHover: '#d8af56',
+    textAccent: '#faefd8'
   },
   sand: {
-    bgDarkest: '#0d0603',
-    cardBg: '#1f1508',
-    cardBorder: '#3b2010',
-    accent: '#c9a96e',
-    accentHover: '#b89660',
+    bgDarkest: '#0e0b08',
+    cardBg: '#1b1611',
+    cardBorder: '#2e251c',
+    accent: '#c49b45',
+    accentHover: '#d8af56',
     textAccent: '#faefd8'
   },
-  'dark-academia': {
-    bgDarkest: '#0d0603',
-    cardBg: '#1f1508',
-    cardBorder: '#3b2010',
-    accent: '#c9a96e',
-    accentHover: '#b89660',
-    textAccent: '#faefd8'
+  midnight: {
+    bgDarkest: '#080d14',
+    cardBg: '#111a24',
+    cardBorder: '#203042',
+    accent: '#c8a355',
+    accentHover: '#dcba70',
+    textAccent: '#f5ecd7'
+  },
+  emerald: {
+    bgDarkest: '#070e0a',
+    cardBg: '#111f16',
+    cardBorder: '#1f3728',
+    accent: '#b5a669',
+    accentHover: '#c9bb7f',
+    textAccent: '#f2eed9'
   },
   royal: {
-    bgDarkest: '#090207',
-    cardBg: '#160a30',
-    cardBorder: '#361654',
-    accent: '#9f7aea',
-    accentHover: '#7c5ec0',
-    textAccent: '#ede9fe'
+    bgDarkest: '#0e070a',
+    cardBg: '#1d1016',
+    cardBorder: '#331d27',
+    accent: '#d4959b',
+    accentHover: '#e2a8ae',
+    textAccent: '#fcedef'
   },
   obsidian: {
-    bgDarkest: '#090909',
-    cardBg: '#141414',
-    cardBorder: '#333333',
-    accent: '#b0b0b0',
-    accentHover: '#808080',
-    textAccent: '#f4f4f4'
+    bgDarkest: '#0a0a0b',
+    cardBg: '#171719',
+    cardBorder: '#2b2b2f',
+    accent: '#b5b5ba',
+    accentHover: '#ceced3',
+    textAccent: '#f4f4f6'
   }
 };
 
 export const THEME_ACCENTS = {
-  midnight:        '#6c63ff',
-  sand:            '#c9a96e',
-  emerald:         '#34d399',
-  obsidian:        '#a0a0a0',
-  royal:           '#9f7aea',
-  'dark-academia': '#c8a96e',
+  'dark-academia': '#c49b45',
+  sand:            '#c49b45',
+  midnight:        '#c8a355',
+  emerald:         '#b5a669',
+  royal:           '#d4959b',
+  obsidian:        '#b5b5ba',
 };
 
 export const COVER_THEMES = {
-  midnight:        { accent: '#6c63ff', glow: 'rgba(108,99,255,0.25)', text: '#e8e6ff',  sub: '#9d97e8', shine: 'rgba(108,99,255,0.12)' },
-  sand:            { accent: '#c9a96e', glow: 'rgba(201,169,110,0.25)', text: '#faefd8', sub: '#b89660', shine: 'rgba(201,169,110,0.10)' },
-  emerald:         { accent: '#34d399', glow: 'rgba(52,211,153,0.20)',  text: '#d1fae5', sub: '#25a876', shine: 'rgba(52,211,153,0.08)'  },
-  obsidian:        { accent: '#b0b0b0', glow: 'rgba(176,176,176,0.15)', text: '#f4f4f4', sub: '#808080', shine: 'rgba(176,176,176,0.07)' },
-  royal:           { accent: '#9f7aea', glow: 'rgba(159,122,234,0.25)', text: '#ede9fe', sub: '#7c5ec0', shine: 'rgba(159,122,234,0.12)' },
-  'dark-academia': { accent: '#c8a96e', glow: 'rgba(200,169,110,0.25)', text: '#faefd8', sub: '#a88650', shine: 'rgba(200,169,110,0.10)' },
+  'dark-academia': { accent: '#c49b45', glow: 'rgba(196,155,69,0.18)', text: '#faefd8', sub: '#b5934e', shine: 'rgba(196,155,69,0.08)' },
+  sand:            { accent: '#c49b45', glow: 'rgba(196,155,69,0.18)', text: '#faefd8', sub: '#b5934e', shine: 'rgba(196,155,69,0.08)' },
+  midnight:        { accent: '#c8a355', glow: 'rgba(200,163,85,0.18)', text: '#f5ecd7', sub: '#b0904d', shine: 'rgba(200,163,85,0.08)' },
+  emerald:         { accent: '#b5a669', glow: 'rgba(181,166,105,0.16)', text: '#f2eed9', sub: '#a0925c', shine: 'rgba(181,166,105,0.07)' },
+  royal:           { accent: '#d4959b', glow: 'rgba(212,149,155,0.18)', text: '#fcedef', sub: '#be8086', shine: 'rgba(212,149,155,0.08)' },
+  obsidian:        { accent: '#b5b5ba', glow: 'rgba(181,181,186,0.14)', text: '#f4f4f6', sub: '#9c9ca1', shine: 'rgba(181,181,186,0.06)' },
 };
 
 export const DEFAULT_JOURNAL_TITLE = 'My Journal';

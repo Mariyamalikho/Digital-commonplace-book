@@ -1,45 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { useJournal } from '../../context/JournalContext';
 import { useAuth } from '../../context/AuthContext';
 import { PageSpread } from './PageSpread';
 import { NavigationDots } from '../Controls/NavigationDots';
-import { CoverCustomizerModal } from '../Controls/CoverCustomizerModal';
-import { ShareModal } from '../Controls/ShareModal';
-import { MembersPanelModal } from '../Controls/MembersPanelModal';
-import { AuthModal } from '../Auth/AuthModal';
-import { AccountSettingsModal } from '../Auth/AccountSettingsModal';
-import { TearAnimationOverlay } from '../Controls/TearAnimationOverlay';
-import { GuestNameModal } from '../Controls/GuestNameModal';
+import { BookSkeleton } from '../Common/BookSkeleton';
+
+// Code-split heavy modal interfaces to eliminate initial bundle bloat
+const CoverCustomizerModal = lazy(() => import('../Controls/CoverCustomizerModal').then(m => ({ default: m.CoverCustomizerModal })));
+const ShareModal = lazy(() => import('../Controls/ShareModal').then(m => ({ default: m.ShareModal })));
+const MembersPanelModal = lazy(() => import('../Controls/MembersPanelModal').then(m => ({ default: m.MembersPanelModal })));
+const AuthModal = lazy(() => import('../Auth/AuthModal').then(m => ({ default: m.AuthModal })));
+const AccountSettingsModal = lazy(() => import('../Auth/AccountSettingsModal').then(m => ({ default: m.AccountSettingsModal })));
+const TearAnimationOverlay = lazy(() => import('../Controls/TearAnimationOverlay').then(m => ({ default: m.TearAnimationOverlay })));
+const GuestNameModal = lazy(() => import('../Controls/GuestNameModal').then(m => ({ default: m.GuestNameModal })));
 
 /**
  * BookContainer Component
- * The main layout wrapper for the journal interface.
- * Handles parsing invite tokens from the URL and loading the appropriate book data,
- * as well as rendering the core PageSpread and all global UI modals.
+ * Main layout wrapper for the physical journal interface.
+ * Coordinates route/token hydration, ambient atmospheric background, and lazy secondary UI.
  */
 export const BookContainer = () => {
   const { currentBook, joinBookViaToken, loadGuestBook } = useJournal();
   const { user, loading, setAuthModalOpen, setAuthMode } = useAuth();
 
   useEffect(() => {
-    if (loading) return; // Wait until we know auth state
+    if (loading) return;
 
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('invite') || urlParams.get('shareToken');
     if (token) {
       if (!user) {
-        // Not logged in: bypass AuthModal and use the secure token tunnel!
         loadGuestBook(token).then(res => {
           if (res.success) {
             window.history.replaceState({}, document.title, window.location.pathname);
           } else {
             console.warn("Guest token error:", res.error);
-            // Optionally fallback to AuthModal if the token was completely invalid?
-            // setAuthMode('login'); setAuthModalOpen(true);
           }
         });
       } else {
-        // Attempt to join the book normally
         joinBookViaToken(token).then(success => {
           if (success) {
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -51,19 +49,27 @@ export const BookContainer = () => {
     }
   }, [joinBookViaToken, loadGuestBook, user, loading, setAuthModalOpen, setAuthMode]);
 
-  // Ambient background derived from book theme
+  // Ambient bookmaker atmosphere derived from leather/cloth cover tone
   const getAmbientBg = () => {
-    const theme = currentBook?.cover?.theme || 'midnight';
+    const theme = currentBook?.cover?.theme || 'dark-academia';
     const map = {
-      midnight:       'radial-gradient(ellipse at 50% 0%, #1a1040 0%, #0a0a0f 65%)',
-      sand:           'radial-gradient(ellipse at 50% 0%, #231608 0%, #0f0d0a 65%)',
-      emerald:        'radial-gradient(ellipse at 50% 0%, #0d2820 0%, #080f0c 65%)',
-      obsidian:       'radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #080808 65%)',
-      royal:          'radial-gradient(ellipse at 50% 0%, #1c0e3a 0%, #0c0a14 65%)',
-      'dark-academia':'radial-gradient(ellipse at 50% 0%, #261d0e 0%, #0d0b08 65%)',
+      'dark-academia': 'radial-gradient(ellipse at 50% 0%, #1c1510 0%, #0e0c0a 70%)',
+      sand:            'radial-gradient(ellipse at 50% 0%, #1a1510 0%, #0e0c0a 70%)',
+      midnight:        'radial-gradient(ellipse at 50% 0%, #131c26 0%, #080d14 70%)',
+      emerald:         'radial-gradient(ellipse at 50% 0%, #132219 0%, #070e0a 70%)',
+      royal:           'radial-gradient(ellipse at 50% 0%, #201016 0%, #0e070a 70%)',
+      obsidian:        'radial-gradient(ellipse at 50% 0%, #1a1a1c 0%, #0a0a0b 70%)',
     };
-    return map[theme] || map.midnight;
+    return map[theme] || map['dark-academia'];
   };
+
+  if (loading && !currentBook) {
+    return (
+      <main className="flex-1 w-full py-6 md:py-12 px-2 flex flex-col items-center justify-center">
+        <BookSkeleton />
+      </main>
+    );
+  }
 
   return (
     <main
@@ -71,14 +77,18 @@ export const BookContainer = () => {
       style={{ background: getAmbientBg() }}
     >
       <PageSpread />
-      <TearAnimationOverlay />
       <NavigationDots />
-      <CoverCustomizerModal />
-      <ShareModal />
-      <MembersPanelModal />
-      <AuthModal />
-      <AccountSettingsModal />
-      <GuestNameModal />
+
+      {/* Lazy Suspense boundary for secondary dialogs */}
+      <Suspense fallback={null}>
+        <TearAnimationOverlay />
+        <CoverCustomizerModal />
+        <ShareModal />
+        <MembersPanelModal />
+        <AuthModal />
+        <AccountSettingsModal />
+        <GuestNameModal />
+      </Suspense>
     </main>
   );
 };

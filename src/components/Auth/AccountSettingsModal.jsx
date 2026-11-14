@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X, AlertCircle, CheckCircle, Trash2 } from 'lucide-react';
+import { X, AlertCircle, CheckCircle, Trash2, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
 
@@ -58,9 +58,9 @@ export const AccountSettingsModal = () => {
         </button>
 
         <div className="text-center mb-6">
-          <div className="w-10 h-10 rounded-[12px] flex items-center justify-center font-display text-white font-bold text-lg mx-auto mb-5"
-            style={{ background: 'var(--accent)' }}>
-            <span className="text-sm">✦</span>
+          <div className="w-10 h-10 rounded-[10px] flex items-center justify-center font-display text-white text-base mx-auto mb-4"
+            style={{ background: 'var(--accent)', color: '#120e09' }}>
+            <Settings size={18} />
           </div>
           <h2 className="font-display text-2xl font-normal mb-1" style={{ color: 'var(--text-primary)' }}>
             Account Settings
@@ -142,7 +142,7 @@ export const AccountSettingsModal = () => {
           ) : (
             <form onSubmit={handleDeleteAccount} className="p-4 rounded-[12px] space-y-3 text-left animate-scale-in"
               style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.3)' }}>
-              <p className="font-semibold text-sm" style={{ color: '#ef4444' }}>⚠️ Permanent Account Deletion</p>
+              <p className="font-semibold text-sm" style={{ color: '#ef4444' }}>Permanent Account Deletion</p>
               <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>This permanently deletes all your journals. Type your password to confirm:</p>
               <input
                 type="password"

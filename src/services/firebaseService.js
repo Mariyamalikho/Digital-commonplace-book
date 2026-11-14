@@ -1,76 +1,56 @@
-// Firebase Service Adapter for Auth, Firestore, and Storage
-import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  sendPasswordResetEmail, 
-  signOut,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence
-} from "firebase/auth";
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  deleteDoc 
-} from "firebase/firestore";
-import { 
-  getStorage, 
-  ref, 
-  uploadString, 
-  getDownloadURL 
-} from "firebase/storage";
+// Firebase Service Adapter for optional secondary sync and Google sign-in
+// Uses dynamic loading to keep primary bundle lean when unconfigured.
 
-const firebaseConfig = {
+const getFirebaseConfig = () => ({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
   appId: import.meta.env.VITE_FIREBASE_APP_ID || ""
-};
-
-let app = null;
-let auth = null;
-let db = null;
-let storage = null;
-let googleProvider = null;
+});
 
 export const isFirebaseConfigured = () => {
-  return Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
+  const config = getFirebaseConfig();
+  return Boolean(config.apiKey && config.projectId);
 };
 
-export const initFirebase = () => {
-  if (isFirebaseConfigured() && !app) {
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-      storage = getStorage(app);
-      googleProvider = new GoogleAuthProvider();
-    } catch (err) {
-      console.warn("Firebase initialization warning:", err.message);
-    }
+let firebaseInstances = null;
+
+export const initFirebase = async () => {
+  if (!isFirebaseConfigured()) return null;
+  if (firebaseInstances) return firebaseInstances;
+
+  try {
+    const { initializeApp } = await import("firebase/app");
+    const { getAuth, GoogleAuthProvider } = await import("firebase/auth");
+    const { getFirestore } = await import("firebase/firestore");
+    const { getStorage } = await import("firebase/storage");
+
+    const app = initializeApp(getFirebaseConfig());
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    firebaseInstances = { app, auth, db, storage, googleProvider };
+    return firebaseInstances;
+  } catch (err) {
+    console.warn("Firebase initialization warning:", err.message);
+    return null;
   }
-  return { app, auth, db, storage, googleProvider };
 };
 
-// Initialize if env vars are configured
-if (isFirebaseConfigured()) {
-  initFirebase();
-}
-
-// Authentication Helpers
 export const firebaseSignInWithGoogle = async (rememberMe = true) => {
-  if (!isFirebaseConfigured() || !auth) {
-    throw new Error("Firebase Auth is not configured. Please supply VITE_FIREBASE_API_KEY in your environment.");
+  if (!isFirebaseConfigured()) {
+    throw new Error("Google Sign-In is not configured in this environment.");
   }
-  await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-  const result = await signInWithPopup(auth, googleProvider || new GoogleAuthProvider());
+  const instances = await initFirebase();
+  if (!instances) throw new Error("Could not initialize authentication provider.");
+
+  const { signInWithPopup, setPersistence, browserLocalPersistence, browserSessionPersistence } = await import("firebase/auth");
+  await setPersistence(instances.auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+  const result = await signInWithPopup(instances.auth, instances.googleProvider);
   return {
     id: result.user.uid,
     name: result.user.displayName || result.user.email.split('@')[0],
@@ -79,45 +59,14 @@ export const firebaseSignInWithGoogle = async (rememberMe = true) => {
   };
 };
 
-export const firebaseSignUpEmail = async (email, password, rememberMe = true) => {
-  if (!isFirebaseConfigured() || !auth) return null;
-  await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-  const result = await createUserWithEmailAndPassword(auth, email, password);
-  return {
-    id: result.user.uid,
-    name: email.split('@')[0],
-    email: result.user.email
-  };
-};
-
-export const firebaseLoginEmail = async (email, password, rememberMe = true) => {
-  if (!isFirebaseConfigured() || !auth) return null;
-  await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-  const result = await signInWithEmailAndPassword(auth, email, password);
-  return {
-    id: result.user.uid,
-    name: result.user.displayName || result.user.email.split('@')[0],
-    email: result.user.email
-  };
-};
-
-export const firebaseSendPasswordReset = async (email) => {
-  if (!isFirebaseConfigured() || !auth) return `Password reset link simulated for ${email}.`;
-  await sendPasswordResetEmail(auth, email);
-  return `Password reset link sent to ${email}.`;
-};
-
-export const firebaseLogout = async () => {
-  if (auth) {
-    await signOut(auth);
-  }
-};
-
-// Firestore Sync Helpers
 export const syncBookToFirestore = async (book) => {
-  if (!db || !book) return;
+  if (!isFirebaseConfigured() || !book) return;
+  const instances = await initFirebase();
+  if (!instances || !instances.db) return;
+
   try {
-    const bookRef = doc(db, "books", book.id);
+    const { doc, setDoc } = await import("firebase/firestore");
+    const bookRef = doc(instances.db, "books", book.id);
     await setDoc(bookRef, {
       ...book,
       updatedAt: new Date().toISOString()
@@ -128,25 +77,14 @@ export const syncBookToFirestore = async (book) => {
 };
 
 export const deleteBookFromFirestore = async (bookId) => {
-  if (!db || !bookId) return;
+  if (!isFirebaseConfigured() || !bookId) return;
+  const instances = await initFirebase();
+  if (!instances || !instances.db) return;
+
   try {
-    await deleteDoc(doc(db, "books", bookId));
+    const { doc, deleteDoc } = await import("firebase/firestore");
+    await deleteDoc(doc(instances.db, "books", bookId));
   } catch (err) {
     console.warn("Firestore delete warning:", err.message);
   }
 };
-
-export const uploadMediaToFirebaseStorage = async (dataUrl, path) => {
-  if (!storage || !dataUrl) return dataUrl;
-  try {
-    const storageRef = ref(storage, path);
-    await uploadString(storageRef, dataUrl, 'data_url');
-    const url = await getDownloadURL(storageRef);
-    return url;
-  } catch (err) {
-    console.warn("Firebase storage upload warning:", err.message);
-    return dataUrl;
-  }
-};
-
-export { auth, db, storage };
