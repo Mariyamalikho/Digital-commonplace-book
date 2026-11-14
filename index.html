@@ -2,17 +2,115 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Commonplace Book</title>
-    <meta name="description" content="A private, artisanal commonplace book for capturing thoughts, excerpts, and reflections with classic bookbinding elegance." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Digital Commonplace Book — Private Journal &amp; Literary Anthology</title>
+    <meta name="description" content="An artisanal, private digital commonplace book for capturing quotes, personal reflections, sketches, and philosophical notes with realistic 3D bookbinding." />
+    <meta name="keywords" content="digital commonplace book, personal journal, commonplace notebook, literary quotes, reading notes, private journal, Urdu notebook, stoic reflections, marginalia" />
+    <meta name="author" content="Mariyam Ali Khokhar" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://digital-commonplace-book.vercel.app/" />
 
-    <!-- Typography: Classical Book Typography + Urdu Script -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Caveat:wght@400..700&family=Noto+Nastaliq+Urdu:wght@400..700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Theme & Display Configuration -->
+    <meta name="theme-color" content="#100e0c" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Open Graph / Facebook Protocol -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Digital Commonplace Book — Private Journal &amp; Literary Anthology" />
+    <meta property="og:description" content="An artisanal, private digital commonplace book for capturing quotes, personal reflections, sketches, and philosophical notes with realistic 3D bookbinding." />
+    <meta property="og:url" content="https://digital-commonplace-book.vercel.app/" />
+    <meta property="og:image" content="https://digital-commonplace-book.vercel.app/welcome_book.png" />
+    <meta property="og:image:alt" content="Digital Commonplace Book Leather Binder Interface" />
+    <meta property="og:site_name" content="Digital Commonplace Book" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Digital Commonplace Book — Private Journal &amp; Literary Anthology" />
+    <meta name="twitter:description" content="An artisanal, private digital commonplace book for capturing quotes, personal reflections, sketches, and philosophical notes with realistic 3D bookbinding." />
+    <meta name="twitter:image" content="https://digital-commonplace-book.vercel.app/welcome_book.png" />
+    <meta name="twitter:image:alt" content="Digital Commonplace Book Leather Binder Interface" />
+    <meta name="twitter:creator" content="@mariyamalikho" />
+
+    <!-- Performance & Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Typography: Classical Monospace, Serif & Urdu Scripts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Caveat:wght@400..700&family=Noto+Nastaliq+Urdu:wght@400..700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data (JSON-LD) for Rich Search Results -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://digital-commonplace-book.vercel.app/#webapp",
+            "name": "Digital Commonplace Book",
+            "url": "https://digital-commonplace-book.vercel.app/",
+            "applicationCategory": "ProductivityApplication",
+            "operatingSystem": "All modern browsers (Web, iOS, Android, Windows, macOS)",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Mariyam Ali Khokhar",
+              "url": "https://mariyamalikhokhar.com/",
+              "sameAs": [
+                "https://github.com/Mariyamalikho",
+                "https://www.linkedin.com/in/mariyamali-khokhar/"
+              ]
+            },
+            "description": "An artisanal digital commonplace notebook designed for scholars, thinkers, and readers to capture excerpts, reflections, voice notes, and sketches.",
+            "browserRequirements": "Requires JavaScript. Requires HTML5.",
+            "softwareVersion": "1.0.0",
+            "featureList": [
+              "Realistic 3D physical book cover and spine mechanics",
+              "Bi-directional Urdu Nastaliq and English script support",
+              "Row Level Security (RLS) encrypted private storage",
+              "Voice audio notes and hand-drawn parchment canvas",
+              "Multi-journal management and multi-format export"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://digital-commonplace-book.vercel.app/#website",
+            "url": "https://digital-commonplace-book.vercel.app/",
+            "name": "Digital Commonplace Book",
+            "publisher": {
+              "@type": "Person",
+              "name": "Mariyam Ali Khokhar"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="theme-scholarly overflow-x-hidden antialiased min-h-screen">
+    <!-- Search engine crawlable fallback content -->
+    <noscript>
+      <div style="padding: 40px; max-width: 800px; margin: 0 auto; font-family: Georgia, serif; line-height: 1.8; color: #222; background: #fdfbf7;">
+        <h1>Digital Commonplace Book</h1>
+        <p>A digital commonplace book is an ancient method of recording extracts, thoughts, observations, and quotations in a structured private journal.</p>
+        <h2>Key Capabilities</h2>
+        <ul>
+          <li><strong>3D Tactile Experience:</strong> Realistic page-turning and leather-bound spine interaction.</li>
+          <li><strong>Bilingual Typography:</strong> Seamless toggle between classical Latin typography and Nastaliq Urdu script.</li>
+          <li><strong>Multi-Format Notes:</strong> Type reflections, draw margin sketches, record spoken voice clips, or attach historical imagery.</li>
+          <li><strong>Private &amp; Secure:</strong> Protected by Row Level Security (RLS) with instant local and cloud synchronization.</li>
+        </ul>
+        <p>Built with React, Vite, and Supabase by <a href="https://mariyamalikhokhar.com/">Mariyam Ali Khokhar</a>.</p>
+      </div>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -164,6 +164,7 @@ export const BookCover = ({ isPreview = false }) => {
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setShareModalOpen(true); }}
+              aria-label="Share this journal"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] text-xs font-medium transition-all"
               style={{
                 background: 'rgba(16,14,12,0.85)',
@@ -182,6 +183,7 @@ export const BookCover = ({ isPreview = false }) => {
           {canWrite && (
             <button
               onClick={e => { e.stopPropagation(); setCoverCustomizerOpen(true); }}
+              aria-label="Customize journal binding and pattern"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] text-xs font-medium transition-all"
               style={{
                 background: 'rgba(16,14,12,0.85)',
@@ -295,6 +297,7 @@ export const BookCover = ({ isPreview = false }) => {
                 onClick={(e) => { e.stopPropagation(); handleOpenAttempt(); }}
                 onMouseEnter={() => setHoveringOpen(true)}
                 onMouseLeave={() => setHoveringOpen(false)}
+                aria-label="Open journal to page spread"
                 className="mt-3 flex items-center gap-2 px-6 py-2.5 rounded-[8px] text-xs font-ui font-medium transition-all"
                 style={{
                   background: hoveringOpen ? t.accent : 'var(--surface-2)',
