@@ -3,7 +3,6 @@ import { useJournal } from '../../context/JournalContext';
 import { useAuth } from '../../context/AuthContext';
 import { PageSpread } from './PageSpread';
 import { NavigationDots } from '../Controls/NavigationDots';
-import { BookSkeleton } from '../Common/BookSkeleton';
 
 // Code-split heavy modal interfaces to eliminate initial bundle bloat
 const CoverCustomizerModal = lazy(() => import('../Controls/CoverCustomizerModal').then(m => ({ default: m.CoverCustomizerModal })));
@@ -20,7 +19,7 @@ const GuestNameModal = lazy(() => import('../Controls/GuestNameModal').then(m =>
  * Coordinates route/token hydration, ambient atmospheric background, and lazy secondary UI.
  */
 export const BookContainer = () => {
-  const { currentBook, booksLoading, joinBookViaToken, loadGuestBook } = useJournal();
+  const { currentBook, joinBookViaToken, loadGuestBook } = useJournal();
   const { user, loading, setAuthModalOpen, setAuthMode } = useAuth();
 
   useEffect(() => {
@@ -62,14 +61,6 @@ export const BookContainer = () => {
     };
     return map[theme] || map['dark-academia'];
   };
-
-  if ((loading || (user && booksLoading)) && !currentBook) {
-    return (
-      <main className="flex-1 w-full py-6 md:py-12 px-2 flex flex-col items-center justify-center">
-        <BookSkeleton />
-      </main>
-    );
-  }
 
   return (
     <main
